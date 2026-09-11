@@ -1,0 +1,171 @@
+'use client';
+
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { useTranslations } from 'next-intl';
+
+import { usePathname } from '@/i18n/routing';
+import { waHref } from '@/config/site.config';
+import { WhatsAppIcon } from '@/components/ui/icons/WhatsApp';
+import { useReducedMotion } from '@/lib/use-reduced-motion';
+
+/** Scroll distance before the button is offered at all. */
+const REVEAL_AT = 120;
+
+/**
+ * Floating WhatsApp button.
+ *
+ * A 56×56 circular FAB, not the old full-width lozenge that sat on top of the
+ * page content at every breakpoint. From `md` up it expands into a pill on
+ * hover or keyboard focus to reveal its label; collapsed, the icon plus the
+ * `aria-label` carry the meaning.
+ *
+ * It hides itself wherever it is noise rather than help: on the contact page,
+ * which already offers every channel; while the footer is on screen, where it
+ * would cover the footer's own contact block; and while a modal is open, where
+ * it would otherwise float ON TOP of the modal (this sits at z-[100], the
+ * mobile nav drawer at z-[60]) and stay clickable through it.
+ */
+export function StickyCTA() {
+  const [scrolled, setScrolled] = useState(false);
+  const [footerVisible, setFooterVisible] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const linkRef = useRef<HTMLAnchorElement>(null);
+  const t = useTranslations('stickyCta');
+  const pathname = usePathname();
+  const reduced = useReducedMotion();
+
+  const isContactPage = pathname === '/contact';
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > REVEAL_AT);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Step aside while the footer is on screen — the footer has its own
+  // WhatsApp row, and the FAB would sit right on top of it.
+  useEffect(() => {
+    const footer = document.querySelector('footer');
+    if (!footer || typeof IntersectionObserver !== 'function') return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setFooterVisible(entry.isIntersecting),
+      { threshold: 0 },
+    );
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  /**
+   * Stand down while a modal is open.
+   *
+   * `aria-modal="true"` is the signal, rather than anything private to the
+   * navbar: it is the standard semantic for "a modal is up", the nav drawer
+   * already sets it, and keying off it means any future modal gets the same
+   * treatment without touching this component again.
+   *
+   * The drawer also flips `inert` on `#main-content` / `<footer>`, but this FAB
+   * is rendered by the layout OUTSIDE both of those, which is exactly why it
+   * escaped in the first place — so it has to notice for itself.
+   */
+  useEffect(() => {
+    if (typeof MutationObserver !== 'function') return;
+
+    const sync = () =>
+      setModalOpen(document.querySelector('[aria-modal="true"]') !== null);
+    sync();
+
+    /*
+     * `childList` + `subtree` on <body> is deliberately broad: the drawer is
+     * mounted by AnimatePresence with `aria-modal` ALREADY on it, so watching
+     * attribute changes alone would never see it arrive. It is also cheaper
+     * than it looks — MutationObserver batches records and invokes the
+     * callback once per microtask checkpoint, not once per mutation, so a
+     * Motion transition inserting fifty nodes costs one `querySelector`, and
+     * React bails out of the re-render when the boolean has not changed.
+     * Debouncing it further would cost a frame of overlap with the modal,
+     * which is the exact bug this observer exists to prevent.
+     */
+    const observer = new MutationObserver(sync);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['aria-modal'],
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  /**
+   * The prefilled message names the page the visitor is writing from, so the
+   * first WhatsApp message already carries context. The title is only known at
+   * click time — it changes on every client-side navigation — so the href is
+   * rewritten here, before the browser acts on it.
+   */
+  const handleClick = useCallback(() => {
+    const link = linkRef.current;
+    if (!link) return;
+    const page = document.title.split(' | ')[0]?.trim();
+    link.href = page
+      ? waHref(t('whatsappMessageFrom', { page }))
+      : waHref(t('whatsappMessage'));
+  }, [t]);
+
+  /*
+   * Unmount outright rather than letting AnimatePresence play the exit
+   * animation. Because the FAB outranks the drawer in the stacking order, a
+   * 250 ms fade-out would keep it painted — and clickable — on top of the
+   * modal for the whole animation, which is the bug being fixed.
+   */
+  if (modalOpen) return null;
+
+  const isVisible = scrolled && !isContactPage && !footerVisible;
+
+  const button = (
+    <a
+      ref={linkRef}
+      href={waHref(t('whatsappMessage'))}
+      onClick={handleClick}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={t('aria')}
+      className="group flex items-center rounded-full bg-brand-accent-strong text-brand-on-accent shadow-card ring-1 ring-brand-accent-ring transition-shadow hover:shadow-elevated focus-visible:ring-2 focus-visible:ring-brand-accent"
+    >
+      <span
+        aria-hidden="true"
+        className="hidden md:block max-w-0 overflow-hidden transition-[max-width] duration-300 ease-out group-hover:max-w-xs group-focus-visible:max-w-xs"
+      >
+        <span className="block whitespace-nowrap pl-6 text-xs font-black uppercase tracking-widest">
+          {t('labelTop')} {t('labelBottom')}
+        </span>
+      </span>
+      <span className="flex h-14 w-14 shrink-0 items-center justify-center">
+        <WhatsAppIcon size={26} />
+      </span>
+    </a>
+  );
+
+  return (
+    <div className="fixed bottom-4 right-4 z-[100] xl:bottom-10 xl:right-10">
+      {reduced ? (
+        // No entrance animation: it either is there or it is not.
+        isVisible ? button : null
+      ) : (
+        <AnimatePresence>
+          {isVisible && (
+            <motion.div
+              initial={{ y: 24, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 24, opacity: 0 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+            >
+              {button}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
+    </div>
+  );
+}

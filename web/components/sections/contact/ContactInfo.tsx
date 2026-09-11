@@ -1,0 +1,222 @@
+'use client';
+
+import { type CSSProperties, useEffect, useState } from 'react';
+import { Mail, MapPin, Phone, ExternalLink } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+
+import {
+  site,
+  telHref,
+  mailHref,
+  waHref,
+  addressLine,
+  isOpenNow,
+  formatTime,
+} from '@/config/site.config';
+import { cn } from '@/lib/utils';
+import { WhatsAppIcon } from '@/components/ui/icons/WhatsApp';
+
+export function ContactInfo({ locale }: { locale: string }) {
+  const t = useTranslations('contact.info');
+  const ts = useTranslations('contact.schedule');
+  const tm = useTranslations('contact.meta');
+
+  /**
+   * Starts as null rather than a guess, so the server-rendered HTML and the
+   * first client render agree. The badge appears once the browser has told us
+   * the visitor's local time.
+   */
+  const [isOpen, setIsOpen] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const update = () => setIsOpen(isOpenNow());
+    update();
+    const interval = setInterval(update, 60_000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  /**
+   * The column slides in with the CSS `.enter` animation (see globals.css),
+   * one step every 0.2s. It used to be a GSAP `from` tween, which re-hid the
+   * h1 the server had already painted and then replayed it.
+   */
+  const enterStep = (step: number) =>
+    ({ '--enter-delay': `${step * 0.2}s` }) as CSSProperties;
+  const ENTER = 'enter [--enter-x:-30px] [--enter-duration:0.8s]';
+
+  /**
+   * `href: null` renders the row as plain text. The office used to link to a
+   * Google Maps search for "Ouagadougou, Burkina Faso" — a whole city, not an
+   * office — so it stays unlinked until site.config.ts has a street address.
+   */
+  const methods: {
+    key: string;
+    href: string | null;
+    label: string;
+    value: string;
+    icon: React.ReactNode;
+    external: boolean;
+  }[] = [
+    {
+      key: 'email',
+      href: mailHref(),
+      label: t('emailLabel'),
+      value: site.contact.email,
+      icon: <Mail className="text-brand-accent w-4 h-4 md:w-5 md:h-5" />,
+      external: false,
+    },
+    {
+      key: 'phone',
+      href: telHref(),
+      label: t('phoneLabel'),
+      value: site.contact.phone,
+      icon: <Phone className="text-brand-accent w-4 h-4 md:w-5 md:h-5" />,
+      external: false,
+    },
+    {
+      key: 'whatsapp',
+      href: waHref(),
+      label: t('whatsappLabel'),
+      value: site.contact.whatsapp,
+      icon: <WhatsAppIcon className="text-green-500 w-4 h-4 md:w-5 md:h-5" />,
+      external: true,
+    },
+    {
+      key: 'office',
+      href: null,
+      label: t('officeLabel'),
+      value: addressLine(),
+      icon: <MapPin className="text-brand-accent w-4 h-4 md:w-5 md:h-5" />,
+      external: false,
+    },
+  ];
+
+  return (
+    <div>
+      <div className={ENTER}>
+        <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[1.15] mb-8 md:mb-12 text-balance break-words">
+          {t.rich('title', {
+            br: () => <br />,
+            accent: (chunks) => (
+              <span className="text-brand-accent italic font-serif lowercase font-light">
+                {chunks}
+              </span>
+            ),
+          })}
+        </h1>
+        <p className="text-brand-muted text-base md:text-lg mb-8">{t('intro')}</p>
+      </div>
+
+      {/* Live availability */}
+      {isOpen !== null && (
+        <div className="mb-8 inline-flex items-center gap-3 rounded-full border border-brand-border px-4 py-2">
+          <span className="relative flex h-2.5 w-2.5">
+            {isOpen && (
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 light:bg-green-600 opacity-70" />
+            )}
+            <span
+              className={cn(
+                'relative inline-flex h-2.5 w-2.5 rounded-full',
+                isOpen ? 'bg-green-400 light:bg-green-600' : 'bg-brand-faint',
+              )}
+            />
+          </span>
+          <span className="text-[11px] md:text-xs font-black uppercase tracking-wide">
+            {isOpen ? t('statusOpen') : t('statusClosed')}
+          </span>
+        </div>
+      )}
+
+      {/* The methods list needs a heading of its own; `contact.meta.title`
+          ("Contact") is exactly that string and already exists. */}
+      <h2 className="sr-only">{tm('title')}</h2>
+      <div className="space-y-6 md:space-y-8 mb-8">
+        {methods.map((m, i) => {
+          const body = (
+            <>
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-brand-border flex items-center justify-center shrink-0 group-hover:border-brand-accent group-hover:bg-brand-accent-soft transition-all">
+                {m.icon}
+              </div>
+              <div className="flex-1">
+                <div className="text-[11px] md:text-xs uppercase tracking-wide mb-1 font-bold text-brand-muted">
+                  {m.label}
+                </div>
+                <div className="text-base md:text-lg font-bold group-hover:text-brand-accent transition-colors break-all md:break-normal">
+                  {m.value}
+                </div>
+              </div>
+              {m.external && (
+                <ExternalLink className="w-4 h-4 opacity-40 group-hover:opacity-100 group-hover:text-brand-accent transition-all shrink-0" />
+              )}
+            </>
+          );
+
+          if (!m.href) {
+            return (
+              <div
+                key={m.key}
+                className={cn(ENTER, 'flex items-center gap-4 md:gap-6')}
+                style={enterStep(i + 1)}
+              >
+                {body}
+              </div>
+            );
+          }
+
+          return (
+            <a
+              key={m.key}
+              href={m.href}
+              {...(m.external
+                ? { target: '_blank', rel: 'noopener noreferrer' }
+                : {})}
+              className={cn(
+                ENTER,
+                'flex items-center gap-4 md:gap-6 group hover:scale-[1.02] transition-transform',
+              )}
+              style={enterStep(i + 1)}
+            >
+              {body}
+            </a>
+          );
+        })}
+      </div>
+
+      {/* Opening hours — rendered from site.config.ts */}
+      <div
+        className={cn(
+          ENTER,
+          'bg-brand-primary/30 rounded-2xl p-6 border border-brand-border mb-8',
+        )}
+        style={enterStep(methods.length + 1)}
+      >
+        <h2 className="text-[11px] md:text-xs uppercase tracking-wide text-brand-muted mb-4 font-bold">
+          {ts('title')}
+        </h2>
+        <div className="space-y-3">
+          {site.contact.schedule.map((slot) => (
+            <div key={slot.id} className="flex justify-between items-center gap-4">
+              <span className="text-sm font-medium text-brand-muted">
+                {ts(`days.${slot.id}`)}
+              </span>
+              <span
+                className={cn(
+                  'text-sm font-bold',
+                  // green-400 is 1.7:1 on cream; green-700 is 5.3:1.
+                  slot.open ? 'text-green-400 light:text-green-700' : 'text-brand-muted',
+                )}
+              >
+                {slot.open && slot.close
+                  ? `${formatTime(slot.open, locale)} - ${formatTime(slot.close, locale)}`
+                  : ts('closed')}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* The promise lives under the form's submit button (and in the footer);
+          a third copy in this column only repeated it. */}
+    </div>
+  );
+}

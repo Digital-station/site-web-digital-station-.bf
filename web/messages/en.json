@@ -1,0 +1,872 @@
+{
+  "meta": {
+    "defaultTitle": "Digital Station | Building tomorrow's digital",
+    "defaultDescription": "IT services, consulting and engineering company based in Ouagadougou. Web and mobile development, digital transformation, cybersecurity and cloud."
+  },
+  "common": {
+    "skipToContent": "Skip to content",
+    "languageLabel": "Language",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode",
+    "switchToFrench": "Switch to French",
+    "switchToEnglish": "Switch to English",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "getStarted": "Start a project",
+    "contactUs": "Contact us",
+    "promise": "Free quote · reply within 24 h",
+    "whatsappCta": "Message us on WhatsApp"
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "servicesEyebrow": "Our services",
+    "solutions": "Our solutions",
+    "about": "About us",
+    "contact": "Contact",
+    "menuLabel": "Navigation menu",
+    "servicesGroup": "Our services ({count})",
+    "breadcrumbLabel": "Breadcrumb"
+  },
+  "footer": {
+    "intro": "We help businesses build better websites, smarter software, and stronger digital systems. Simple, effective, and built for growth.",
+    "navigationTitle": "Navigation",
+    "contactsTitle": "Contacts",
+    "hoursTitle": "Hours",
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "followUs": "Follow us on {network}"
+  },
+  "rail": {
+    "vertical": "Digital Station / {year}"
+  },
+  "scrollIndicator": {
+    "beginning": "Intro",
+    "capabilities": "Services",
+    "successStories": "Industries",
+    "scaleNow": "Contact"
+  },
+  "stickyCta": {
+    "labelTop": "Contact",
+    "labelBottom": "us",
+    "aria": "Message us on WhatsApp",
+    "whatsappMessage": "Hello Digital Station! I'd like to discuss a project with you.",
+    "whatsappMessageFrom": "Hello Digital Station! I'm writing from the \"{page}\" page. I'd like to discuss a project with you."
+  },
+  "home": {
+    "meta": {
+      "title": "IT & digital services in Ouagadougou",
+      "description": "IT services, consulting and engineering in Ouagadougou: custom software, digital transformation, cybersecurity, cloud and AI."
+    },
+    "hero": {
+      "eyebrow": "IT services, consulting and engineering",
+      "titleLine1": "Redefining",
+      "titleConnector": "the",
+      "titleLine2": "Digital",
+      "titleLine3": "Frontier",
+      "cta": "Start a project",
+      "ctaAria": "Contact us to start your project",
+      "partnersTitle": "Technologies we deploy",
+      "statement": "We consult, engineer, and design technology solutions to address business challenges with precision.",
+      "statValue": "10",
+      "statLabel": "Areas of expertise",
+      "workWithUs": "Work<br></br>With Us"
+    },
+    "services": {
+      "learnMore": "Learn more about {service}"
+    },
+    "industries": {
+      "eyebrow": "Our Domains",
+      "titleLead": "Industries",
+      "titleAccent": "We Serve",
+      "body": "From healthcare to energy, we work across the key sectors of the West African economy, with solutions built for each business.",
+      "searchPlaceholder": "Search industries…",
+      "clearSearch": "Clear search",
+      "items": {
+        "healthcare": {
+          "name": "Healthcare & Wellness",
+          "details": "Hospitals, clinics, telemedicine platforms"
+        },
+        "finance": {
+          "name": "Financial Services",
+          "details": "Banking, insurance, fintech & payments"
+        },
+        "realestate": {
+          "name": "Real Estate & Construction",
+          "details": "Property management, PropTech, smart buildings"
+        },
+        "retail": {
+          "name": "Retail & e-commerce",
+          "details": "Online stores, POS, omnichannel retail"
+        },
+        "education": {
+          "name": "Education",
+          "details": "EdTech, LMS, academic & research institutions"
+        },
+        "manufacturing": {
+          "name": "Manufacturing & Industrial",
+          "details": "Industry 4.0, automation, supply chain"
+        },
+        "agriculture": {
+          "name": "Agriculture",
+          "details": "AgriTech, precision farming, food processing"
+        },
+        "transport": {
+          "name": "Transportation & Logistics",
+          "details": "Fleet management, last-mile delivery, freight"
+        },
+        "hospitality": {
+          "name": "Hospitality & Tourism",
+          "details": "Hotels, booking platforms, travel technology"
+        },
+        "energy": {
+          "name": "Energy & Utilities",
+          "details": "Renewables, grid management, smart metering"
+        },
+        "media": {
+          "name": "Media & Entertainment",
+          "details": "Streaming, gaming, content & publishing platforms"
+        },
+        "government": {
+          "name": "Government & Nonprofit",
+          "details": "Digital government, civic tech, NGO solutions"
+        }
+      }
+    },
+    "tools": {
+      "eyebrow": "Our Stack",
+      "titleLead": "Tools",
+      "titleAccent": "We Master",
+      "body": "From languages to enterprise platforms, these are the technologies we deliver with every day.",
+      "logoAlt": "{name} logo",
+      "pause": "Pause scrolling",
+      "play": "Resume scrolling"
+    },
+    "cta": {
+      "title": "Let's<br></br><accent>work</accent> together.",
+      "subtitle": "Ready to start your project?",
+      "button": "Start a project"
+    }
+  },
+  "services": {
+    "items": {
+      "software-development": {
+        "title": "Software Development & Engineering",
+        "desc": "Custom design and development of websites, web and mobile applications tailored to your business needs.",
+        "audience": "SMEs, institutions and start-ups that need a dependable business tool, website or app.",
+        "longDesc": "We design and build custom digital solutions — websites, web and mobile applications — fully aligned with your business processes. From requirements analysis to production deployment, our engineering team delivers robust, scalable and high-performance solutions.",
+        "benefits": [
+          "Custom web & mobile applications",
+          "Scalable & maintainable architecture",
+          "Modern & intuitive interfaces",
+          "Agile iterative delivery"
+        ],
+        "process": [
+          "Business requirements analysis",
+          "Design & prototyping",
+          "Development & testing",
+          "Deployment & maintenance"
+        ],
+        "featureTitle": "Solutions tailored to your business",
+        "featureDesc": "Every line of code is written to address your operational constraints and accelerate your digital growth.",
+        "scopeTitle": "What we build",
+        "scopeIntro": "We turn ideas into products that are fast, reliable, and ready to scale with your business.",
+        "scopeItems": [
+          {
+            "title": "Websites",
+            "description": "Landing pages, marketing websites, and conversion-focused business websites designed for visibility and growth."
+          },
+          {
+            "title": "Web applications",
+            "description": "Dashboards, portals, SaaS products, and internal tools built for daily operations and automation."
+          },
+          {
+            "title": "Mobile apps (iOS & Android)",
+            "description": "Native or cross-platform applications designed for customer engagement, field teams, or on-the-go workflows."
+          },
+          {
+            "title": "APIs & integrations",
+            "description": "Secure integrations with your CRM, ERP, payment systems, analytics tools, and third-party services."
+          },
+          {
+            "title": "Maintenance & evolution",
+            "description": "Ongoing improvements, performance tuning, and feature rollouts to keep your product competitive."
+          }
+        ],
+        "heroBadgeLabel": "Digital Product Delivery",
+        "heroSubtitle": "Fast, modern digital products that look sharp and perform flawlessly.",
+        "heroDescription": "From polished websites to powerful web and mobile apps, we shape technical solutions around your business goals, your users, and your growth plan.",
+        "heroCtaLabel": "Start a project",
+        "whyUsTitle": "Why choose our team ?",
+        "whyUsIntro": "We combine product thinking, design discipline, and engineering execution to build software that feels effortless for your users and reliable for your business.",
+        "whyUsItems": [
+          "We build for performance, scalability, and long-term maintainability.",
+          "We translate business goals into clear product features and clean technical decisions.",
+          "We ensure your solution is ready for growth, integrations, and future upgrades."
+        ],
+        "featureCtaLabel": "Explore our web and app solutions",
+        "ctaTitle": "Need a Modern Website That Delivers Results?",
+        "ctaSubtitle": "Let's turn your idea into a digital experience that attracts, converts, and scales.",
+        "ctaButtonLabel": "Start a project"
+      },
+      "social-media-management": {
+        "title": "Social Media Management",
+        "desc": "Strategy, content and optimisation across your social channels to strengthen your online visibility.",
+        "audience": "Brands, retailers and organisations that want a consistent, well-managed online presence.",
+        "longDesc": "We build a coherent, engaging social presence for your brand. From content creation to community management and performance analysis, we put targeted actions in place to maximise your digital impact.",
+        "benefits": [
+          "Tailored social content strategy",
+          "Higher audience engagement",
+          "Community monitoring and moderation",
+          "Performance reporting"
+        ],
+        "process": [
+          "Audit of existing channels",
+          "Strategy definition",
+          "Content creation and publishing",
+          "Analysis and optimisation"
+        ],
+        "featureTitle": "A social presence that performs",
+        "featureDesc": "We help you build lasting relationships with your customers through relevant content and genuine interaction."
+      },
+      "integration-solutions": {
+        "title": "Solution Integration",
+        "desc": "Connecting your business software  ERP, CRM and third-party tools  into one unified information system.",
+        "audience": "Organisations whose business tools do not yet talk to one another.",
+        "longDesc": "We deploy and interconnect your business software  ERP, CRM, SaaS platforms and third-party tools — into a single unified digital ecosystem. No more data silos: your teams work from information that flows freely, centralised and reliable.",
+        "benefits": [
+          "Data silos eliminated",
+          "Real-time synchronisation",
+          "Immediate productivity gains",
+          "A unified information system"
+        ],
+        "process": [
+          "Audit of the existing setup",
+          "Mapping the data flows",
+          "Connector development",
+          "Testing and go-live"
+        ],
+        "featureTitle": "A seamless information system",
+        "featureDesc": "We connect your existing tools so they talk to each other transparently, cutting errors and operational time loss."
+      },
+      "licences-editeurs": {
+        "title": "Software Licensing",
+        "desc": "Advice, procurement and optimised management of software licences for businesses and institutions.",
+        "audience": "Companies and public bodies that need to equip their workstations and stay on top of their licences.",
+        "longDesc": "We advise businesses and institutions on the purchase and management of their software licences. We help you stay compliant, control costs and access the best commercial terms.",
+        "benefits": [
+          "Licence cost optimisation",
+          "Regulatory compliance kept on track",
+          "Access to preferential pricing",
+          "Centralised software estate management"
+        ],
+        "process": [
+          "Audit of the existing software estate",
+          "Advice and recommendations",
+          "Procurement and activation",
+          "Tracking and renewal"
+        ],
+        "featureTitle": "Licence advice and procurement",
+        "featureDesc": "We help you choose, buy and manage your Microsoft, Oracle, Adobe and other major-vendor licences."
+      },
+      "support-infogerance": {
+        "title": "Support & Managed Services",
+        "desc": "Proactive monitoring and technical assistance that keep your systems performing without interruption.",
+        "audience": "Organisations with no in-house IT team, or whose team needs day-to-day reinforcement.",
+        "longDesc": "Our team keeps your infrastructure and applications operational. With continuous monitoring, responsive assistance and on-site intervention, we work to keep your information system available and performing.",
+        "benefits": [
+          "Continuous monitoring and responsive support",
+          "Fast, local intervention",
+          "Proactive infrastructure monitoring",
+          "Reduced downtime"
+        ],
+        "process": [
+          "Initial systems audit",
+          "Monitoring setup",
+          "Incident management",
+          "Reporting and continuous improvement"
+        ],
+        "featureTitle": "Your outsourced IT department",
+        "featureDesc": "We take on your entire IT operation so you can focus on your core business with complete peace of mind."
+      },
+      "formation-accompagnement": {
+        "title": "Training & Change Management",
+        "desc": "Building your teams' skills and guiding change so your new tools are genuinely adopted.",
+        "audience": "Teams that have just adopted a new tool and need to make it part of how they work.",
+        "longDesc": "Even the best tool is worthless without users who have mastered it. We design tailored training programmes and guide your teams through change, so your new digital solutions are adopted quickly, effectively and for the long term.",
+        "benefits": [
+          "Training tailored to each profile",
+          "Structured change management",
+          "Custom learning materials",
+          "Post-training follow-up and coaching"
+        ],
+        "process": [
+          "Needs assessment",
+          "Programme design",
+          "Running the sessions",
+          "Evaluation and follow-up"
+        ],
+        "featureTitle": "The human factor at the heart of digital",
+        "featureDesc": "We put the end user at the centre of every project, so the technology genuinely serves your teams and your goals."
+      },
+      "transformation-digitale": {
+        "title": "Digital Transformation Consulting",
+        "desc": "Strategic guidance through your digital transition, from first thinking to full implementation.",
+        "audience": "Leaders who want a clear roadmap before investing in technology.",
+        "longDesc": "Digital transformation is a journey, not a destination. We guide leaders and their teams in defining a digital roadmap, identifying where the value lies, and progressively implementing solutions suited to their sector and their digital maturity.",
+        "benefits": [
+          "A clear digital roadmap",
+          "Quick wins identified",
+          "Strategy and technology aligned",
+          "Stronger IT governance"
+        ],
+        "process": [
+          "Digital maturity assessment",
+          "Defining the vision and roadmap",
+          "Steering the workstreams",
+          "Measuring the impact"
+        ],
+        "featureTitle": "Strategy before technology",
+        "featureDesc": "We help you ask the right questions before choosing the right tools, for a lasting transformation that creates real business value."
+      },
+      "cybersecurite-conformite": {
+        "title": "Cybersecurity & Compliance",
+        "desc": "Security audits, compliance with Burkina Faso's data-protection law and the GDPR, and protection of your sensitive data.",
+        "audience": "Organisations that handle sensitive data or have a compliance requirement to meet.",
+        "longDesc": "With cyber threats on the rise, protecting your information system is no longer optional. We carry out in-depth security audits, implement robust protection policies, and guide you towards compliance with the regulations that apply to you: Burkina Faso's data-protection law and the GDPR.",
+        "benefits": [
+          "Vulnerability audits and penetration testing",
+          "CIL / GDPR compliance",
+          "Protection of sensitive data",
+          "Business continuity planning"
+        ],
+        "process": [
+          "Full security audit",
+          "Risk analysis",
+          "Implementing the protections",
+          "Team awareness training"
+        ],
+        "featureTitle": "Security by design",
+        "featureDesc": "We build security best practice into every stage of your projects, for an information system resilient to today's threats and tomorrow's."
+      },
+      "cloud-hebergement": {
+        "title": "Cloud & Hosting",
+        "desc": "Cloud migration and infrastructure management on AWS, Azure and Google Cloud for a more agile IT.",
+        "audience": "Companies with ageing infrastructure, or whose needs vary from one month to the next.",
+        "longDesc": "We support businesses through their migration to the cloud and the management of their infrastructure on AWS, Microsoft Azure and Google Cloud Platform. Our approach aims for a controlled, secure transition, optimised for lower costs and maximum agility.",
+        "benefits": [
+          "Secure cloud migration with minimal downtime",
+          "Lower infrastructure costs",
+          "Scalability and high availability",
+          "Multi-cloud and hybrid cloud"
+        ],
+        "process": [
+          "Audit of the existing infrastructure",
+          "Migration strategy",
+          "Migration and configuration",
+          "Optimisation and ongoing management"
+        ],
+        "featureTitle": "Agile IT that serves your growth",
+        "featureDesc": "Our team deploys on AWS, Azure and GCP and helps you get the most out of the cloud while keeping your costs and your security under control.",
+        "platforms": [
+          {
+            "name": "Amazon Web Services",
+            "focus": [
+              "EC2 & Lambda",
+              "S3 & RDS",
+              "CloudFront & Route 53"
+            ],
+            "color": "text-amber-400",
+            "insight": "Scalable infrastructure and managed services to host and grow your business applications with confidence."
+          },
+          {
+            "name": "Microsoft Azure",
+            "focus": [
+              "Azure Virtual Machines",
+              "Azure DevOps",
+              "Azure Active Directory"
+            ],
+            "color": "text-blue-400",
+            "insight": "The natural cloud for Microsoft environments, with native integration into Office 365 and Active Directory."
+          },
+          {
+            "name": "Google Cloud Platform",
+            "focus": [
+              "Compute Engine",
+              "BigQuery & AI APIs",
+              "Kubernetes Engine (GKE)"
+            ],
+            "color": "text-emerald-400",
+            "insight": "Leading-edge infrastructure for data, AI and cloud-native projects that demand performance and innovation."
+          }
+        ]
+      },
+      "intelligence-artificielle": {
+        "title": "Applied Artificial Intelligence",
+        "desc": "AI solutions : chatbots, automation and document processing , integrated to boost your team's productivity.",
+        "audience": "Teams spending too much time on repetitive tasks or on processing documents.",
+        "longDesc": "Artificial intelligence is changing how work gets done. We embed concrete, operational AI into your business processes: intelligent conversational agents, automation of repetitive tasks, and intelligent document processing that frees up your teams' potential.",
+        "benefits": [
+          "Custom chatbots and virtual assistants",
+          "Business process automation (RPA + AI)",
+          "Intelligent document processing (OCR, NLP)",
+          "Predictive dashboards and decision support"
+        ],
+        "process": [
+          "Identifying the use cases",
+          "Model design and integration",
+          "Testing and tuning",
+          "Deployment and scaling"
+        ],
+        "featureTitle": "AI applied to the real world",
+        "featureDesc": "We don't sell AI for its own sake — we identify the high-impact use cases in your organisation and deploy solutions that genuinely make a difference."
+      }
+    }
+  },
+  "contact": {
+    "meta": {
+      "title": "Contact",
+      "description": "Let's talk about your digital project. Web development, mobile apps and digital transformation in Ouagadougou. We reply within 24 hours."
+    },
+    "info": {
+      "title": "Let's launch<br></br><accent>your project</accent><br></br>together.",
+      "intro": "Turn your ideas into digital solutions that perform. Our team is ready to help you build them.",
+      "statusOpen": "Available now",
+      "statusClosed": "Currently closed",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone",
+      "whatsappLabel": "WhatsApp",
+      "officeLabel": "Office"
+    },
+    "schedule": {
+      "title": "Opening hours",
+      "closed": "Closed",
+      "days": {
+        "weekdays": "Monday – Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      }
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "items": {
+        "response": {
+          "q": "How quickly do you reply?",
+          "a": "We reply within 24 working hours, often sooner."
+        },
+        "quote": {
+          "q": "Are quotes free?",
+          "a": "Yes — every quote is free and comes with no obligation."
+        },
+        "remote": {
+          "q": "Do you work remotely?",
+          "a": "Yes, we support clients across West Africa."
+        },
+        "payment": {
+          "q": "Which payment methods do you accept?",
+          "a": "Bank transfer, Mobile Money (Orange, Moov, Wave) and cash."
+        }
+      }
+    },
+    "form": {
+      "name": "Full name",
+      "namePlaceholder": "e.g. Adama Ouedraogo",
+      "email": "Email",
+      "emailPlaceholder": "e.g. adama@company.com",
+      "phone": "Phone",
+      "phonePlaceholder": "e.g. +226 70 00 00 00",
+      "contactHint": "Email or phone — at least one.",
+      "objective": "Type of service",
+      "objectivePlaceholder": "Select a service...",
+      "budget": "Estimated budget (optional)",
+      "currency": "FCFA",
+      "brief": "Project description",
+      "briefPlaceholder": "Describe your project, your goals and any current constraints...",
+      "submit": "Send message",
+      "sending": "Sending...",
+      "privacyNote": "Your details stay confidential and are used only to handle your request.",
+      "successTitle": "Message sent!",
+      "successBody": "Thank you for reaching out. Our team will get back to you within 24 hours.",
+      "successSpam": "Please check your spam folder if you don't hear from us.",
+      "sendAnother": "Send another message",
+      "retryWhatsapp": "Continue on WhatsApp",
+      "retryEmail": "Send by email",
+      "demoBrief": "Demo request: {product}",
+      "objectives": {
+        "other": "Other"
+      },
+      "budgets": {
+        "low": "< 500K",
+        "mid": "500K - 2M",
+        "high": "> 2M"
+      },
+      "errors": {
+        "name": "Please enter your name.",
+        "email": "Please enter a valid email address",
+        "phone": "A valid phone number is required",
+        "contactRequired": "Please provide an email or a phone number.",
+        "brief": "Please tell us a little more about your project",
+        "tooLong": "This field is too long.",
+        "submit": "Sending failed. Please try again, or email us directly at infos@digitalstation.bf."
+      }
+    }
+  },
+  "servicesPage": {
+    "meta": {
+      "title": "Our services",
+      "description": "Software development, integration, cloud, cybersecurity, AI and digital transformation. Explore Digital Station's ten areas of expertise."
+    },
+    "eyebrow": "What we do",
+    "titleLine1": "Building",
+    "titleLine2": "systems",
+    "titleLine3": "that last.",
+    "intro": "We build custom CRM systems, ERP platforms, business websites and e-commerce solutions to help companies grow and operate efficiently.",
+    "stat2Value": "10",
+    "stat2Label": "Areas of expertise",
+    "philosophy": {
+      "first": {
+        "title": "Decisions grounded in data",
+        "desc": "Every technical choice rests on concrete measurement, never on hunches."
+      },
+      "second": {
+        "title": "Business before tooling",
+        "desc": "We start from your actual processes and choose the technology to fit — never the other way round."
+      },
+      "third": {
+        "title": "Technical rigour",
+        "desc": "Code and infrastructure built for performance, security and long-term maintainability."
+      }
+    },
+    "knowledgeEyebrow": "The knowledge base",
+    "knowledgeTitleLead": "Understanding",
+    "knowledgeTitleAccent": "what we do.",
+    "knowledgeIntro": "There is a clear logic behind every service we offer. Here are the principles that guide each of our areas of expertise.",
+    "scaleEyebrow": "Performance",
+    "scaleTitleLead": "Built to",
+    "scaleTitleAccent": "last.",
+    "scaleBody": "Whether you operate in Ouagadougou or across several markets, our systems are built to adapt and to hold up over time.",
+    "scalePoint1Title": "Security by design",
+    "scalePoint1Desc": "Data protection designed in from the start, not bolted on afterwards.",
+    "scalePoint2Title": "Availability",
+    "scalePoint2Desc": "Continuous monitoring and fast intervention to keep interruptions short.",
+    "vizLabel": "System diagnostic",
+    "vizValue": "Optimised.",
+    "ctaEyebrow": "Ready to start?",
+    "ctaTitleLead": "Let's build",
+    "ctaTitleAccent": "together.",
+    "ctaPrimary": "Start a project",
+    "ctaSecondary": "See our solutions"
+  },
+  "servicePage": {
+    "defaults": {
+      "scopeTitle": "How we work",
+      "scopeIntro": "We don't work from templates. We work from proven frameworks.",
+      "heroBadgeLabel": "Service deep-dive",
+      "heroSubtitle": "We turn your goals into working systems.",
+      "heroCtaLabel": "Start a project",
+      "whyUsTitle": "Why choose us",
+      "whyUsIntro": "What you get on every engagement.",
+      "featureCtaLabel": "Explore our solutions",
+      "ctaTitle": "Let's build it",
+      "ctaSubtitle": "We build with precision, clarity and lasting results.",
+      "ctaButtonLabel": "Contact us",
+      "processEyebrow": "Our process",
+      "processTitle": "How we deliver",
+      "forWhoTitle": "Who it's for",
+      "howToStartTitle": "How to start",
+      "howToStart": "A free first call, a quote within 24 h, then a clear action plan.",
+      "commitmentTitle": "Our commitment"
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "About us",
+      "description": "Digital Station: an IT services, consulting and engineering company founded in 2018 in Ouagadougou. Our mission, our values and our team."
+    },
+    "hero": {
+      "eyebrow": "Your digital partner",
+      "titleLine1": "Our",
+      "titleLine2": "story",
+      "titleLine3": "begins.",
+      "intro": "Digital Station was born from a simple conviction: African businesses deserve technology partners who understand their human stakes as well as their technical challenges.",
+      "ctaServices": "Our services",
+      "ctaContact": "Contact us",
+      "statYears": "Years of experience",
+      "statLocal": "Based in Burkina Faso"
+    },
+    "mission": {
+      "eyebrow": "Our mission",
+      "title": "We are the technology <accent>partner</accent> you have been waiting for.",
+      "body1": "Digital Station supports businesses and institutions across West Africa through their digital transformation. From custom software engineering to continuous managed services, strategic consulting and cybersecurity, we offer a complete ecosystem of services led by a team of committed experts.",
+      "body2": "Our approach rests on three pillars: technical excellence, mutual trust, and an obsession with concrete results.",
+      "moreExpertises": "+{count} more",
+      "statServices": "Expert services",
+      "expertises": {
+        "webMobile": "Web & Mobile Development",
+        "cloud": "Cloud & DevOps Solutions",
+        "ai": "Artificial Intelligence",
+        "security": "Cybersecurity",
+        "consulting": "IT Consulting & Architecture",
+        "transformation": "Digital Transformation",
+        "data": "Data & Analytics",
+        "training": "Training & Change Management"
+      }
+    },
+    "values": {
+      "eyebrow": "Our values",
+      "title": "What <accent>drives us.</accent>",
+      "items": {
+        "excellence": {
+          "title": "Operational excellence",
+          "desc": "We aim for excellence in every delivery, with no compromise on quality. Every line of code counts."
+        },
+        "innovation": {
+          "title": "Continuous innovation",
+          "desc": "We anticipate technological shifts to offer forward-looking solutions suited to the African market."
+        },
+        "partnership": {
+          "title": "Lasting partnership",
+          "desc": "Our clients are partners, not transactions. We build relationships for the long term."
+        },
+        "local": {
+          "title": "Global standards, local roots",
+          "desc": "International standards with a deep understanding of local realities and needs in Burkina Faso."
+        }
+      }
+    },
+    "timeline": {
+      "eyebrow": "Our journey",
+      "title": "Our <accent>evolution.</accent>",
+      "items": {
+        "2018": "Digital Station founded in Burkina Faso",
+        "2019": "First web & mobile projects delivered",
+        "2021": "Expansion into IT consulting & ERP",
+        "2023": "Launch of continuous support & managed services",
+        "2024": "AI and automation solutions integrated",
+        "2025": "AI and advanced digital transformation practice"
+      }
+    },
+    "team": {
+      "eyebrow": "Our team",
+      "title": "Experts who <accent>care</accent>",
+      "body": "Our strength lies in a multidisciplinary team. Developers, solution architects, cybersecurity specialists and strategy consultants work together to turn your ambitions into working technology.",
+      "stats": {
+        "developers": {
+          "label": "Developers"
+        },
+        "consultants": {
+          "label": "IT consultants"
+        },
+        "ai": {
+          "label": "AI specialists"
+        },
+        "support": {
+          "label": "Continuous support"
+        }
+      }
+    },
+    "director": {
+      "name": "Landry P. KABORE",
+      "role": "Managing Director & Founder",
+      "initials": "LPK",
+      "sectionTitle": "A word from the Managing Director",
+      "visionTitle": "Our vision",
+      "pillarsTitle": "The pillars of our growth strategy",
+      "message": "Technology is not an end in itself. It is a lever in the service of human ambition. Since we started in 2018 our conviction has not changed: treat every client as a long-term partner, deliver technical excellence, and never lose sight of what actually matters to them. In Burkina Faso and across West Africa, we are building tomorrow's digital, one project at a time.",
+      "vision": {
+        "vision": {
+          "title": "Vision 2030",
+          "desc": "To become the IT reference in West Africa"
+        },
+        "team": {
+          "title": "Team",
+          "desc": "Train 100 local experts by 2030"
+        },
+        "excellence": {
+          "title": "Excellence",
+          "desc": "International standards, local impact"
+        }
+      }
+    },
+    "cta": {
+      "eyebrow": "Ready to work together?",
+      "title": "Let's build the <br></br><accent>future</accent> together.",
+      "body": "Let's talk about your project. Our team is ready to take on your technology challenges and turn your ambitions into working solutions.",
+      "ctaPrimary": "Start a project",
+      "ctaSecondary": "See our services"
+    },
+    "process": {
+      "eyebrow": "Our method",
+      "title": "How we <accent>work.</accent>",
+      "intro": "Whatever the engagement, we follow the same five phases. It is what makes our timelines realistic and our deliveries predictable.",
+      "footnote": "Each service adapts these phases to its own technical demands.",
+      "footnoteCta": "See the detail per service",
+      "steps": {
+        "audit": {
+          "title": "Audit & scoping",
+          "desc": "We start from what exists: your processes, your tools, your constraints. Nothing is proposed before we understand what already works."
+        },
+        "design": {
+          "title": "Design",
+          "desc": "Architecture, mockups and technology choices. You approve the direction before the first line of code is written."
+        },
+        "build": {
+          "title": "Build",
+          "desc": "Frequent, iterative releases. You watch the product take shape rather than waiting for one big delivery."
+        },
+        "test": {
+          "title": "Testing & sign-off",
+          "desc": "Every release is tested, then signed off with you before it goes live. This is where the product's reliability is decided."
+        },
+        "deliver": {
+          "title": "Deploy & support",
+          "desc": "Going live, training your teams, then ongoing monitoring and improvements."
+        }
+      }
+    }
+  },
+  "solutions": {
+    "meta": {
+      "title": "Our solutions",
+      "description": "Discover the software built by Digital Station: retail management, ticketing, real estate and school administration."
+    },
+    "eyebrow": "Our products",
+    "title": "Our <accent>solutions.</accent>",
+    "intro": "Business software designed and built in Burkina Faso, shaped around the realities of West African companies and institutions.",
+    "cta": "Request a demo",
+    "ctaAria": "Request a demo of {name}",
+    "items": {
+      "alimgesto": {
+        "name": "AlimGesto",
+        "tagline": "Built for grocery stores and minimarkets",
+        "desc": "Management software built for grocery stores, minimarkets and neighbourhood retail. Handle your sales, stock, customers and suppliers with ease.",
+        "tags": [
+          "Point of Sale",
+          "Stock",
+          "Retail"
+        ]
+      },
+      "ticketia": {
+        "name": "Ticketia",
+        "tagline": "Smart ticketing for every event you run",
+        "desc": "A platform for selling and managing tickets for concerts, festivals, nightclubs, conferences and cultural events.",
+        "tags": [
+          "Ticketing",
+          "Events",
+          "Payments"
+        ]
+      },
+      "immopilot": {
+        "name": "ImmoPilot",
+        "tagline": "Run your property business efficiently",
+        "desc": "A complete property management solution for agencies, developers and property managers.",
+        "tags": [
+          "Real Estate",
+          "Management",
+          "Rentals"
+        ]
+      },
+      "edumanager": {
+        "name": "EduManager",
+        "tagline": "School administration, simplified",
+        "desc": "A digital platform for managing students, teachers, grades, attendance and school payments.",
+        "tags": [
+          "Education",
+          "Administration",
+          "Schools"
+        ]
+      }
+    }
+  },
+  "notFound": {
+    "code": "Error 404",
+    "title": "Page<br></br>not found.",
+    "body": "The page you are looking for has moved or no longer exists. Let's get you back on track.",
+    "ctaHome": "Back to home",
+    "ctaServices": "See our services"
+  },
+  "privacy": {
+    "metaTitle": "Privacy Policy",
+    "metaDescription": "How Digital Station collects, uses and protects your personal data.",
+    "eyebrow": "Transparency",
+    "title": "Privacy Policy.",
+    "lastUpdated": "Last updated: {date}",
+    "contactTitle": "Contact us",
+    "contactBody": "For any question about your personal data, or to exercise your rights, write to us at",
+    "sections": {
+      "collection": {
+        "title": "Data we collect",
+        "body": "We collect only what is needed to provide our services: the details you send us through our contact form (name, email address, phone number, description of your project), together with anonymous usage data used to improve the site."
+      },
+      "usage": {
+        "title": "How we use it",
+        "body": "Your data is used solely to answer your enquiry, to send you a proposal, and to manage the work that follows. It is not used for any other purpose without your prior agreement."
+      },
+      "sharing": {
+        "title": "Sharing with third parties",
+        "body": "We do not sell or rent your personal data. It may be processed by our technical providers (hosting, email delivery) only as far as the site requires, and under a confidentiality undertaking."
+      },
+      "retention": {
+        "title": "How long we keep it",
+        "body": "Enquiries received through the contact form are kept for as long as needed to handle your request and any commercial relationship that follows, then archived or deleted."
+      },
+      "rights": {
+        "title": "Your rights",
+        "body": "You have the right to access, correct, erase, restrict and object to the processing of your personal data, as well as the right to data portability. Requests are handled promptly."
+      },
+      "cookies": {
+        "title": "Cookies",
+        "body": "This site does not set any cookies. Your theme preference is stored locally in your browser (localStorage) and your language is carried in the page address. You can clear this data at any time from your browser settings."
+      },
+      "security": {
+        "title": "Security",
+        "body": "Traffic to and from this site is encrypted. We apply appropriate technical and organisational measures to protect your data against unauthorised access, alteration or disclosure."
+      }
+    }
+  },
+  "terms": {
+    "metaTitle": "Terms of Service",
+    "metaDescription": "Terms governing the use of Digital Station's website and services.",
+    "eyebrow": "Agreement",
+    "title": "Terms of<br></br>Service.",
+    "lastUpdated": "Last updated: {date}",
+    "contactTitle": "Contact us",
+    "contactBody": "For any question about these terms, write to us at",
+    "sections": {
+      "engagement": {
+        "title": "Purpose",
+        "body": "By browsing this site and using our services you accept these terms. They govern use of the website; engagements are covered by a separate contract signed with each client."
+      },
+      "services": {
+        "title": "Our services",
+        "body": "Digital Station provides IT consulting, engineering and integration services. The scope, timeline and deliverables of each engagement are set out in the corresponding proposal and contract."
+      },
+      "intellectual": {
+        "title": "Intellectual property",
+        "body": "The content of this site : text, imagery, trade marks and logos belongs to Digital Station. Ownership of deliverables produced during an engagement is defined by the contract agreed with the client."
+      },
+      "obligations": {
+        "title": "Client responsibilities",
+        "body": "Delivering our work depends on receiving the information, access and approvals we need within reasonable timeframes. Delays attributable to these may shift the agreed schedule."
+      },
+      "liability": {
+        "title": "Liability",
+        "body": "We commit the means necessary to deliver our services properly. We are not liable for indirect losses, nor for interruptions caused by third-party services or by circumstances outside our control."
+      },
+      "law": {
+        "title": "Governing law",
+        "body": "These terms are governed by the law of Burkina Faso. In the event of a dispute, the parties will seek an amicable resolution before commencing proceedings."
+      }
+    }
+  },
+  "errorPage": {
+    "eyebrow": "Error",
+    "title": "Something went wrong.",
+    "body": "This page hit an unexpected problem. Trying again usually resolves it.",
+    "contactBody": "If it keeps happening, write to us at",
+    "reference": "ref",
+    "retry": "Try again",
+    "home": "Back to home"
+  }
+}
