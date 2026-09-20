@@ -64,8 +64,10 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close the menus whenever the route changes.
+  // Close the menus whenever the route changes. Reacting to the pathname
+  // (an external value) inside an effect is the intended pattern here.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMobileMenuOpen(false);
     setServicesOpen(false);
   }, [pathname]);

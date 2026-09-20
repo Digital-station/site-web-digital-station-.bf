@@ -1,18 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  X, 
-  ExternalLink, 
-  CheckCircle2, 
-  Sparkles, 
-  Smartphone, 
-  Monitor, 
-  Layers, 
-  ArrowRight,
-  ShieldCheck,
-  Zap,
-  BarChart3
-} from 'lucide-react';
+import { X, CheckCircle2, Sparkles, Layers, ArrowRight, BarChart3 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 
@@ -41,7 +29,6 @@ interface ProductPreviewModalProps {
 
 export function ProductPreviewModal({ product, onClose }: ProductPreviewModalProps) {
   const [activeTab, setActiveTab] = useState<number>(0);
-  const tc = useTranslations('common');
   const ts = useTranslations('solutions');
 
   if (!product) return null;

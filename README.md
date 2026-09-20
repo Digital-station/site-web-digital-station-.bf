@@ -25,11 +25,22 @@ npm run dev
 
 The dev server listens on <http://localhost:3000> (set `PORT` to change it).
 
-Type-check before committing — this is the only checker configured:
+Before committing, run the same checks CI runs (`.github/workflows/ci.yml`):
 
 ```bash
-npx tsc --noEmit
+npm run check        # typecheck + lint + test, in that order
 ```
+
+or individually:
+
+```bash
+npm run typecheck    # tsc --noEmit
+npm run lint         # ESLint 9 — next/core-web-vitals + typescript presets
+npm test             # Vitest — lead schema, FR/EN message parity, config invariants
+```
+
+CI also runs `npm audit --audit-level=high` and fails the build on a
+high/critical advisory.
 
 ## Build
 
@@ -133,8 +144,43 @@ messages/          fr.json / en.json — all user-facing text, key-for-key equal
 lib/               SEO, schema.org, analytics, helpers
 proxy.ts           locale redirect (Next 16's renamed middleware)
 scripts/           postbuild standalone-asset copy
+tests/             Vitest unit tests (run with `npm test`)
+.github/workflows  CI: typecheck, lint, test, audit
 ```
 
 Two rules worth keeping: **all visible text goes through a next-intl key** (and
-both message files must stay at exact key parity), and **colours come from the
-Tailwind design tokens**, never a literal hex value.
+both message files must stay at exact key parity — `npm test` enforces this),
+and **colours come from the Tailwind design tokens**, never a literal hex value.
+
+## Quality checklist
+
+The site is audited against the
+[Front-End Checklist](https://github.com/thedaviddias/front-end-checklist)
+(385 rules across HTML, CSS, JavaScript, Performance, Accessibility, SEO,
+Security, Images, Testing, Privacy and i18n). The full rule-by-rule status —
+what passes, what was fixed, what is not applicable and why, and what can only
+be verified on the live host — lives in
+**[`FRONTEND-CHECKLIST.md`](FRONTEND-CHECKLIST.md)**, with a prioritised
+roadmap at the end.
+
+Headline status (rules that apply to this site):
+
+| Area | Status |
+| --- | --- |
+| HTML / CSS / JavaScript | Pass. Strict TS, ESLint, print stylesheet, `noscript`, no duplicate ids. |
+| Accessibility | Pass in code. Skip link, landmarks, one `h1`, focus management, reduced motion. Screen-reader and device pass still to be recorded. |
+| SEO | Pass. Canonical + hreflang + OG/Twitter per page, JSON-LD graph, truthful sitemap, coherent robots. |
+| Security | HSTS, nosniff, Referrer-Policy, Permissions-Policy, X-Frame-Options, clean `npm audit`. **No CSP yet** (needs a nonce — see roadmap). |
+| Performance | Static pages, code-split heavy sections, `next/image`, `next/font`. Lighthouse/WebPageTest numbers to be taken on the live host. |
+| Testing | Typecheck + lint + unit tests in CI. No E2E, axe, or error monitoring yet. |
+| Privacy | No cookies, minimal form, privacy + terms in footer. Add retention/deletion wording. |
+
+Re-open the checklist whenever a new kind of feature ships (video, tables,
+articles, authentication): the rules marked N/A for that feature become live.
+
+## Other documents
+
+- [`AUDIT-REPORT.md`](AUDIT-REPORT.md) — enterprise-credibility audit (design,
+  copy, technical SEO, trust) and its roadmap.
+- [`AUDIT-STRATEGY.md`](AUDIT-STRATEGY.md) — the strategy behind that audit.
+- [`FRONTEND-CHECKLIST.md`](FRONTEND-CHECKLIST.md) — this front-end checklist.

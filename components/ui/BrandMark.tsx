@@ -38,7 +38,6 @@ export function BrandMark({
   const alt = isIcon ? site.name : `${site.name} — ${site.tagline}`;
 
   const common = {
-    alt,
     width,
     height,
     className: cn('h-auto w-auto', className),
@@ -48,6 +47,7 @@ export function BrandMark({
     <>
       <Image
         {...common}
+        alt={alt}
         src={isIcon ? site.brand.icon : site.brand.lockup}
         className={cn(common.className, 'only-light')}
       />
@@ -57,6 +57,7 @@ export function BrandMark({
           of the two themes. */}
       <Image
         {...common}
+        alt={alt}
         src={isIcon ? site.brand.iconOnDark : site.brand.lockupOnDark}
         className={cn(common.className, 'only-dark')}
       />

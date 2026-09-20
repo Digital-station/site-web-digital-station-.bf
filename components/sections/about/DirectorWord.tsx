@@ -197,10 +197,10 @@ export const DirectorWord = () => {
                 <div className="p-4 rounded-xl bg-brand-primary/60 border border-brand-border/60 space-y-2">
                   <div className="text-xs font-mono uppercase tracking-wider text-brand-accent flex items-center gap-1.5">
                     <ShieldCheck className="w-4 h-4" />
-                    <span>Engagement direct de la direction</span>
+                    <span>{t('commitment.title')}</span>
                   </div>
                   <p className="text-xs text-brand-muted leading-relaxed font-light">
-                    Chaque mission bénéficie d'une supervision architecturale directe. Aucune boîte noire : nos clients ont accès au Gérant sans intermédiaire.
+                    {t('commitment.body')}
                   </p>
                 </div>
 

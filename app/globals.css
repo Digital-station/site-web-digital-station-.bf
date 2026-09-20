@@ -398,3 +398,76 @@
   animation: none;
   mix-blend-mode: normal;
 }
+
+/* ============================================================================
+   Print
+   Front-End Checklist › CSS › "Include a print stylesheet". Strips chrome and
+   decoration, forces a light page, and prints link targets after the anchor
+   text so a printed service page still carries its references.
+   ========================================================================= */
+@media print {
+  :root,
+  [data-theme='dark'] {
+    color-scheme: light;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* Site chrome and decoration have no meaning on paper. */
+  nav,
+  footer,
+  canvas,
+  video,
+  [data-print-hidden],
+  .print\:hidden {
+    display: none !important;
+  }
+
+  main {
+    padding-left: 0 !important;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  a,
+  a:visited {
+    color: #000 !important;
+    text-decoration: underline;
+  }
+
+  /* External targets follow the link text; in-page and mail/phone links do not. */
+  a[href^='http']:not([href*='digitalstation.bf'])::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    word-break: break-all;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  img,
+  figure,
+  table,
+  pre,
+  blockquote {
+    break-inside: avoid;
+  }
+
+  @page {
+    margin: 2cm;
+  }
+}

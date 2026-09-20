@@ -101,8 +101,32 @@ export const Wavemesh = ({ className = "" }: { className?: string }) => {
       return { rows: 30, cols: 140 };
     }
 
-    // Loose numeric state bag — direct port of the original sketch's `S`.
-    const S: any = {
+    type Star = { x: number; y: number; r: number; a: number };
+    type MeshPoint = { rx: number; ry: number; d: number };
+    type MeshState = {
+      w: number;
+      h: number;
+      t: number;
+      rows: number;
+      cols: number;
+      lt: number;
+      fp: number;
+      fv: number;
+      bp: number;
+      bv: number;
+      wa: number;
+      stars: Star[];
+      /** Pre-rendered glow sprite; created in `rz()`. */
+      ps: HTMLCanvasElement | null;
+      /** Pre-rendered point sprite; created in `rz()`. */
+      gs: HTMLCanvasElement | null;
+      fc: number;
+      rot: number;
+      mr: MeshPoint[][];
+    };
+
+    // Numeric state bag — direct port of the original sketch's `S`, typed.
+    const S: MeshState = {
       w: 0,
       h: 0,
       t: 0,
@@ -253,7 +277,7 @@ export const Wavemesh = ({ className = "" }: { className?: string }) => {
       S.mr = [];
       for (let j = 0; j < S.rows; j++) {
         const d = j / (S.rows - 1);
-        const row: any[] = [];
+        const row: MeshPoint[] = [];
         for (let i = 0; i < S.cols; i++) {
           const u = i / (S.cols - 1);
           const p = mp(u, d, t);
@@ -288,6 +312,10 @@ export const Wavemesh = ({ className = "" }: { className?: string }) => {
     }
 
     function paint(f: { tx: number; ty: number }) {
+      // Sprites are built in rz(), which always runs before the first paint.
+      const glow = S.gs;
+      const point = S.ps;
+      if (!glow || !point) return;
       for (let j = 0; j < S.mr.length; j++) {
         const row = S.mr[j];
         const d = row[0].d;
@@ -300,12 +328,12 @@ export const Wavemesh = ({ className = "" }: { className?: string }) => {
         ctx.globalAlpha = op * 0.28;
         for (let i = off; i < row.length; i += 2) {
           const p = row[i];
-          ctx.drawImage(S.gs, p.rx + f.tx - gs / 2, p.ry + f.ty - gs / 2, gs, gs);
+          ctx.drawImage(glow, p.rx + f.tx - gs / 2, p.ry + f.ty - gs / 2, gs, gs);
         }
         ctx.globalAlpha = op;
         for (let i = 0; i < row.length; i++) {
           const p = row[i];
-          ctx.drawImage(S.ps, p.rx + f.tx - ps / 2, p.ry + f.ty - ps / 2, ps, ps);
+          ctx.drawImage(point, p.rx + f.tx - ps / 2, p.ry + f.ty - ps / 2, ps, ps);
         }
       }
     }

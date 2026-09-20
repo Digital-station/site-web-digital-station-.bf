@@ -25,18 +25,26 @@ const IndustriesWeServe = dynamic(
     import('@/components/sections/IndustriesWeServe').then(
       (m) => m.IndustriesWeServe,
     ),
-  { loading: () => <SectionPlaceholder id="industries" /> },
+  { loading: () => <SectionPlaceholder /> },
 );
 
 const ToolsWeMaster = dynamic(
   () => import('@/components/sections/ToolsWeMaster').then((m) => m.ToolsWeMaster),
-  { loading: () => <SectionPlaceholder id="tools" /> },
+  { loading: () => <SectionPlaceholder /> },
 );
 
-function SectionPlaceholder({ id }: { id: string }) {
+/**
+ * No `id` here on purpose. The placeholder used to carry the real section's
+ * id (`industries` / `tools`) so anchors resolved before the chunk landed —
+ * but the section itself is streamed into the same document (Suspense keeps
+ * both in the HTML for a moment), so every home page shipped two elements
+ * with the same id. Duplicate ids are invalid HTML and break
+ * `getElementById`-based anchors such as the ScrollIndicator. The real
+ * section owns its id; the placeholder only reserves the height.
+ */
+function SectionPlaceholder() {
   return (
-    <section
-      id={id}
+    <div
       aria-hidden="true"
       className="lg:pl-16 border-t border-brand-border py-24 lg:py-32 min-h-[600px]"
     />
