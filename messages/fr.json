@@ -15,7 +15,8 @@
     "getStarted": "Démarrer un projet",
     "contactUs": "Nous contacter",
     "promise": "Devis gratuit · réponse sous 24 h",
-    "whatsappCta": "Écrire sur WhatsApp"
+    "whatsappCta": "Écrire sur WhatsApp",
+    "noscript": "Ce site fonctionne sans JavaScript pour la lecture, mais le formulaire de contact et le changement de thème en ont besoin. Vous pouvez aussi nous écrire directement par e-mail ou par téléphone (coordonnées en bas de page)."
   },
   "nav": {
     "home": "Accueil",
@@ -997,6 +998,10 @@
           "title": "Excellence",
           "desc": "Standards internationaux, impact local"
         }
+      },
+      "commitment": {
+        "title": "Engagement direct de la direction",
+        "body": "Chaque mission bénéficie d'une supervision architecturale directe. Aucune boîte noire : nos clients ont accès au Gérant sans intermédiaire."
       }
     },
     "cta": {

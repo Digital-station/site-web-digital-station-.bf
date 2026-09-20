@@ -104,6 +104,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (root.getAttribute('data-theme') !== next) {
       root.setAttribute('data-theme', next);
     }
+    // Deliberate one-time post-hydration sync with an external store
+    // (localStorage); see the comment above.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setThemeState(next);
   }, []);
 

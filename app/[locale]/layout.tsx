@@ -125,6 +125,14 @@ export default async function LocaleLayout({ children, params }: Props) {
         unrelated to anything this app renders.
       */}
       <body suppressHydrationWarning>
+        {/* Front-End Checklist › HTML › noscript fallback. The pages are
+            server-rendered and readable without JS; this only explains what
+            will not work (form, theme toggle) and where to go instead. */}
+        <noscript>
+          <p role="status" className="bg-brand-accent px-4 py-3 text-center text-sm text-white">
+            {t('noscript')}
+          </p>
+        </noscript>
         {/* The one Organization node, on every page; everything else
             references it by @id. See lib/schema.ts. */}
         <script

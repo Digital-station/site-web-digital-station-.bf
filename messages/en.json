@@ -15,7 +15,8 @@
     "getStarted": "Start a project",
     "contactUs": "Contact us",
     "promise": "Free quote · reply within 24 h",
-    "whatsappCta": "Message us on WhatsApp"
+    "whatsappCta": "Message us on WhatsApp",
+    "noscript": "This site can be read without JavaScript, but the contact form and the theme switch need it. You can also reach us directly by e-mail or phone (details in the footer)."
   },
   "nav": {
     "home": "Home",
@@ -997,6 +998,10 @@
           "title": "Excellence",
           "desc": "International standards, local impact"
         }
+      },
+      "commitment": {
+        "title": "Direct management commitment",
+        "body": "Every engagement is supervised directly at the architecture level. No black box: our clients reach the Managing Director without intermediaries."
       }
     },
     "cta": {
