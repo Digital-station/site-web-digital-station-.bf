@@ -28,7 +28,7 @@ import { Container } from "@/components/layout/Container";
 import { WhatsAppIcon } from "@/components/ui/icons/WhatsApp";
 import { DirectorWord } from "./DirectorWord";
 import { Process } from "./Process";
-import { TrustDocuments } from "./TrustDocuments";
+import { TrustDocuments, type TrustDocSizes } from "./TrustDocuments";
 
 /* ── DATA (icons + keys only; all prose lives in messages) ── */
 
@@ -92,18 +92,18 @@ function yearsInBusiness(): number {
   return new Date().getFullYear() - Number(site.foundingDate);
 }
 
-export function AboutContent() {
+export function AboutContent({ trustDocSizes }: { trustDocSizes: TrustDocSizes }) {
   return (
     <>
       <Hero />
       <Mission />
       <Values />
-      {/* 
+      {/*
       <Timeline />
       */}
       <TeamPreview />
       <DirectorWord />
-      <TrustDocuments />
+      <TrustDocuments sizes={trustDocSizes} />
       <Process />
       <AboutCta />
     </>

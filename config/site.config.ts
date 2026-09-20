@@ -88,10 +88,15 @@ export const site = {
   },
 
   /**
-   * Booking / Meeting configuration (Cal.com, Calendly, or custom link).
+   * Booking / Meeting configuration.
+   *
+   * There is intentionally no external scheduler link here: no Cal.com (or
+   * similar) account exists yet, and advertising one sent visitors to a
+   * dead page. The contact page's scheduler sends a lead to /api/leads and
+   * the team confirms the slot by email/WhatsApp. Add a `calLink` back ONLY
+   * once the account is live and verified.
    */
   booking: {
-    calLink: 'https://cal.com/digitalstation/discovery-call',
     duration: '20 min',
   },
 

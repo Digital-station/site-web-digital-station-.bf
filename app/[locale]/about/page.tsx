@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
+import { statSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { routing } from '@/i18n/routing';
 import { AboutContent } from '@/components/sections/about/AboutContent';
 import { site } from '@/config/site.config';
@@ -25,6 +28,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
+/**
+ * Real on-disk sizes of the downloadable documents, measured at render time.
+ * TrustDocuments prints them verbatim, so the site can never advertise a
+ * "1.2 Mo" deck when the file is smaller — the sizes are the files.
+ */
+function docSizes() {
+  const read = (file: string) => {
+    try {
+      return statSync(join(process.cwd(), 'public', 'docs', file)).size;
+    } catch {
+      return 0;
+    }
+  };
+  return {
+    capabilities: read('digital-station-capabilities-deck.pdf'),
+    nda: read('digital-station-mutual-nda.pdf'),
+  };
+}
+
 export default async function AboutPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -47,7 +69,7 @@ export default async function AboutPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: ldJson(breadcrumb) }}
       />
-      <AboutContent />
+      <AboutContent trustDocSizes={docSizes()} />
     </>
   );
 }

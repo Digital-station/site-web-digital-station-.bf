@@ -79,13 +79,13 @@ export function ProductPreviewModal({ product, onClose }: ProductPreviewModalPro
               <div className="w-3 h-3 rounded-full bg-green-500/80" />
               <span className="ml-2 text-xs font-mono text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-brand-accent" />
-                Interactive Preview // {product.name}
+                {ts('modal.previewLabel')} — {product.name}
               </span>
             </div>
             <button
               type="button"
               onClick={onClose}
-              aria-label="Close preview"
+              aria-label={ts('modal.closeAria')}
               className="w-9 h-9 rounded-full border border-brand-border flex items-center justify-center text-brand-muted hover:text-brand-text hover:border-brand-accent transition-colors"
             >
               <X className="w-5 h-5" />
@@ -106,7 +106,7 @@ export function ProductPreviewModal({ product, onClose }: ProductPreviewModalPro
                 ))}
                 <span className="text-[11px] font-mono uppercase px-3 py-1 rounded-full border border-green-500/30 text-green-400 bg-green-500/10 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                  Production Ready
+                  {ts('modal.productionReady')}
                 </span>
               </div>
               <h2 id="product-preview-title" className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-balance">
@@ -138,7 +138,7 @@ export function ProductPreviewModal({ product, onClose }: ProductPreviewModalPro
             <div className="space-y-4">
               <h3 className="text-xs font-mono uppercase tracking-wider text-brand-accent flex items-center gap-2">
                 <Layers className="w-4 h-4" />
-                Exploration des modules & écrans clés
+                {ts('modal.modulesTitle')}
               </h3>
 
               <div className="flex flex-wrap gap-2 border-b border-brand-border pb-3">
@@ -202,7 +202,7 @@ export function ProductPreviewModal({ product, onClose }: ProductPreviewModalPro
             {/* Tech Stack Chips */}
             <div className="space-y-2">
               <span className="text-xs font-mono uppercase text-brand-muted tracking-wider">
-                Architecture & Technologies :
+                {ts('modal.archTitle')}
               </span>
               <div className="flex flex-wrap gap-2">
                 {product.techStack.map((tech) => (
@@ -220,7 +220,7 @@ export function ProductPreviewModal({ product, onClose }: ProductPreviewModalPro
           {/* Action Footer */}
           <div className="p-6 border-t border-brand-border bg-brand-primary/50 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-xs text-brand-muted font-light text-center sm:text-left">
-              Besoin d'un déploiement sur-mesure ou d'une démo complète avec vos équipes ?
+              {ts('modal.footerNote')}
             </div>
             <div className="flex items-center gap-3 w-full sm:w-auto">
               <button
@@ -228,14 +228,14 @@ export function ProductPreviewModal({ product, onClose }: ProductPreviewModalPro
                 onClick={onClose}
                 className="btn-outline px-5 py-3 text-xs uppercase font-bold tracking-wider flex-1 sm:flex-initial text-center"
               >
-                Fermer
+                {ts('modal.close')}
               </button>
               <Link
                 href={`/contact?product=${product.id}`}
                 onClick={onClose}
                 className="btn-primary px-6 py-3 text-xs uppercase font-bold tracking-wider flex items-center justify-center gap-2 flex-1 sm:flex-initial shadow-lg shadow-brand-accent-strong/20"
               >
-                <span>Demander l'accès démo</span>
+                <span>{ts('demoAccess')}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
