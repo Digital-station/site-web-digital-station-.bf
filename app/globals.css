@@ -1,0 +1,400 @@
+@import 'tailwindcss';
+
+/* `light:` — for the few raw Tailwind colours (status green, error red,
+   service accents) that pass contrast on charcoal but not on cream. It lets a
+   class darken in the light theme only, e.g. `text-red-500 light:text-red-700`,
+   leaving the dark theme's CSS untouched. Brand colours use the tokens below
+   instead and never need it. */
+@custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
+
+/* ============================================================================
+   Digital Station — design tokens
+   Derived from okta-DESIGN.md, with the brand blue measured from Logo.webp.
+
+   Structure:
+     :root                      → dark palette (the default)
+     :root[data-theme="light"]  → light palette
+     @theme inline              → binds Tailwind utilities to those variables
+
+   `@theme inline` is what makes runtime theming work: it emits utilities that
+   reference var(--…) instead of baking a literal hex into the CSS, so flipping
+   [data-theme] on <html> re-colours the whole site without a reload.
+   ========================================================================= */
+
+:root {
+  color-scheme: dark;
+
+  /* Surfaces - Elevated Dark Futuristic Tech Palette */
+  --ds-bg: #0b0d11;              /* deep obsidian void ground             */
+  --ds-surface: #12161f;         /* high-contrast raised cards, footer    */
+  --ds-surface-2: #181f2c;       /* hover / nested tech surface           */
+  --ds-border: rgb(59 137 246 / 0.16);   /* subtle high-tech blue border  */
+  --ds-border-strong: rgb(59 137 246 / 0.35);
+  /* Form field outline. */
+  --ds-field-border: rgb(59 137 246 / 0.22);
+
+  /* Text — contrast measured against --ds-bg (#0b0d11)                  */
+  --ds-text: #ffffff;            /* on-primary       — > 18:1 ✓           */
+  --ds-text-muted: rgb(241 245 249 / 0.68);  /* slate-100 @ 68%          */
+  --ds-text-faint: rgb(241 245 249 / 0.52);  /* real text OK              */
+  /* Ornament only (rail text, hairline labels). */
+  --ds-text-ghost: rgb(241 245 249 / 0.38);
+
+  /* Brand blue & electric cyan — futuristic precision */
+  --ds-accent: #38bdf8;          /* electric sky/cyan text on dark        */
+  --ds-accent-strong: #1d4ed8;   /* button fill — 8.5:1 vs white          */
+  --ds-on-accent: #ffffff;
+  --ds-accent-ring: #38bdf8;     /* hairline glow ring                    */
+  --ds-accent-soft: rgb(56 189 248 / 0.14);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --ds-bg: #fffefa;              /* okta: surface, used as page ground    */
+  --ds-surface: #ffffff;
+  --ds-surface-2: #f6f4ef;
+  --ds-border: #afaba1;          /* okta border, full strength on light   */
+  --ds-border-strong: #8f8b82;
+  /* A field's edge is how you find it (WCAG 1.4.11, 3:1). #afaba1 is 2.2:1
+     on cream; this is 3.4:1. */
+  --ds-field-border: #8f8b82;
+
+  /* Text — contrast measured against --ds-bg (#fffefa)                   */
+  --ds-text: #191919;            /* okta: text             — 17.5:1 ✓     */
+  --ds-text-muted: rgb(25 25 25 / 0.66);     /* ~7.0:1 ✓                  */
+  --ds-text-faint: rgb(25 25 25 / 0.60);     /* ~4.6:1 ✓ — real text OK   */
+  /* Ornament only (rail text, hairline labels). ~4.6:1 — never body copy. */
+  --ds-text-ghost: rgb(25 25 25 / 0.60);
+
+  --ds-accent: #144f97;          /* true brand blue — 8.03:1 vs cream ✓   */
+  --ds-accent-strong: #144f97;
+  --ds-on-accent: #ffffff;
+  --ds-accent-ring: #144f97;
+  --ds-accent-soft: rgb(20 79 151 / 0.10);
+}
+
+@theme inline {
+  /* Typography — families are bound in lib/fonts.ts via next/font */
+  --font-sans: var(--font-display-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-editorial-serif), Georgia, serif;
+  --font-mono: var(--font-technical-mono), ui-monospace, monospace;
+
+  /* Plus Jakarta Sans stops at 800, so font-black always rendered 800; the
+     token says so. font-light keeps Tailwind's 300, which lib/fonts.ts loads.
+     (Instrument Serif and Space Grotesk have no 300 and fall back to their
+     nearest loaded weight, as before.) */
+  --font-weight-black: 800;
+
+  /* Brand colours — names kept identical to the Vite app so ported
+     components need no class rewrites (bg-brand-primary, text-brand-accent…) */
+  --color-brand-primary: var(--ds-bg);
+  --color-brand-surface: var(--ds-surface);
+  --color-brand-surface-2: var(--ds-surface-2);
+  --color-brand-border: var(--ds-border);
+  --color-brand-border-strong: var(--ds-border-strong);
+  --color-brand-field: var(--ds-field-border);
+  --color-brand-text: var(--ds-text);
+  --color-brand-muted: var(--ds-text-muted);
+  --color-brand-faint: var(--ds-text-faint);
+  --color-brand-ghost: var(--ds-text-ghost);
+  --color-brand-accent: var(--ds-accent);
+  --color-brand-accent-strong: var(--ds-accent-strong);
+  --color-brand-on-accent: var(--ds-on-accent);
+  --color-brand-accent-ring: var(--ds-accent-ring);
+  --color-brand-accent-soft: var(--ds-accent-soft);
+
+  /* Radius — okta-DESIGN.md */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 15px;
+  --radius-xl: 16px;
+
+  /* Shadows — okta-DESIGN.md */
+  --shadow-card: 0 0 18px 0 rgb(0 0 0 / 0.20);
+  --shadow-elevated: 0 0 18px 0 rgb(0 0 0 / 0.20);
+
+  /* Motion — okta-DESIGN.md */
+  --ease-brand: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Motion + spacing constants that are not Tailwind theme keys */
+:root {
+  --duration-fast: 100ms;
+  --duration-base: 300ms;
+  --duration-slow: 1000ms;
+  --ease-brand: ease-in-out;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans bg-brand-primary text-brand-text antialiased overflow-x-hidden;
+    /* okta body tier: 16px / 500 / 1.5 / 0.32px */
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.32px;
+    transition: background-color var(--duration-base) var(--ease-brand),
+                color var(--duration-base) var(--ease-brand);
+  }
+
+  ::selection {
+    background-color: var(--ds-accent);
+    color: var(--ds-on-accent);
+  }
+
+  /* Headings keep the DISPLAY SANS, matching the current site.
+     okta-DESIGN.md puts section headings on a serif; applying that to every
+     h1–h4 would visibly redesign the site, so the serif is exposed as the
+     `font-serif` utility for selective use instead — the same way Playfair
+     Display is used selectively today. */
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tighter font-bold uppercase;
+  }
+
+  /* okta display tier: 80px / 500 / 1.1 / 0.08px */
+  .type-display {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: 0.08px;
+  }
+
+  /* okta heading tier: 48px / 400 / 1.17, serif */
+  .type-heading {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 3.6vw, 3rem);
+    font-weight: 400;
+    line-height: 1.17;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-brand-primary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full transition-colors;
+    background-color: var(--ds-border);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--ds-accent);
+  }
+
+  /* GSAP animation prep.
+     KEEP IN SYNC with the class names GSAP targets — the animation code
+     selects by class, so a new animated card class must be added here too. */
+  .service-card,
+  .trend-card,
+  .benefit-card,
+  .knowledge-item,
+  .stat-item,
+  .home-service-card,
+  .portfolio-item,
+  .cta-content,
+  .knowledge-hub-item {
+    will-change: transform, opacity;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Theme-scoped visibility, used by <BrandMark> to swap logo colourways.
+     Driven by the data-theme attribute on <html>.
+
+     The dark rule is written as :not([data-theme='light']) rather than
+     [data-theme='dark'] ON PURPOSE. If the attribute is ever missing — the
+     inline script blocked, an extension stripping it, JS disabled — an
+     ==-style rule matches nothing and BOTH colourways stay visible, which
+     showed the logo twice. Negation makes dark the fallback, matching the
+     colour tokens, which also default on bare :root. */
+  :root:not([data-theme='light']) .only-light {
+    display: none;
+  }
+
+  :root[data-theme='light'] .only-dark {
+    display: none;
+  }
+
+  /* iOS viewport-height fix */
+  .h-svh {
+    height: 100svh;
+  }
+
+  .min-h-svh {
+    min-height: 100svh;
+  }
+
+  /* First-paint entrance for above-the-fold copy: hero headlines, intros,
+     CTAs. It used to be GSAP or Motion `initial`, so the text either shipped
+     hidden in the server HTML (nothing to paint until hydration, which holds
+     back LCP) or shipped visible and was hidden again by JS to replay the
+     tween, which flashed. A CSS animation starts at first paint and needs no
+     JS.
+
+     Per element, set any of --enter-x / --enter-y / --enter-scale /
+     --enter-rotate / --enter-opacity / --enter-delay / --enter-duration.
+     Individual `translate` / `scale` / `rotate` properties rather than
+     `transform`, so Motion's inline transform (the service hero's tilt) is
+     left alone. `backwards` rather than `both`, so a finished animation lets
+     go of those properties. No-preference only: reduced motion gets the
+     static layout, without the delays. */
+  @keyframes enter {
+    from {
+      opacity: var(--enter-opacity, 0);
+      translate: var(--enter-x, 0) var(--enter-y, 0);
+      scale: var(--enter-scale, 1);
+      rotate: var(--enter-rotate, 0deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .enter {
+      animation: enter var(--enter-duration, 1s)
+        var(--enter-ease, cubic-bezier(0.16, 1, 0.3, 1))
+        var(--enter-delay, 0s) backwards;
+    }
+  }
+
+  /* Respect the OS reduced-motion setting — okta-DESIGN.md accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Visible focus ring — 2px, offset 2px, per the design file */
+  :focus-visible {
+    outline: 2px solid var(--ds-accent-ring);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Filled brand-blue pill. White label reads 8.09:1 on #144F97 ✓.
+     The hairline ring lifts the fill off the charcoal page, where the
+     button-to-background contrast alone would only be 2.17:1. */
+  .btn-primary {
+    @apply px-8 py-3 rounded-full font-bold text-center transition-transform
+           hover:scale-105 active:scale-95;
+    background-color: var(--ds-accent-strong);
+    color: var(--ds-on-accent);
+    box-shadow: inset 0 0 0 1px var(--ds-accent-ring);
+  }
+
+  .btn-outline {
+    @apply border px-8 py-3 rounded-full font-bold text-center
+           transition-[background-color,border-color,transform] active:scale-95;
+    border-color: var(--ds-border);
+    color: var(--ds-text);
+  }
+
+  .btn-outline:hover {
+    background-color: var(--ds-accent-soft);
+    border-color: var(--ds-accent-ring);
+  }
+
+  .nav-link {
+    @apply text-xs font-bold uppercase tracking-widest transition-all;
+    color: var(--ds-text-muted);
+  }
+
+  .nav-link:hover {
+    color: var(--ds-text);
+  }
+}
+
+/* ============================================================================
+   Endless decorative loops
+
+   The drifting and turning blurs, the scroll-hint bob and the CTA glow. They
+   were Motion `repeat: Infinity` animations that ran for as long as the page
+   was open, on or off screen. As CSS they can be paused: `usePauseOffscreen`
+   (lib/use-pause-offscreen.ts) marks an off-screen section `data-offscreen`.
+
+   Use them behind `motion-safe:` so reduced motion gets the still layout.
+   Individual `translate` / `rotate` / `scale` properties, so a loop composes
+   with a Tailwind `-translate-x-1/2` or another loop on the same element.
+
+   The pause rule is unlayered on purpose: an `animate-*` utility's
+   `animation` shorthand resets the play state, and the utilities layer beats
+   anything in `@layer base`.
+   ========================================================================= */
+@theme {
+  --animate-drift: drift 8s ease-in-out infinite;
+  --animate-bob: bob 2s ease-in-out infinite;
+  --animate-breathe: breathe 4s ease-in-out infinite;
+}
+
+@keyframes drift {
+  50% {
+    translate: -20px 30px;
+  }
+}
+
+@keyframes bob {
+  50% {
+    translate: 0 8px;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes turn {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes swell {
+  50% {
+    scale: 1.05;
+  }
+}
+
+[data-offscreen],
+[data-offscreen] * {
+  animation-play-state: paused;
+}
+
+/* ============================================================================
+   Theme-toggle view transition
+
+   The browser's default cross-fade between the two root snapshots fights the
+   circle-spread clip in `components/ui/ThemeToggle.tsx`: the old theme fades
+   out while the new one is still being revealed, so the wipe reads as a blur.
+   Pinning both layers leaves the clip as the only thing moving. The reference
+   implementation injected this from JS on mount; a stylesheet is the same
+   effect without the runtime DOM write.
+   ========================================================================= */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
