@@ -1,35 +1,151 @@
 %PDF-1.4
-1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
-2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
-3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >> endobj
-4 0 obj << /Length 215 >> stream
-BT
-/F1 22 Tf
-50 720 Td
-(DIGITAL STATION - DOSSIER DE CAPACITES & PROFIL D'ENTREPRISE) Tj
-/F1 12 Tf
-0 -40 Td
-(Societe d'Ingenierie Logicielle, Cloud & Cybersecurite - Ouagadougou, Burkina Faso) Tj
-0 -25 Td
-(RCCM: BF-OUA-01-2018-B12-08492 | IFU: 00108492X | infos@digitalstation.bf) Tj
-0 -40 Td
-(Poles: Developpement Logiciel, ERP Odoo, Solutions Metiers, DevOps & Cloud, Cybersecurite) Tj
-0 -30 Td
-(Produits Editeurs: Ticketia, AlimGesto, ImmoPilot, EduManager) Tj
-0 -50 Td
-(Document officiel - Version 2026. Telechargeable sur digitalstation.bf) Tj
-ET
-endstream endobj
-5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> endobj
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 4 0 R 5 0 R 6 0 R] /Count 4 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 11 0 R /F2 12 0 R /F3 13 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 1053 >>
+stream
+0.08 0.31 0.59 RG 1 w 40 40 515 762 re S
+BT /F2 26 Tf 1 0 0 1 60 700 Tm (DIGITAL STATION) Tj ET
+BT /F3 13 Tf 1 0 0 1 60 676 Tm (Bâtir le numérique de demain) Tj ET
+BT /F2 15 Tf 1 0 0 1 60 620 Tm (Dossier de présentation & capacités techniques) Tj ET
+BT /F1 11 Tf 1 0 0 1 60 600 Tm (Company Profile & Capabilities Deck - Édition 2026) Tj ET
+0.8 w 60 580 m 535 580 l S
+BT /F1 10 Tf 1 0 0 1 60 550 Tm (Société de services, d'expertise et d'ingénierie informatique) Tj ET
+BT /F1 10 Tf 1 0 0 1 60 534 Tm (Avenue Kwame Nkrumah, Immeuble Digital - Ouagadougou, Burkina Faso) Tj ET
+BT /F1 10 Tf 1 0 0 1 60 518 Tm (infos@digitalstation.bf  |  +226 50 22 28 94  |  digitalstation.bf) Tj ET
+BT /F1 10 Tf 1 0 0 1 60 470 Tm (Forme juridique : DIGITAL STATION SARL) Tj ET
+BT /F1 10 Tf 1 0 0 1 60 454 Tm (RCCM : BF-OUA-01-2018-B12-08492   |   IFU : 00108492X) Tj ET
+BT /F1 10 Tf 1 0 0 1 60 438 Tm (Capital social : 1 000 000 FCFA   |   Fondation : 2018) Tj ET
+BT /F3 9 Tf 1 0 0 1 60 380 Tm (Document officiel téléchargeable sur digitalstation.bf - Version 2026.) Tj ET
+endstream
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 11 0 R /F2 12 0 R /F3 13 0 R >> >> /Contents 8 0 R >>
+endobj
+8 0 obj
+<< /Length 1781 >>
+stream
+BT /F2 16 Tf 1 0 0 1 50 790 Tm (1. Qui nous sommes) Tj ET
+0.8 w 50 780 m 545 780 l S
+BT /F1 10 Tf 1 0 0 1 50 755 Tm (Digital Station est une société d'ingénierie informatique fondée en 2018 à) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 739 Tm (Ouagadougou. Nous conseillons, concevons et développons des solutions) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 723 Tm (technologiques pour les entreprises, institutions et partenaires) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 707 Tm (internationaux actifs en Afrique de l'Ouest.) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 675 Tm (Notre positionnement : une exigence technique de niveau international,) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 659 Tm (ancrée dans les réalités opérationnelles du marché burkinabè et) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 643 Tm (ouest-africain \(connectivité intermittente, Mobile Money, souveraineté) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 627 Tm (des données, conformité CIL\).) Tj ET
+BT /F2 10 Tf 1 0 0 1 50 595 Tm (Pôles d'expertise :) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 579 Tm ( 01  Développement logiciel & ingénierie \(web, mobile, API\)) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 563 Tm ( 02  Gestion des réseaux sociaux) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 547 Tm ( 03  Intégration de solutions \(ERP, CRM, SI\)) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 531 Tm ( 04  Licences logicielles \(conseil, approvisionnement, conformité\)) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 515 Tm ( 05  Support & infogérance) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 499 Tm ( 06  Formation & accompagnement) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 483 Tm ( 07  Conseil en transformation digitale) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 467 Tm ( 08  Cybersécurité & conformité \(CIL / RGPD\)) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 451 Tm ( 09  Cloud & hébergement \(AWS, Azure, GCP\)) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 435 Tm ( 10  Intelligence artificielle appliquée) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 11 0 R /F2 12 0 R /F3 13 0 R >> >> /Contents 9 0 R >>
+endobj
+9 0 obj
+<< /Length 2081 >>
+stream
+BT /F2 16 Tf 1 0 0 1 50 790 Tm (2. Produits éditeurs) Tj ET
+0.8 w 50 780 m 545 780 l S
+BT /F2 12 Tf 1 0 0 1 50 750 Tm (AlimGesto) Tj ET
+BT /F3 10 Tf 1 0 0 1 150 750 Tm (Commerce de détail) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 734 Tm (Gestion des ventes, stocks, clients et fournisseurs pour alimentations et supérettes ; caiss) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 721 Tm (e hors-ligne et synchronisation cloud.) Tj ET
+BT /F2 12 Tf 1 0 0 1 50 696 Tm (Ticketia) Tj ET
+BT /F3 10 Tf 1 0 0 1 150 696 Tm (Événementiel) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 680 Tm (Billetterie avec QR code signé, contrôle hors-ligne en foule \(stades, festivals\) et réconcil) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 667 Tm (iation cloud.) Tj ET
+BT /F2 12 Tf 1 0 0 1 50 642 Tm (ImmoPilot) Tj ET
+BT /F3 10 Tf 1 0 0 1 150 642 Tm (Immobilier) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 626 Tm (Gestion immobilière complète : biens, locataires, loyers \(Mobile Money\), contrats.) Tj ET
+BT /F2 12 Tf 1 0 0 1 50 601 Tm (EduManager) Tj ET
+BT /F3 10 Tf 1 0 0 1 150 601 Tm (Éducation) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 585 Tm (Gestion scolaire : élèves, enseignants, notes, présences et paiements.) Tj ET
+BT /F2 12 Tf 1 0 0 1 50 554 Tm (3. Méthode & garanties contractuelles) Tj ET
+0.8 w 50 550 m 545 550 l S
+BT /F1 10 Tf 1 0 0 1 50 530 Tm (Chaque mission suit cinq phases : audit & cadrage, conception,) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 515 Tm (développement itératif, tests & recette, déploiement & suivi.) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 500 Tm () Tj ET
+BT /F1 10 Tf 1 0 0 1 50 485 Tm (Garanties systématiques :) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 470 Tm ( - Cession intégrale de la propriété intellectuelle et dépôt Git privé;) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 455 Tm ( - Prototypes Figma et documentation technique livrés;) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 440 Tm ( - Garantie corrective de 30 jours après la mise en production;) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 425 Tm ( - Accord de confidentialité \(NDA mutuel\) disponible avant tout cadrage;) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 410 Tm ( - Réponse commerciale sous 24 h ouvrées, devis gratuit et sans engagement.) Tj ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 11 0 R /F2 12 0 R /F3 13 0 R >> >> /Contents 10 0 R >>
+endobj
+10 0 obj
+<< /Length 1623 >>
+stream
+BT /F2 16 Tf 1 0 0 1 50 790 Tm (4. Stack technologique & contact) Tj ET
+0.8 w 50 780 m 545 780 l S
+BT /F2 10 Tf 1 0 0 1 50 750 Tm (Environnements maîtrisés au quotidien :) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 735 Tm ( TypeScript / Next.js / React, Node.js, Golang, Python, PHP, C#, Java) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 720 Tm ( PostgreSQL, MySQL, MongoDB, Redis, SQLite) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 705 Tm ( Docker, Nginx, Linux \(Debian/Ubuntu\), Proxmox, Vmware) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 690 Tm ( AWS, Azure, Google Cloud Platform, Cloudflare, Let's Encrypt) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 675 Tm ( Odoo, Salesforce, Sage, SharePoint, Microsoft 365) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 660 Tm ( Figma, GitLab, Jest, Postman, n8n) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 645 Tm () Tj ET
+BT /F2 10 Tf 1 0 0 1 50 630 Tm (Direction :) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 615 Tm ( Landry P. KABORE - Gérant / Managing Director) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 600 Tm ( Ingénieur logiciel & architecte solutions IT,) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 585 Tm ( 7+ ans d'expérience en systèmes d'information critiques en Afrique de l'Ouest.) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 570 Tm () Tj ET
+BT /F2 10 Tf 1 0 0 1 50 555 Tm (Coordonnées :) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 540 Tm ( Avenue Kwame Nkrumah, Immeuble Digital, Ouagadougou, Burkina Faso) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 525 Tm ( infos@digitalstation.bf | +226 50 22 28 94 | WhatsApp +226 66 16 97 62) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 510 Tm ( digitalstation.bf) Tj ET
+BT /F1 10 Tf 1 0 0 1 50 495 Tm () Tj ET
+BT /F1 10 Tf 1 0 0 1 50 480 Tm (Horaires : lundi-vendredi 8h00-18h00, samedi 9h00-13h00 \(GMT\).) Tj ET
+endstream
+endobj
+11 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+12 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+13 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding >>
+endobj
 xref
-0 6
+0 14
 0000000000 65535 f 
 0000000009 00000 n 
 0000000058 00000 n 
-0000000115 00000 n 
-0000000244 00000 n 
-0000000510 00000 n 
-trailer << /Size 6 /Root 1 0 R >>
+0000000133 00000 n 
+0000001387 00000 n 
+0000003369 00000 n 
+0000005651 00000 n 
+0000000282 00000 n 
+0000001536 00000 n 
+0000003518 00000 n 
+0000005801 00000 n 
+0000007477 00000 n 
+0000007575 00000 n 
+0000007678 00000 n 
+trailer
+<< /Size 14 /Root 1 0 R >>
 startxref
-589
+7784
 %%EOF

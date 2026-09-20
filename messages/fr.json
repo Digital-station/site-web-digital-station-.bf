@@ -147,6 +147,287 @@
       "title": "Travaillons<br></br><accent>ensemble</accent>.",
       "subtitle": "Prêt à démarrer votre projet ?",
       "button": "Démarrer un projet"
+    },
+    "segments": {
+      "eyebrow": "Accompagnement sur mesure",
+      "title": "Des réponses précises selon vos enjeux",
+      "intro": "Que vous dirigiez une PME en pleine expansion, une institution publique ou un groupe international, nos méthodologies s'adaptent à votre réalité.",
+      "items": {
+        "regional": {
+          "badge": "Entreprises & PME régionales",
+          "title": "Accélérez vos opérations locales",
+          "description": "Déploiement ERP (Odoo), digitalisation des points de vente, infogérance continue et automatisation administrative, avec une présence physique à Ouagadougou.",
+          "highlights": [
+            "Support de proximité en direct",
+            "Solutions hors-ligne & Mobile Money",
+            "Facturation & fiscalité conformes"
+          ],
+          "cta": "Explorer nos solutions d'entreprise"
+        },
+        "nearshore": {
+          "badge": "Partenaires internationaux & diaspora",
+          "title": "Votre hub d'ingénierie nearshore",
+          "description": "Équipes de développement dédiées, anglophones et francophones, sur le fuseau horaire GMT+0. Des compétences pointues aux meilleurs standards mondiaux.",
+          "highlights": [
+            "Alignement fuseau GMT (Europe/Afrique)",
+            "Ingénieurs bilingues",
+            "Contrats & NDA internationaux"
+          ],
+          "cta": "Échanger avec notre direction technique"
+        },
+        "public": {
+          "badge": "Institutions & secteur public / ONG",
+          "title": "Souveraineté des données & sécurité",
+          "description": "Développement de systèmes d'information critiques, plateformes citoyennes, conformité stricte et audits de cybersécurité pour organisations exigeantes.",
+          "highlights": [
+            "Souveraineté & hébergement local/cloud",
+            "Traçabilité & audits de conformité",
+            "Pérennité des systèmes déployés"
+          ],
+          "cta": "Découvrir le pôle Gouvernance & SI"
+        }
+      }
+    },
+    "architecture": {
+      "eyebrow": "Ingénierie en transparence",
+      "title": "Nos architectures, expliquées",
+      "subtitle": "Un aperçu concret de la façon dont nous concevons des systèmes fiables, sûrs et prêts pour l'échelle.",
+      "tabs": {
+        "ticketia": "Billetterie hors-ligne",
+        "alimgesto": "Commerce edge-to-cloud",
+        "cloud": "Cloud haute disponibilité",
+        "security": "Sécurité zero-trust"
+      },
+      "items": {
+        "ticketia": {
+          "title": "Ticketia — Moteur de billetterie & contrôle hors-ligne",
+          "subtitle": "Architecture zéro latence pour stades et événements à forte affluence",
+          "stats": [
+            {
+              "label": "Validation QR code",
+              "value": "< 0,3 seconde"
+            },
+            {
+              "label": "Capacité hors-ligne",
+              "value": "100 % autonome"
+            },
+            {
+              "label": "Protection anti-rejeu",
+              "value": "Nonce & Ed25519"
+            }
+          ],
+          "flow": [
+            {
+              "step": "01",
+              "title": "Achat & signature",
+              "desc": "Génération du billet avec QR code signé cryptographiquement (clé privée ECDSA), stocké localement sur le smartphone."
+            },
+            {
+              "step": "02",
+              "title": "Porte d'accès sans réseau",
+              "desc": "L'application contrôleur vérifie la signature via la clé publique pré-chargée dans un cache SQLite local."
+            },
+            {
+              "step": "03",
+              "title": "Maillage P2P & anti-doublon",
+              "desc": "Les terminaux contrôleurs échangent les jetons scannés en réseau local maillé (Wi-Fi local / Bluetooth)."
+            },
+            {
+              "step": "04",
+              "title": "Réconciliation cloud",
+              "desc": "Synchronisation par lots vers la base centrale PostgreSQL dès le retour du réseau internet."
+            }
+          ]
+        },
+        "alimgesto": {
+          "title": "AlimGesto — Architecture hybride edge-to-cloud",
+          "subtitle": "Continuité de vente absolue pour commerces et supérettes",
+          "stats": [
+            {
+              "label": "Tolérance aux pannes Internet",
+              "value": "Zéro impact sur les ventes"
+            },
+            {
+              "label": "Vitesse d'encaissement",
+              "value": "< 5 s par ticket"
+            },
+            {
+              "label": "Synchronisation",
+              "value": "Delta bidirectionnel"
+            }
+          ],
+          "flow": [
+            {
+              "step": "01",
+              "title": "Caisse edge locale",
+              "desc": "L'encaissement et le tiroir-caisse s'exécutent sur un moteur local ultra-rapide, sans dépendance Internet."
+            },
+            {
+              "step": "02",
+              "title": "File d'attente journalisée",
+              "desc": "Chaque vente génère un événement append-only, persisté localement en base transactionnelle."
+            },
+            {
+              "step": "03",
+              "title": "Synchronisation delta automatique",
+              "desc": "Dès que la connexion 4G/fibre est détectée, le synchroniseur pousse les deltas sans bloquer les ventes."
+            },
+            {
+              "step": "04",
+              "title": "Console gérant en temps réel",
+              "desc": "Le gérant suit à distance, sur son mobile, les stocks consolidés et la trésorerie en temps réel."
+            }
+          ]
+        },
+        "cloud": {
+          "title": "Infrastructure cloud & haute disponibilité",
+          "subtitle": "Déploiements conteneurisés et scalables pour entreprises et SaaS",
+          "stats": [
+            {
+              "label": "Disponibilité cible",
+              "value": "99,9 % (SLA)"
+            },
+            {
+              "label": "Déploiement continu",
+              "value": "Zéro interruption"
+            },
+            {
+              "label": "Sauvegardes",
+              "value": "Instantanés quotidiens"
+            }
+          ],
+          "flow": [
+            {
+              "step": "01",
+              "title": "Reverse proxy & WAF",
+              "desc": "Filtrage anti-DDoS, terminaison SSL Let's Encrypt automatisée et routage de trafic Nginx/Cloudflare."
+            },
+            {
+              "step": "02",
+              "title": "Clusters conteneurisés Docker",
+              "desc": "Isolation stricte des services applicatifs, microservices et API avec orchestration résiliente."
+            },
+            {
+              "step": "03",
+              "title": "Base de données redondée",
+              "desc": "PostgreSQL avec réplication en streaming, rétention des journaux WAL et instantanés chiffrés."
+            },
+            {
+              "step": "04",
+              "title": "Supervision & alertes 24/7",
+              "desc": "Métriques système (CPU, RAM, disque, I/O) avec alertes automatiques vers l'équipe d'infogérance."
+            }
+          ]
+        },
+        "security": {
+          "title": "Gouvernance & sécurité zero-trust",
+          "subtitle": "Protection des données sensibles et conformité institutionnelle",
+          "stats": [
+            {
+              "label": "Chiffrement au repos",
+              "value": "AES-256"
+            },
+            {
+              "label": "Chiffrement en transit",
+              "value": "TLS 1.3 strict"
+            },
+            {
+              "label": "Authentification",
+              "value": "MFA & RBAC"
+            }
+          ],
+          "flow": [
+            {
+              "step": "01",
+              "title": "Principe du moindre privilège",
+              "desc": "Gestion fine des rôles (RBAC), séparation étanche des environnements de développement, de recette et de production."
+            },
+            {
+              "step": "02",
+              "title": "Chiffrement de bout en bout",
+              "desc": "Données nominatives chiffrées au repos (AES-256) et certificats TLS 1.3 avec HSTS strict."
+            },
+            {
+              "step": "03",
+              "title": "Piste d'audit immuable",
+              "desc": "Journalisation inviolable de toutes les actions administratives et de tout accès aux données sensibles."
+            },
+            {
+              "step": "04",
+              "title": "Conformité CIL & RGPD",
+              "desc": "Cartographie des traitements, registre des données personnelles et procédures de notification prêtes à l'emploi."
+            }
+          ]
+        }
+      }
+    },
+    "estimator": {
+      "eyebrow": "Cadrage express",
+      "title": "Calculez le cadrage de votre projet",
+      "intro": "Obtenez en trois clics une estimation prévisionnelle de délai, les livrables recommandés et les garanties contractuelles associées.",
+      "step1": "1. Nature de votre projet technologique",
+      "step2": "2. Envergure & exigence opérationnelle",
+      "step3": "3. Livrables & engagements inclus",
+      "types": {
+        "webApp": {
+          "title": "Application web & SaaS",
+          "subtitle": "Portails métiers, dashboards, plateformes clients"
+        },
+        "mobileApp": {
+          "title": "Application mobile",
+          "subtitle": "iOS & Android haute performance (Flutter/React Native)"
+        },
+        "erpOdoo": {
+          "title": "Intégration ERP & Odoo",
+          "subtitle": "Gestion commerciale, comptabilité, CRM & stocks"
+        },
+        "cloudDevops": {
+          "title": "Infrastructure cloud & DevOps",
+          "subtitle": "AWS, Docker/Kubernetes, CI/CD & supervision"
+        },
+        "auditSecurity": {
+          "title": "Cybersécurité & audit SI",
+          "subtitle": "Tests d'intrusion, conformité des données & PCA"
+        }
+      },
+      "complexity": {
+        "mvp": {
+          "label": "Prototype / MVP rapide",
+          "desc": "Fonctionnalités essentielles pour valider le marché rapidement",
+          "weeks": "3 à 5 semaines"
+        },
+        "standard": {
+          "label": "Système métier complet",
+          "desc": "Architecture évolutive, intégrations API, back-office avancé",
+          "weeks": "6 à 10 semaines"
+        },
+        "enterprise": {
+          "label": "Plateforme haute disponibilité",
+          "desc": "Multi-rôles, redondance, cluster base de données, SLA 99,9 %",
+          "weeks": "10 à 16 semaines"
+        }
+      },
+      "deliverables": {
+        "sourceCode": "100 % cession de propriété & code source Git",
+        "figma": "Prototypes UI/UX Figma & design system",
+        "tests": "Suites de tests automatisés & documentation API",
+        "warranty": "Garantie corrective 30 jours post-déploiement",
+        "training": "Formation des équipes & transfert de compétences"
+      },
+      "synthesis": {
+        "title": "Synthèse prévisionnelle",
+        "instant": "Instantané",
+        "archLabel": "Architecture cible",
+        "delayLabel": "Délai estimé",
+        "methodLabel": "Méthodologie",
+        "methodValue": "Sprints agiles",
+        "guaranteesTitle": "Garanties contractuelles :",
+        "guarantee1": "Dépôt Git privé & propriété intellectuelle intégrale",
+        "guarantee2": "Support et garantie post-mise en production 30 j",
+        "guarantee3": "Interlocuteur technique dédié (Gérant / Lead Tech)",
+        "cta": "Recevoir le devis détaillé (sous 24 h)",
+        "note": "Estimation gratuite, sans aucun engagement. Devis chiffré formel sous 24 heures ouvrées."
+      }
     }
   },
   "services": {
@@ -404,7 +685,7 @@
       },
       "intelligence-artificielle": {
         "title": "Intelligence artificielle appliquée",
-        "desc": "Intégration de solutions IA , chatbots, automatisation et traitement de documents pour accroître votre productivité.",
+        "desc": "Intégration de solutions IA : chatbots, automatisation et traitement de documents pour accroître votre productivité.",
         "audience": "Équipes qui passent trop de temps sur des tâches répétitives ou sur du traitement de documents.",
         "longDesc": "L'intelligence artificielle transforme les façons de travailler. Nous intégrons des solutions IA concrètes et opérationnelles dans vos processus métiers : agents conversationnels intelligents, automatisation des tâches répétitives et traitement intelligent de documents pour libérer le potentiel de vos équipes.",
         "benefits": [
@@ -510,6 +791,35 @@
         "tooLong": "Ce champ est trop long.",
         "submit": "L'envoi a échoué. Réessayez, ou écrivez-nous directement à infos@digitalstation.bf."
       }
+    },
+    "scheduler": {
+      "eyebrow": "Échange direct",
+      "title": "Réserver un échange d'architecture ({duration})",
+      "tz": "Fuseau : GMT (Ouagadougou)",
+      "intro": "Un échange direct, sans filtre commercial : 20 minutes pour auditer vos besoins techniques, évaluer la faisabilité et tracer une feuille de route claire.",
+      "ndaNote": "Accord de confidentialité (NDA) implicite",
+      "noCommitment": "Aucun engagement requis",
+      "recommendations": "Recommandations d'architecture immédiates",
+      "stepSlots": "1. Créneau souhaité (indicatif)",
+      "slotTomorrow": "Demain",
+      "slotNextDay": "Après-demain",
+      "stepDetails": "2. Vos coordonnées professionnelles",
+      "namePlaceholder": "Nom complet ou titre",
+      "emailPlaceholder": "Email professionnel",
+      "topics": {
+        "architecture": "Cadrage de projet / développement sur mesure",
+        "productDemo": "Démonstration produit (Ticketia, AlimGesto, ImmoPilot, EduManager)",
+        "nearshore": "Partenariat nearshore / équipe dédiée",
+        "erpCloud": "Déploiement ERP & infrastructure cloud"
+      },
+      "submit": "Demander ce créneau",
+      "sending": "Envoi en cours...",
+      "successTitle": "Demande bien reçue !",
+      "successBody": "Merci {name}. Nous confirmons la disponibilité du créneau par email ou WhatsApp sous 24 h ouvrées, avec un lien de visioconférence le cas échéant.",
+      "successAlt": "Besoin d'une réponse immédiate ?",
+      "reset": "Faire une autre demande",
+      "error": "L'envoi a échoué. Réessayez, ou écrivez-nous directement à infos@digitalstation.bf.",
+      "brief": "Demande de créneau — {topic}. Créneau souhaité : {slot}."
     }
   },
   "servicesPage": {
@@ -673,7 +983,7 @@
       "sectionTitle": "Mot du Gérant",
       "visionTitle": "Notre vision",
       "pillarsTitle": "Les piliers de notre stratégie de croissance",
-      "message": "La technologie n'est pas une fin en soi. C'est un levier au service d'une ambition humaine. Depuis notre création , notre conviction reste inchangée : accompagner chaque client comme un partenaire de long terme, lui offrir l'excellence technique sans jamais perdre de vue ses enjeux réels. Au Burkina Faso et en Afrique de l'Ouest, nous bâtissons le numérique de demain.",
+      "message": "La technologie n'est pas une fin en soi. C'est un levier au service d'une ambition humaine. Depuis notre création, notre conviction reste inchangée : accompagner chaque client comme un partenaire de long terme, lui offrir l'excellence technique sans jamais perdre de vue ses enjeux réels. Au Burkina Faso et en Afrique de l'Ouest, nous bâtissons le numérique de demain.",
       "vision": {
         "vision": {
           "title": "Vision 2030",
@@ -724,6 +1034,24 @@
           "desc": "Mise en production, formation de vos équipes, puis supervision et évolutions continues."
         }
       }
+    },
+    "trust": {
+      "eyebrow": "Transparence & documents contractuels",
+      "title": "Documents d'entreprise en libre accès",
+      "intro": "Téléchargez nos documents officiels pour instruire vos comités d'achat ou cadrer immédiatement nos échanges sous protection juridique.",
+      "capabilities": {
+        "title": "Dossier de présentation & capacités techniques",
+        "subtitle": "Company Profile & Capabilities Deck (PDF)",
+        "desc": "Présentation complète de notre organisation, de nos méthodologies d'ingénierie, de notre stack technologique et de nos produits éditeurs.",
+        "badge": "Officiel"
+      },
+      "nda": {
+        "title": "Accord de confidentialité type (Mutual NDA)",
+        "subtitle": "Standard Non-Disclosure Agreement (PDF)",
+        "desc": "Modèle d'engagement de confidentialité mutuel protégeant vos données sensibles, codes sources et concepts avant tout cadrage.",
+        "badge": "Protection juridique"
+      },
+      "version": "Version 2026"
     }
   },
   "solutions": {
@@ -777,6 +1105,18 @@
           "École"
         ]
       }
+    },
+    "previewOverlay": "Aperçu interactif",
+    "previewScreens": "Aperçu des écrans",
+    "demoAccess": "Demander l'accès démo",
+    "modal": {
+      "previewLabel": "Aperçu interactif",
+      "productionReady": "Prêt pour la production",
+      "closeAria": "Fermer l'aperçu",
+      "modulesTitle": "Exploration des modules & écrans clés",
+      "archTitle": "Architecture & technologies :",
+      "footerNote": "Besoin d'un déploiement sur mesure ou d'une démo complète avec vos équipes ?",
+      "close": "Fermer"
     }
   },
   "notFound": {

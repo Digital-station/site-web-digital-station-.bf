@@ -78,7 +78,7 @@ export function SolutionsContent() {
                       className="px-5 py-2.5 rounded-full bg-brand-accent text-brand-on-accent text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-2 shadow-xl hover:scale-105 transition-transform"
                     >
                       <Eye className="w-4 h-4" />
-                      <span>Aperçu Interactif</span>
+                      <span>{t('previewOverlay')}</span>
                     </button>
                   </div>
                 </div>
@@ -112,7 +112,7 @@ export function SolutionsContent() {
                       className="btn-outline inline-flex items-center gap-2.5 px-5 py-3 text-xs uppercase font-bold tracking-wider hover:border-brand-accent"
                     >
                       <Eye className="w-4 h-4 text-brand-accent" />
-                      <span>Aperçu des Écrans</span>
+                      <span>{t('previewScreens')}</span>
                     </button>
 
                     <Link

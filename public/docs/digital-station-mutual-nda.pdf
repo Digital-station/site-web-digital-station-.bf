@@ -1,34 +1,105 @@
 %PDF-1.4
-1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
-2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
-3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >> endobj
-4 0 obj << /Length 225 >> stream
-BT
-/F1 22 Tf
-50 720 Td
-(ACCORD DE CONFIDENTIALITE MUTUEL / MUTUAL NDA) Tj
-/F1 12 Tf
-0 -40 Td
-(ENTRE LES SOUSSIGNES: DIGITAL STATION SARL ET LE PARTENAIRE/CLIENT) Tj
-0 -25 Td
-(Objet: Protection des informations confidentielles techniques, metiers et commerciales.) Tj
-0 -35 Td
-(Article 1: Engagement strict de non-divulgation des donnees et des codes sources.) Tj
-0 -25 Td
-(Article 2: Duree de validite: 3 ans a compter de la signature de l'accord.) Tj
-0 -45 Td
-(Pour DIGITAL STATION SARL - Landry P. KABORE, Gerant) Tj
-ET
-endstream endobj
-5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> endobj
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 4 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 7 0 R /F2 8 0 R /F3 9 0 R >> >> /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 2463 >>
+stream
+BT /F2 16 Tf 1 0 0 1 50 790 Tm (ACCORD DE CONFIDENTIALITÉ MUTUEL / MUTUAL NDA) Tj ET
+0.8 w 50 778 m 545 778 l S
+BT /F2 9.5 Tf 1 0 0 1 50 750 Tm (Entre les soussignés / Between the undersigned:) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 736 Tm () Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 722 Tm (DIGITAL STATION SARL, RCCM BF-OUA-01-2018-B12-08492, IFU 00108492X,) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 708 Tm (Avenue Kwame Nkrumah, Immeuble Digital, Ouagadougou, Burkina Faso) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 694 Tm (\(ci-après « la Société » / hereinafter "the Company"\)) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 680 Tm () Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 666 Tm (et / and : ________________________________________________) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 652 Tm (\(ci-après « le Partenaire » / hereinafter "the Partner"\)) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 638 Tm () Tj ET
+BT /F2 9.5 Tf 1 0 0 1 50 624 Tm (Article 1 - Objet / Purpose) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 610 Tm (Chaque partie peut communiquer à l'autre des informations confidentielles) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 596 Tm (\(concepts, données, codes sources, documents commerciaux\) dans le cadre de) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 582 Tm (l'étude d'un projet commun. Le présent accord encadre leur protection.) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 568 Tm (Each party may disclose confidential information \(concepts, data, source) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 554 Tm (code, business documents\) while evaluating a joint project. This agreement) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 540 Tm (frames their protection.) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 526 Tm () Tj ET
+BT /F2 9.5 Tf 1 0 0 1 50 512 Tm (Article 2 - Engagements / Commitments) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 498 Tm (La partie réceptrice s'engage à : \(a\) n'utiliser les informations qu'aux) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 484 Tm (fins de l'étude du projet ; \(b\) ne les divulguer qu'aux collaborateurs tenus) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 470 Tm (au même secret ; \(c\) appliquer des mesures de protection au moins équivalentes) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 456 Tm (à celles appliquées à ses propres informations confidentielles.) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 442 Tm (The receiving party shall: \(a\) use the information solely to evaluate the) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 428 Tm (project; \(b\) disclose it only to staff bound by the same duty; \(c\) apply) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 414 Tm (protection measures at least equal to those applied to its own information.) Tj ET
+endstream
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 7 0 R /F2 8 0 R /F3 9 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 2309 >>
+stream
+BT /F2 9.5 Tf 1 0 0 1 50 800 Tm (Article 3 - Exclusions / Exclusions) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 786 Tm (Ne sont pas confidentielles les informations : publiques sans faute de la) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 772 Tm (partie réceptrice ; déjà connues ; reçues légitimement d'un tiers ;) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 758 Tm (développées indépendamment. / Not confidential: information that is public) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 744 Tm (through no fault of the receiver, already known, lawfully received from a) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 730 Tm (third party, or independently developed.) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 716 Tm () Tj ET
+BT /F2 9.5 Tf 1 0 0 1 50 700 Tm (Article 4 - Durée / Term) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 686 Tm (Les obligations survivent deux \(2\) ans à la fin des échanges. / The) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 672 Tm (obligations survive two \(2\) years after the end of the discussions.) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 658 Tm () Tj ET
+BT /F2 9.5 Tf 1 0 0 1 50 642 Tm (Article 5 - Restitution / Return) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 628 Tm (Sur demande, chaque partie restitue ou détruit les supports reçus. / Upon) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 614 Tm (request, each party returns or destroys the materials received.) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 600 Tm () Tj ET
+BT /F2 9.5 Tf 1 0 0 1 50 584 Tm (Article 6 - Droit applicable / Governing law) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 570 Tm (Droit burkinabè ; à défaut d'accord amiable, tribunaux de Ouagadougou. /) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 556 Tm (Burkinabè law; failing an amicable settlement, the courts of Ouagadougou.) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 542 Tm () Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 526 Tm (Fait à / Done at ______________________, le / on ____ / ____ / ________) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 512 Tm () Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 496 Tm () Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 480 Tm (La Société / The Company                      Le Partenaire / The Partner) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 466 Tm () Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 450 Tm () Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 434 Tm () Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 418 Tm (__________________________                 __________________________) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 404 Tm (Nom / Name :) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 50 390 Tm (Titre / Title :) Tj ET
+endstream
+endobj
+7 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+8 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+9 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding >>
+endobj
 xref
-0 6
+0 10
+0000000000 65535 f 
 0000000009 00000 n 
 0000000058 00000 n 
-0000000115 00000 n 
-0000000244 00000 n 
-0000000520 00000 n 
-trailer << /Size 6 /Root 1 0 R >>
+0000000121 00000 n 
+0000002782 00000 n 
+0000000267 00000 n 
+0000002928 00000 n 
+0000005289 00000 n 
+0000005386 00000 n 
+0000005488 00000 n 
+trailer
+<< /Size 10 /Root 1 0 R >>
 startxref
-599
+5593
 %%EOF

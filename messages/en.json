@@ -147,6 +147,287 @@
       "title": "Let's<br></br><accent>work</accent> together.",
       "subtitle": "Ready to start your project?",
       "button": "Start a project"
+    },
+    "segments": {
+      "eyebrow": "Tailored engagement",
+      "title": "Precise answers for your specific stakes",
+      "intro": "Whether you run a fast-growing SME, a public institution or an international group, our methodologies adapt to your reality.",
+      "items": {
+        "regional": {
+          "badge": "Regional businesses & SMEs",
+          "title": "Accelerate your local operations",
+          "description": "ERP deployment (Odoo), point-of-sale digitalisation, continuous managed IT and administrative automation, with a physical presence in Ouagadougou.",
+          "highlights": [
+            "Direct, on-the-ground support",
+            "Offline-first & Mobile Money solutions",
+            "Compliant invoicing & taxation"
+          ],
+          "cta": "Explore our business solutions"
+        },
+        "nearshore": {
+          "badge": "International partners & diaspora",
+          "title": "Your nearshore engineering hub",
+          "description": "Dedicated development teams, English- and French-speaking, on the GMT+0 time zone. Deep expertise delivered to the best global standards.",
+          "highlights": [
+            "GMT time-zone alignment (Europe/Africa)",
+            "Bilingual engineers",
+            "International contracts & NDAs"
+          ],
+          "cta": "Talk to our technical direction"
+        },
+        "public": {
+          "badge": "Institutions & public sector / NGOs",
+          "title": "Data sovereignty & security",
+          "description": "Mission-critical information systems, citizen platforms, strict compliance and cybersecurity audits for demanding organisations.",
+          "highlights": [
+            "Sovereign local/cloud hosting",
+            "Traceability & compliance audits",
+            "Long-lived, maintainable systems"
+          ],
+          "cta": "Discover our Governance & IS practice"
+        }
+      }
+    },
+    "architecture": {
+      "eyebrow": "Engineering in the open",
+      "title": "Our architectures, explained",
+      "subtitle": "A concrete look at how we design systems that are reliable, secure and ready to scale.",
+      "tabs": {
+        "ticketia": "Offline ticketing",
+        "alimgesto": "Edge-to-cloud retail",
+        "cloud": "High-availability cloud",
+        "security": "Zero-trust security"
+      },
+      "items": {
+        "ticketia": {
+          "title": "Ticketia — Offline ticketing & gate-control engine",
+          "subtitle": "Zero-latency architecture for stadiums and high-attendance events",
+          "stats": [
+            {
+              "label": "QR-code validation",
+              "value": "< 0.3 seconds"
+            },
+            {
+              "label": "Offline capability",
+              "value": "100% autonomous"
+            },
+            {
+              "label": "Replay protection",
+              "value": "Nonce & Ed25519"
+            }
+          ],
+          "flow": [
+            {
+              "step": "01",
+              "title": "Purchase & signature",
+              "desc": "The ticket is issued with a cryptographically signed QR code (ECDSA private key) and stored locally on the smartphone."
+            },
+            {
+              "step": "02",
+              "title": "Network-free gate access",
+              "desc": "The controller app verifies the signature using the public key preloaded in a local SQLite cache."
+            },
+            {
+              "step": "03",
+              "title": "P2P mesh & anti-duplicate",
+              "desc": "Controller terminals exchange scanned tokens over a local mesh network (local Wi-Fi / Bluetooth)."
+            },
+            {
+              "step": "04",
+              "title": "Cloud reconciliation",
+              "desc": "Batch synchronisation to the central PostgreSQL database as soon as the internet connection is back."
+            }
+          ]
+        },
+        "alimgesto": {
+          "title": "AlimGesto — Hybrid edge-to-cloud architecture",
+          "subtitle": "Absolute sales continuity for corner shops and supermarkets",
+          "stats": [
+            {
+              "label": "Internet outage tolerance",
+              "value": "Zero impact on sales"
+            },
+            {
+              "label": "Checkout speed",
+              "value": "< 5s per ticket"
+            },
+            {
+              "label": "Synchronisation",
+              "value": "Bidirectional delta"
+            }
+          ],
+          "flow": [
+            {
+              "step": "01",
+              "title": "Local edge checkout",
+              "desc": "Checkout and cash drawer run on an ultra-fast local engine with no internet dependency."
+            },
+            {
+              "step": "02",
+              "title": "Journaled event queue",
+              "desc": "Every sale produces an append-only event, persisted locally in a transactional database."
+            },
+            {
+              "step": "03",
+              "title": "Automatic delta sync",
+              "desc": "As soon as a 4G/fibre connection is detected, the synchroniser pushes deltas without blocking sales."
+            },
+            {
+              "step": "04",
+              "title": "Real-time owner console",
+              "desc": "The owner monitors consolidated stock and cash flow remotely, on their phone, in real time."
+            }
+          ]
+        },
+        "cloud": {
+          "title": "Cloud infrastructure & high availability",
+          "subtitle": "Containerised, scalable deployments for enterprises and SaaS",
+          "stats": [
+            {
+              "label": "Target availability",
+              "value": "99.9% SLA"
+            },
+            {
+              "label": "Continuous deployment",
+              "value": "Zero downtime"
+            },
+            {
+              "label": "Backups",
+              "value": "Daily snapshots"
+            }
+          ],
+          "flow": [
+            {
+              "step": "01",
+              "title": "Reverse proxy & WAF",
+              "desc": "Anti-DDoS filtering, automated Let's Encrypt SSL termination and Nginx/Cloudflare traffic routing."
+            },
+            {
+              "step": "02",
+              "title": "Docker container clusters",
+              "desc": "Strict isolation of application services, microservices and APIs with resilient orchestration."
+            },
+            {
+              "step": "03",
+              "title": "Redundant database",
+              "desc": "PostgreSQL with streaming replication, WAL journal retention and encrypted snapshots."
+            },
+            {
+              "step": "04",
+              "title": "24/7 monitoring & alerting",
+              "desc": "System metrics (CPU, RAM, disk, I/O) with automatic alerts to the managed-IT team."
+            }
+          ]
+        },
+        "security": {
+          "title": "Zero-trust governance & security",
+          "subtitle": "Sensitive-data protection and institutional compliance",
+          "stats": [
+            {
+              "label": "Encryption at rest",
+              "value": "AES-256"
+            },
+            {
+              "label": "Encryption in transit",
+              "value": "Strict TLS 1.3"
+            },
+            {
+              "label": "Authentication",
+              "value": "MFA & RBAC"
+            }
+          ],
+          "flow": [
+            {
+              "step": "01",
+              "title": "Least-privilege principle",
+              "desc": "Fine-grained roles (RBAC) and strict separation of development, staging and production environments."
+            },
+            {
+              "step": "02",
+              "title": "End-to-end encryption",
+              "desc": "Personal data encrypted at rest (AES-256) and TLS 1.3 certificates with strict HSTS."
+            },
+            {
+              "step": "03",
+              "title": "Tamper-proof audit trail",
+              "desc": "Immutable logging of every administrative action and every access to sensitive data."
+            },
+            {
+              "step": "04",
+              "title": "CIL & GDPR compliance",
+              "desc": "Processing maps, personal-data registers and breach-notification procedures, ready to use."
+            }
+          ]
+        }
+      }
+    },
+    "estimator": {
+      "eyebrow": "Express scoping",
+      "title": "Scope your project in three clicks",
+      "intro": "Get an indicative timeline, the recommended deliverables and the associated contractual guarantees.",
+      "step1": "1. Nature of your technology project",
+      "step2": "2. Scale & operational requirements",
+      "step3": "3. Included deliverables & commitments",
+      "types": {
+        "webApp": {
+          "title": "Web application & SaaS",
+          "subtitle": "Business portals, dashboards, customer platforms"
+        },
+        "mobileApp": {
+          "title": "Mobile application",
+          "subtitle": "High-performance iOS & Android (Flutter/React Native)"
+        },
+        "erpOdoo": {
+          "title": "ERP & Odoo integration",
+          "subtitle": "Sales, accounting, CRM & inventory management"
+        },
+        "cloudDevops": {
+          "title": "Cloud infrastructure & DevOps",
+          "subtitle": "AWS, Docker/Kubernetes, CI/CD & monitoring"
+        },
+        "auditSecurity": {
+          "title": "Cybersecurity & IS audit",
+          "subtitle": "Penetration testing, data compliance & BCP"
+        }
+      },
+      "complexity": {
+        "mvp": {
+          "label": "Prototype / fast MVP",
+          "desc": "Essential features to validate the market quickly",
+          "weeks": "3 to 5 weeks"
+        },
+        "standard": {
+          "label": "Complete business system",
+          "desc": "Scalable architecture, API integrations, advanced back office",
+          "weeks": "6 to 10 weeks"
+        },
+        "enterprise": {
+          "label": "High-availability platform",
+          "desc": "Multi-role, redundancy, database cluster, 99.9% SLA",
+          "weeks": "10 to 16 weeks"
+        }
+      },
+      "deliverables": {
+        "sourceCode": "100% ownership transfer & Git source code",
+        "figma": "Figma UI/UX prototypes & design system",
+        "tests": "Automated test suites & API documentation",
+        "warranty": "30-day corrective warranty after deployment",
+        "training": "Team training & skills transfer"
+      },
+      "synthesis": {
+        "title": "Indicative summary",
+        "instant": "Live",
+        "archLabel": "Target architecture",
+        "delayLabel": "Estimated timeline",
+        "methodLabel": "Methodology",
+        "methodValue": "Agile sprints",
+        "guaranteesTitle": "Contractual guarantees:",
+        "guarantee1": "Private Git repository & full intellectual-property transfer",
+        "guarantee2": "30-day post-production support & warranty",
+        "guarantee3": "Dedicated technical contact (Managing Director / Lead Tech)",
+        "cta": "Get the detailed quote (within 24h)",
+        "note": "Free estimate, no commitment. Formal priced quote within 24 business hours."
+      }
     }
   },
   "services": {
@@ -404,7 +685,7 @@
       },
       "intelligence-artificielle": {
         "title": "Applied Artificial Intelligence",
-        "desc": "AI solutions : chatbots, automation and document processing , integrated to boost your team's productivity.",
+        "desc": "AI solutions — chatbots, automation and document processing — integrated to boost your team's productivity.",
         "audience": "Teams spending too much time on repetitive tasks or on processing documents.",
         "longDesc": "Artificial intelligence is changing how work gets done. We embed concrete, operational AI into your business processes: intelligent conversational agents, automation of repetitive tasks, and intelligent document processing that frees up your teams' potential.",
         "benefits": [
@@ -510,6 +791,35 @@
         "tooLong": "This field is too long.",
         "submit": "Sending failed. Please try again, or email us directly at infos@digitalstation.bf."
       }
+    },
+    "scheduler": {
+      "eyebrow": "Direct conversation",
+      "title": "Book an architecture session ({duration})",
+      "tz": "Time zone: GMT (Ouagadougou)",
+      "intro": "A direct conversation with no sales filter: 20 minutes to audit your technical needs, assess feasibility and outline a clear roadmap.",
+      "ndaNote": "Implicit non-disclosure agreement",
+      "noCommitment": "No commitment required",
+      "recommendations": "Immediate architecture recommendations",
+      "stepSlots": "1. Preferred slot (indicative)",
+      "slotTomorrow": "Tomorrow",
+      "slotNextDay": "Day after tomorrow",
+      "stepDetails": "2. Your professional details",
+      "namePlaceholder": "Full name or title",
+      "emailPlaceholder": "Work email",
+      "topics": {
+        "architecture": "Project scoping / custom development",
+        "productDemo": "Product demonstration (Ticketia, AlimGesto, ImmoPilot, EduManager)",
+        "nearshore": "Nearshore partnership / dedicated team",
+        "erpCloud": "ERP deployment & cloud infrastructure"
+      },
+      "submit": "Request this slot",
+      "sending": "Sending...",
+      "successTitle": "Request received!",
+      "successBody": "Thank you {name}. We will confirm the slot's availability by email or WhatsApp within 24 business hours, with a video-call link where relevant.",
+      "successAlt": "Need an immediate answer?",
+      "reset": "Make another request",
+      "error": "Sending failed. Please try again, or write to us directly at infos@digitalstation.bf.",
+      "brief": "Slot request — {topic}. Preferred slot: {slot}."
     }
   },
   "servicesPage": {
@@ -724,6 +1034,24 @@
           "desc": "Going live, training your teams, then ongoing monitoring and improvements."
         }
       }
+    },
+    "trust": {
+      "eyebrow": "Transparency & contractual documents",
+      "title": "Company documents, freely available",
+      "intro": "Download our official documents to brief your purchasing committees, or frame our discussions under legal protection from day one.",
+      "capabilities": {
+        "title": "Company profile & technical capabilities",
+        "subtitle": "Dossier de présentation (PDF, in French)",
+        "desc": "A complete presentation of our organisation, engineering methodologies, technology stack and software products.",
+        "badge": "Official"
+      },
+      "nda": {
+        "title": "Standard mutual non-disclosure agreement",
+        "subtitle": "Accord de confidentialité mutuel (PDF bilingue)",
+        "desc": "A mutual NDA template protecting your sensitive data, source code and concepts before any scoping work begins.",
+        "badge": "Legal protection"
+      },
+      "version": "2026 edition"
     }
   },
   "solutions": {
@@ -777,6 +1105,18 @@
           "Schools"
         ]
       }
+    },
+    "previewOverlay": "Interactive preview",
+    "previewScreens": "Preview the screens",
+    "demoAccess": "Request demo access",
+    "modal": {
+      "previewLabel": "Interactive preview",
+      "productionReady": "Production ready",
+      "closeAria": "Close preview",
+      "modulesTitle": "Explore the key modules & screens",
+      "archTitle": "Architecture & technologies:",
+      "footerNote": "Need a custom deployment or a full demo with your teams?",
+      "close": "Close"
     }
   },
   "notFound": {

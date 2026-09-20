@@ -1,35 +1,94 @@
 'use client';
 
 import { useState } from 'react';
-import { Calendar, Clock, Video, CheckCircle2, ArrowRight, ShieldCheck, UserCheck } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { site } from '@/config/site.config';
+import {
+  ArrowRight,
+  CheckCircle2,
+  Clock,
+  ShieldCheck,
+  UserCheck,
+  Video,
+  MessageCircle,
+} from 'lucide-react';
+import { useTranslations, useLocale } from 'next-intl';
+
+import { site, waHref } from '@/config/site.config';
+
+/**
+ * Discovery-call request.
+ *
+ * HONESTY CONTRACT: this component never pretends a meeting is booked. It
+ * sends a structured lead to `/api/leads` (the same inbox as the contact
+ * form) and tells the visitor we will CONFIRM the slot within 24 business
+ * hours. The previous version displayed fixed "tomorrow" slots and claimed a
+ * Google Meet invite had been emailed — nothing was sent, which is a
+ * credibility disaster for enterprise buyers.
+ *
+ * All prose lives in messages under `contact.scheduler`.
+ */
+
+type TopicId = 'architecture' | 'productDemo' | 'nearshore' | 'erpCloud';
+const TOPIC_IDS: TopicId[] = ['architecture', 'productDemo', 'nearshore', 'erpCloud'];
+
+/** Indicative slots: next two office mornings/afternoons, Ouagadougou time. */
+const SLOTS = [
+  { dayOffset: 1, time: '10:00 GMT' },
+  { dayOffset: 1, time: '14:30 GMT' },
+  { dayOffset: 2, time: '11:00 GMT' },
+  { dayOffset: 2, time: '16:00 GMT' },
+] as const;
+
+function slotLabel(locale: string, dayOffset: number): string {
+  const date = new Date(Date.now() + dayOffset * 24 * 3600 * 1000);
+  return new Intl.DateTimeFormat(locale === 'fr' ? 'fr-FR' : 'en-GB', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    timeZone: 'Africa/Ouagadougou',
+  }).format(date);
+}
+
+type Status = 'idle' | 'sending' | 'success' | 'error';
 
 export function MeetingScheduler() {
-  const [selectedSlot, setSelectedSlot] = useState<string>('tomorrow-10');
-  const [isBooked, setIsBooked] = useState<boolean>(false);
-  const [fullName, setFullName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [topic, setTopic] = useState<string>('architecture');
+  const locale = useLocale();
+  const t = useTranslations('contact.scheduler');
 
-  const t = useTranslations('contact');
+  const [selectedSlot, setSelectedSlot] = useState(0);
+  const [status, setStatus] = useState<Status>('idle');
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [topic, setTopic] = useState<TopicId>('architecture');
 
-  const AVAILABLE_SLOTS = [
-    { id: 'slot-1', date: 'Demain / Tomorrow', time: '10:00 GMT' },
-    { id: 'slot-2', date: 'Demain / Tomorrow', time: '14:30 GMT' },
-    { id: 'slot-3', date: 'Après-demain / Next Day', time: '11:00 GMT' },
-    { id: 'slot-4', date: 'Après-demain / Next Day', time: '16:00 GMT' },
-  ];
+  const slot = SLOTS[selectedSlot];
+  const slotText = `${slotLabel(locale, slot.dayOffset)} · ${slot.time}`;
 
-  const handleBookingSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !fullName) return;
-    setIsBooked(true);
+    if (status === 'sending') return;
+    setStatus('sending');
+    try {
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: fullName,
+          email,
+          company: '',
+          objective: t(`topics.${topic}`),
+          brief: t('brief', { topic: t(`topics.${topic}`), slot: slotText }),
+        }),
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      setStatus('success');
+    } catch {
+      setStatus('error');
+    }
   };
 
   return (
-    <div className="bg-brand-surface border border-brand-border rounded-[2rem] p-6 sm:p-10 relative overflow-hidden shadow-2xl">
-      {/* Background Glow */}
+    <div className="bg-brand-surface border border-brand-border rounded-[2rem] p-6 sm:p-10 relative overflow-hidden shadow-card">
+      {/* Background glow */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header */}
@@ -37,43 +96,51 @@ export function MeetingScheduler() {
         <div>
           <div className="flex items-center gap-2 text-brand-accent text-xs font-mono font-bold uppercase tracking-wider mb-1">
             <Video className="w-4 h-4" />
-            <span>Direct Meeting Scheduler</span>
+            <span>{t('eyebrow')}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-balance">
-            Réserver un échange d'architecture ({site.booking.duration})
+            {t('title', { duration: site.booking.duration })}
           </h2>
         </div>
 
         <div className="flex items-center gap-2 bg-brand-primary/60 border border-brand-border px-4 py-2 rounded-full w-fit">
           <Clock className="w-4 h-4 text-brand-accent" />
-          <span className="text-xs font-mono text-brand-muted">Fuseau : GMT (Ouagadougou / Londres)</span>
+          <span className="text-xs font-mono text-brand-muted">{t('tz')}</span>
         </div>
       </div>
 
-      {isBooked ? (
+      {status === 'success' ? (
         <div className="py-12 flex flex-col items-center justify-center text-center space-y-4">
           <div className="w-16 h-16 rounded-full bg-green-500/20 border border-green-500/40 flex items-center justify-center text-green-400 mb-2">
             <CheckCircle2 className="w-8 h-8" />
           </div>
-          <h3 className="text-2xl font-black uppercase tracking-tight">
-            Invitation confirmée !
-          </h3>
+          <h3 className="text-2xl font-black uppercase tracking-tight">{t('successTitle')}</h3>
           <p className="text-sm text-brand-muted max-w-md font-light leading-relaxed">
-            Un lien de visioconférence sécurisé (Google Meet) ainsi que les détails de l'échange avec <strong className="text-brand-text">{site.leadership.director.name}</strong> ont été envoyés à <strong className="text-brand-text">{email}</strong>.
+            {t('successBody', { name: fullName })}
           </p>
-          <div className="pt-4">
+          <div className="pt-2 flex flex-col items-center gap-3">
+            <p className="text-xs text-brand-muted font-light">{t('successAlt')}</p>
+            <a
+              href={waHref(t('brief', { topic: t(`topics.${topic}`), slot: slotText }))}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-outline inline-flex items-center gap-2 px-5 py-2.5 text-xs uppercase font-bold tracking-wider"
+            >
+              <MessageCircle className="w-4 h-4 text-green-500" />
+              WhatsApp
+            </a>
             <button
               type="button"
-              onClick={() => setIsBooked(false)}
+              onClick={() => setStatus('idle')}
               className="text-xs font-mono text-brand-accent uppercase underline underline-offset-4"
             >
-              Modifier ou choisir un autre créneau
+              {t('reset')}
             </button>
           </div>
         </div>
       ) : (
         <div className="grid lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Context & Host */}
+          {/* Left column: context & host */}
           <div className="lg:col-span-5 space-y-6">
             <div className="bg-brand-primary/40 border border-brand-border rounded-2xl p-5 space-y-4">
               <div className="flex items-center gap-3">
@@ -90,115 +157,111 @@ export function MeetingScheduler() {
                 </div>
               </div>
 
-              <p className="text-xs text-brand-muted leading-relaxed font-light">
-                Échange direct sans filtre commercial. 20 minutes pour auditer vos besoins techniques, évaluer la faisabilité et tracer une feuille de route claire.
-              </p>
+              <p className="text-xs text-brand-muted leading-relaxed font-light">{t('intro')}</p>
 
               <div className="space-y-2 pt-2 border-t border-brand-border/60">
                 <div className="flex items-center gap-2 text-[11px] text-brand-muted font-mono">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
-                  <span>Accord de confidentialité (NDA) implicite</span>
+                  <ShieldCheck className="w-3.5 h-3.5 text-green-400 shrink-0" />
+                  <span>{t('ndaNote')}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[11px] text-brand-muted font-mono">
                   <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
-                  <span>Aucun engagement requis</span>
+                  <span>{t('noCommitment')}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[11px] text-brand-muted font-mono">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
-                  <span>Recommandations d'architecture immédiates</span>
+                  <UserCheck className="w-3.5 h-3.5 text-green-400 shrink-0" />
+                  <span>{t('recommendations')}</span>
                 </div>
               </div>
             </div>
-
-            {/* External Cal.com direct fallback */}
-            <div className="p-4 rounded-xl border border-brand-border/60 bg-brand-surface-2 text-xs text-brand-muted flex items-center justify-between">
-              <span>Vous préférez votre propre agenda ?</span>
-              <a
-                href={site.booking.calLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-brand-accent font-bold hover:underline font-mono inline-flex items-center gap-1"
-              >
-                Ouvrir Cal.com
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
           </div>
 
-          {/* Right Column: Slot Picker & Fast Booking Form */}
-          <form onSubmit={handleBookingSubmit} className="lg:col-span-7 space-y-6">
+          {/* Right column: slot picker & request form */}
+          <form onSubmit={handleSubmit} className="lg:col-span-7 space-y-6">
             <div>
-              <label className="block text-xs font-mono uppercase tracking-wider text-brand-accent mb-3">
-                1. Choisissez un créneau prioritaire
-              </label>
+              <span className="block text-xs font-mono uppercase tracking-wider text-brand-accent mb-3">
+                {t('stepSlots')}
+              </span>
               <div className="grid grid-cols-2 gap-3">
-                {AVAILABLE_SLOTS.map((slot) => (
+                {SLOTS.map((s, i) => (
                   <button
-                    key={slot.id}
+                    key={`${s.dayOffset}-${s.time}`}
                     type="button"
-                    onClick={() => setSelectedSlot(slot.id)}
+                    aria-pressed={selectedSlot === i}
+                    onClick={() => setSelectedSlot(i)}
                     className={`p-3.5 rounded-xl border text-left transition-all ${
-                      selectedSlot === slot.id
+                      selectedSlot === i
                         ? 'border-brand-accent bg-brand-accent-soft text-brand-accent shadow-sm'
                         : 'border-brand-border bg-brand-primary/30 text-brand-muted hover:border-brand-accent/40 hover:text-brand-text'
                     }`}
                   >
-                    <div className="text-[11px] uppercase tracking-wide opacity-80">{slot.date}</div>
-                    <div className="text-sm font-bold font-mono mt-1 text-brand-text">{slot.time}</div>
+                    <span className="text-[11px] uppercase tracking-wide opacity-80 block">
+                      {slotLabel(locale, s.dayOffset)}
+                    </span>
+                    <span className="text-sm font-bold font-mono mt-1 text-brand-text block">
+                      {s.time}
+                    </span>
                   </button>
                 ))}
               </div>
             </div>
 
             <div className="space-y-4">
-              <label className="block text-xs font-mono uppercase tracking-wider text-brand-accent">
-                2. Vos coordonnées professionnelles
-              </label>
-              
+              <span className="block text-xs font-mono uppercase tracking-wider text-brand-accent">
+                {t('stepDetails')}
+              </span>
+
               <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <input
-                    type="text"
-                    required
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    placeholder="Nom complet ou Titre"
-                    className="w-full bg-brand-primary/50 border border-brand-border rounded-xl px-4 py-3 text-sm focus:border-brand-accent outline-none text-brand-text placeholder:text-brand-muted"
-                  />
-                </div>
-                <div>
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email professionnel"
-                    className="w-full bg-brand-primary/50 border border-brand-border rounded-xl px-4 py-3 text-sm focus:border-brand-accent outline-none text-brand-text placeholder:text-brand-muted"
-                  />
-                </div>
+                <input
+                  type="text"
+                  required
+                  maxLength={120}
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder={t('namePlaceholder')}
+                  aria-label={t('namePlaceholder')}
+                  className="w-full bg-brand-primary/50 border border-brand-border rounded-xl px-4 py-3 text-sm focus:border-brand-accent outline-none text-brand-text placeholder:text-brand-muted"
+                />
+                <input
+                  type="email"
+                  required
+                  maxLength={254}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={t('emailPlaceholder')}
+                  aria-label={t('emailPlaceholder')}
+                  className="w-full bg-brand-primary/50 border border-brand-border rounded-xl px-4 py-3 text-sm focus:border-brand-accent outline-none text-brand-text placeholder:text-brand-muted"
+                />
               </div>
 
-              <div>
-                <select
-                  value={topic}
-                  onChange={(e) => setTopic(e.target.value)}
-                  className="w-full bg-brand-primary/50 border border-brand-border rounded-xl px-4 py-3 text-sm focus:border-brand-accent outline-none text-brand-text"
-                >
-                  <option value="architecture">Cadrage de projet / Développement sur-mesure</option>
-                  <option value="product-demo">Démonstration produit (Ticketia, Alimgesto, ImmoPilot, EduManager)</option>
-                  <option value="nearshore">Partenariat Nearshore / Équipe dédiée</option>
-                  <option value="erp-cloud">Déploiement ERP & Infrastructure Cloud</option>
-                </select>
-              </div>
+              <select
+                value={topic}
+                onChange={(e) => setTopic(e.target.value as TopicId)}
+                aria-label={t('stepDetails')}
+                className="w-full bg-brand-primary/50 border border-brand-border rounded-xl px-4 py-3 text-sm focus:border-brand-accent outline-none text-brand-text"
+              >
+                {TOPIC_IDS.map((id) => (
+                  <option key={id} value={id}>
+                    {t(`topics.${id}`)}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <button
               type="submit"
-              className="btn-primary w-full py-4 text-xs font-mono uppercase font-black tracking-widest flex items-center justify-center gap-3 shadow-lg shadow-brand-accent-strong/20"
+              disabled={status === 'sending'}
+              className="btn-primary w-full py-4 text-xs font-mono uppercase font-black tracking-widest flex items-center justify-center gap-3 shadow-lg shadow-brand-accent-strong/20 disabled:opacity-60"
             >
-              <span>Confirmer le rendez-vous direct</span>
+              <span>{status === 'sending' ? t('sending') : t('submit')}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
+
+            {status === 'error' && (
+              <p className="text-xs text-red-400 light:text-red-700 text-center font-light" role="alert">
+                {t('error')}
+              </p>
+            )}
           </form>
         </div>
       )}
