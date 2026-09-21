@@ -3,7 +3,7 @@
 import type { CSSProperties } from "react";
 import dynamic from "next/dynamic";
 import { ArrowRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/routing";
 import { site, waHref } from "@/config/site.config";
@@ -33,6 +33,7 @@ const TECHNOLOGIES = [
 export function Hero() {
   const t = useTranslations("home.hero");
   const tc = useTranslations("common");
+  const locale = useLocale();
 
   return (
     <section
@@ -69,11 +70,28 @@ export function Hero() {
               </span>
             </span>
             <span className="block">
-              <span className="enter [--enter-y:100px] [--enter-delay:0.1s] italic font-serif font-light lowercase pr-2 md:pr-4 opacity-80 inline-block">
+              {/*
+                Forced line breaks, scoped to the widths where the fallback
+                font and the webfont would otherwise wrap line 2 differently
+                (fallback is wider, so on a slow connection the h1 paints
+                with 5 lines and snaps to 4/3 when the font lands — a 52 px
+                jump on phones, 143 px on desktop, measured as CLS 0.155).
+                Where the two fonts already agree (640–1280 px, and English
+                everywhere — its words are short) the spans flow naturally,
+                so the design is untouched there. FR gets an explicit <br/>
+                from its message string; EN has none to render.
+              */}
+              <span
+                className={`enter [--enter-y:100px] [--enter-delay:0.1s] italic font-serif font-light lowercase pr-2 md:pr-4 opacity-80 ${
+                  locale === "fr" ? "block sm:max-xl:inline-block" : "inline-block"
+                }`}
+              >
                 {t("titleConnector")}
               </span>
               <span className="enter [--enter-y:100px] [--enter-delay:0.2s] inline-block">
-                {t("titleLine2")}
+                {t.rich("titleLine2", {
+                  br: () => <br className="sm:hidden" />,
+                })}
               </span>
             </span>
             <span className="block">
@@ -117,21 +135,38 @@ export function Hero() {
         </div>
       </Container>
 
-      {/* Technologies we deploy */}
-      <div className="lg:pl-16 bg-brand-surface py-12 lg:py-16 border-t border-brand-border">
+      {/*
+        Technologies we deploy. Below `sm` the seven names sit in three
+        EXPLICIT rows (2+2+3) instead of one wrapping flex row: the fallback
+        font is wider than the webfont, so a wrapping row flips between 2
+        and 3 rows when the font lands (and as the items stream in) — a
+        52 px jump measured as CLS. Fixed rows can't rewrap; `min-h`
+        reserves the full three-row height so late-streaming rows fill it
+        instead of growing it. At `sm` and up the row wrappers dissolve
+        (`contents`) and the seven items flow exactly as before — the two
+        fonts already agree there. `text-xs` under 480 px keeps the widest
+        fallback row inside a 360 px viewport.
+      */}
+      <div className="lg:pl-16 bg-brand-surface py-12 lg:py-16 border-t border-brand-border min-h-[270px] sm:min-h-0">
         <Container>
           <p className="text-[11px] md:text-xs uppercase tracking-wide text-brand-muted mb-8 font-black text-center lg:text-left">
             {t("partnersTitle")}
           </p>
-          <div className="flex flex-wrap justify-center lg:justify-between items-center gap-8 md:gap-12 opacity-60 hover:opacity-90 transition-opacity duration-500">
-            {TECHNOLOGIES.map((tech) => (
-              <div
-                key={tech}
-                className="text-sm md:text-lg font-black uppercase tracking-tighter whitespace-nowrap"
-              >
-                {tech}
-              </div>
-            ))}
+          <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-between items-center gap-8 md:gap-12 opacity-60 hover:opacity-90 transition-opacity duration-500">
+            {[TECHNOLOGIES.slice(0, 2), TECHNOLOGIES.slice(2, 4), TECHNOLOGIES.slice(4)].map(
+              (row) => (
+                <div key={row.join("-")} className="flex justify-center gap-8 sm:contents">
+                  {row.map((tech) => (
+                    <div
+                      key={tech}
+                      className="text-sm max-[479px]:text-xs md:text-lg font-black uppercase tracking-tighter whitespace-nowrap"
+                    >
+                      {tech}
+                    </div>
+                  ))}
+                </div>
+              ),
+            )}
           </div>
         </Container>
       </div>
