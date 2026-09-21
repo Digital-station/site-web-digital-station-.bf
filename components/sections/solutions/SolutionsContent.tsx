@@ -75,7 +75,9 @@ export function SolutionsContent() {
                     <button
                       type="button"
                       onClick={() => handleOpenPreview(s.id)}
-                      className="px-5 py-2.5 rounded-full bg-brand-accent text-brand-on-accent text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-2 shadow-xl hover:scale-105 transition-transform"
+                      // accent-strong, not accent: white on the electric-cyan
+                      // accent is ~2:1 in the dark theme (fails WCAG AA).
+                      className="px-5 py-2.5 rounded-full bg-brand-accent-strong text-brand-on-accent text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-2 shadow-xl hover:scale-105 transition-transform"
                     >
                       <Eye className="w-4 h-4" />
                       <span>{t('previewOverlay')}</span>

@@ -1,13 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import { useTranslations } from 'next-intl';
 
 import { usePathname } from '@/i18n/routing';
 import { waHref } from '@/config/site.config';
 import { WhatsAppIcon } from '@/components/ui/icons/WhatsApp';
-import { useReducedMotion } from '@/lib/use-reduced-motion';
 
 /** Scroll distance before the button is offered at all. */
 const REVEAL_AT = 120;
@@ -33,7 +31,6 @@ export function StickyCTA() {
   const linkRef = useRef<HTMLAnchorElement>(null);
   const t = useTranslations('stickyCta');
   const pathname = usePathname();
-  const reduced = useReducedMotion();
 
   const isContactPage = pathname === '/contact';
 
@@ -113,59 +110,47 @@ export function StickyCTA() {
       : waHref(t('whatsappMessage'));
   }, [t]);
 
-  /*
-   * Unmount outright rather than letting AnimatePresence play the exit
-   * animation. Because the FAB outranks the drawer in the stacking order, a
-   * 250 ms fade-out would keep it painted — and clickable — on top of the
-   * modal for the whole animation, which is the bug being fixed.
-   */
+  // Unmount outright while a modal is open. Because the FAB outranks the
+  // drawer in the stacking order, any fade-out would keep it painted — and
+  // clickable — on top of the modal for the whole animation.
   if (modalOpen) return null;
 
   const isVisible = scrolled && !isContactPage && !footerVisible;
 
-  const button = (
-    <a
-      ref={linkRef}
-      href={waHref(t('whatsappMessage'))}
-      onClick={handleClick}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={t('aria')}
-      className="group flex items-center rounded-full bg-brand-accent-strong text-brand-on-accent shadow-card ring-1 ring-brand-accent-ring transition-shadow hover:shadow-elevated focus-visible:ring-2 focus-visible:ring-brand-accent"
-    >
-      <span
-        aria-hidden="true"
-        className="hidden md:block max-w-0 overflow-hidden transition-[max-width] duration-300 ease-out group-hover:max-w-xs group-focus-visible:max-w-xs"
-      >
-        <span className="block whitespace-nowrap pl-6 text-xs font-black uppercase tracking-widest">
-          {t('labelTop')} {t('labelBottom')}
-        </span>
-      </span>
-      <span className="flex h-14 w-14 shrink-0 items-center justify-center">
-        <WhatsAppIcon size={26} />
-      </span>
-    </a>
-  );
-
   return (
     <div className="fixed bottom-4 right-4 z-[100] xl:bottom-10 xl:right-10">
-      {reduced ? (
-        // No entrance animation: it either is there or it is not.
-        isVisible ? button : null
-      ) : (
-        <AnimatePresence>
-          {isVisible && (
-            <motion.div
-              initial={{ y: 24, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 24, opacity: 0 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-            >
-              {button}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      )}
+      {/* The entrance is a CSS transition, not Motion: `invisible` keeps the
+          hidden button out of the Tab order and away from screen readers,
+          the same way the navbar's mega-menu works. Reduced motion is
+          covered by the global CSS kill-switch in globals.css. */}
+      <div
+        className={`transition-[opacity,translate,visibility] duration-300 ease-out motion-reduce:transition-none ${
+          isVisible ? 'opacity-100 translate-y-0 visible' : 'opacity-0 translate-y-6 invisible'
+        }`}
+      >
+        <a
+          ref={linkRef}
+          href={waHref(t('whatsappMessage'))}
+          onClick={handleClick}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={t('aria')}
+          tabIndex={isVisible ? undefined : -1}
+          className="group flex items-center rounded-full bg-brand-accent-strong text-brand-on-accent shadow-card ring-1 ring-brand-accent-ring transition-shadow hover:shadow-elevated focus-visible:ring-2 focus-visible:ring-brand-accent"
+        >
+          <span
+            aria-hidden="true"
+            className="hidden md:block max-w-0 overflow-hidden transition-[max-width] duration-300 ease-out group-hover:max-w-xs group-focus-visible:max-w-xs"
+          >
+            <span className="block whitespace-nowrap pl-6 text-xs font-black uppercase tracking-widest">
+              {t('labelTop')} {t('labelBottom')}
+            </span>
+          </span>
+          <span className="flex h-14 w-14 shrink-0 items-center justify-center">
+            <WhatsAppIcon size={26} />
+          </span>
+        </a>
+      </div>
     </div>
   );
 }

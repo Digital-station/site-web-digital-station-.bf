@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { FocusEvent, KeyboardEvent } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, ChevronDown, Menu, Sparkles, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -282,7 +281,15 @@ export function Navbar() {
               <ul className="bg-brand-surface border border-brand-border p-8 rounded-2xl shadow-2xl grid grid-cols-2 gap-x-8 gap-y-6">
                 {SERVICES.map((s) => (
                   <li key={s.num}>
-                    <Link href={`/services/${s.slug}`} className="group/item rounded-md">
+                    {/* No prefetch while the panel is closed: the invisible
+                        links still intersect the viewport, so the default
+                        viewport-prefetch would download ten service pages on
+                        every page load. Opening the panel flips this on. */}
+                    <Link
+                      href={`/services/${s.slug}`}
+                      prefetch={servicesOpen}
+                      className="group/item rounded-md"
+                    >
                       <div className="text-[11px] font-mono text-brand-accent mb-1 flex items-center gap-2">
                         <Sparkles className="w-2.5 h-2.5" aria-hidden="true" />
                         {s.num}
@@ -335,130 +342,144 @@ export function Navbar() {
         </button>
       </div>
 
-      {/* ---- Mobile drawer ------------------------------------------------ */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[55] md:hidden"
-            />
-
-            <motion.div
-              ref={drawerRef}
-              id="mobile-nav-drawer"
-              role="dialog"
-              aria-modal="true"
-              aria-label={t('menuLabel')}
-              onKeyDown={handleDrawerKeyDown}
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 w-[82%] h-[100dvh] bg-brand-primary z-[60] flex flex-col md:hidden border-l border-brand-border shadow-[-10px_0_30px_rgba(0,0,0,0.5)]"
-            >
-              <div className="h-16 px-6 flex items-center justify-between border-b border-brand-border shrink-0">
-                <Link
-                  href="/"
-                  className="flex items-center gap-3"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <BrandMark variant="icon" height={28} />
-                  <span className="font-display text-lg font-bold tracking-tighter uppercase">
-                    {site.name}
-                  </span>
-                </Link>
-                <button
-                  ref={closeRef}
-                  type="button"
-                  onClick={() => setMobileMenuOpen(false)}
-                  aria-label={tc('closeMenu')}
-                  className="-mr-2 h-11 w-11 flex items-center justify-center rounded-full hover:bg-brand-surface-2 transition-colors"
-                >
-                  <X className="w-6 h-6" aria-hidden="true" />
-                </button>
-              </div>
-
-              <div className="flex-1 px-6 py-6 flex flex-col gap-8 overflow-y-auto overscroll-contain">
-                <ul className="flex flex-col gap-1">
-                  {drawerLinks.map((l) => (
-                    <li key={l.href}>
-                      <Link
-                        href={l.href}
-                        className="py-2 text-3xl font-black uppercase tracking-tighter hover:text-brand-accent transition-colors block"
-                      >
-                        {l.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Ten service links would bury everything else, so they sit
-                    behind a collapsed <details>. Native disclosure: keyboard
-                    and screen-reader support come for free. */}
-                <details className="group border-t border-brand-border pt-4">
-                  <summary className="flex cursor-pointer items-center justify-between py-2 text-sm font-black uppercase tracking-widest text-brand-muted list-none [&::-webkit-details-marker]:hidden">
-                    {t('servicesGroup', { count: SERVICES.length })}
-                    <ChevronDown
-                      aria-hidden="true"
-                      className="w-4 h-4 shrink-0 transition-transform duration-300 group-open:rotate-180"
-                    />
-                  </summary>
-
-                  <ul className="flex flex-col gap-1 pt-3 pl-2">
-                    <li>
-                      <Link
-                        href="/services"
-                        className="group/all flex items-center justify-between py-2 text-sm font-bold uppercase tracking-tighter text-brand-accent transition-colors"
-                      >
-                        {t('servicesEyebrow')}
-                        <ArrowRight
-                          aria-hidden="true"
-                          className="w-4 h-4 opacity-0 -translate-x-4 transition-all group-hover/all:opacity-100 group-hover/all:translate-x-0"
-                        />
-                      </Link>
-                    </li>
-                    {SERVICES.map((s) => (
-                      <li key={s.slug}>
-                        <Link
-                          href={`/services/${s.slug}`}
-                          className="group/item flex items-center justify-between py-2 text-sm font-bold uppercase tracking-tighter text-brand-muted transition-all hover:text-brand-accent"
-                        >
-                          {ts(`${s.slug}.title`)}
-                          <ArrowRight
-                            aria-hidden="true"
-                            className="w-4 h-4 text-brand-accent opacity-0 -translate-x-4 transition-all group-hover/item:opacity-100 group-hover/item:translate-x-0"
-                          />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </details>
-
-                <div className="flex items-center gap-4 pt-4 border-t border-brand-border">
-                  <LocaleToggle />
-                  <ThemeToggle />
-                </div>
-              </div>
-
-              <div className="p-6 border-t border-brand-border shrink-0 bg-brand-primary">
-                <Link
-                  href="/contact"
-                  className="btn-primary block w-full py-5 text-lg uppercase font-black tracking-tighter"
-                >
-                  {tc('getStarted')}
-                </Link>
-                <p className="mt-3 text-center text-xs font-light text-brand-muted">
-                  {tc('promise')}
-                </p>
-              </div>
-            </motion.div>
-          </>
+      {/* ---- Mobile drawer ------------------------------------------------
+          Always mounted, shown and hidden with CSS — the Motion spring cost
+          a ~120 KB dependency in the initial bundle for a slide-in. `inert`
+          + `invisible` keep the closed drawer out of the Tab order and away
+          from screen readers, the same way the mega-menu works. `role` and
+          `aria-modal` are only present while open; that absence is also the
+          signal StickyCTA watches to know no modal is up. */}
+      <div
+        onClick={() => setMobileMenuOpen(false)}
+        aria-hidden="true"
+        className={cn(
+          'fixed inset-0 bg-black/60 backdrop-blur-sm z-[55] md:hidden transition-[opacity,visibility] duration-300 motion-reduce:transition-none',
+          mobileMenuOpen
+            ? 'opacity-100 visible'
+            : 'opacity-0 invisible pointer-events-none',
         )}
-      </AnimatePresence>
+      />
+
+      <div
+        ref={drawerRef}
+        id="mobile-nav-drawer"
+        role={mobileMenuOpen ? 'dialog' : undefined}
+        aria-modal={mobileMenuOpen || undefined}
+        aria-label={t('menuLabel')}
+        inert={!mobileMenuOpen}
+        onKeyDown={handleDrawerKeyDown}
+        className={cn(
+          'fixed top-0 right-0 w-[82%] h-[100dvh] bg-brand-primary z-[60] flex flex-col md:hidden border-l border-brand-border shadow-[-10px_0_30px_rgba(0,0,0,0.5)]',
+          'transition-[translate,visibility] duration-300 ease-out motion-reduce:transition-none',
+          mobileMenuOpen ? 'translate-x-0 visible' : 'translate-x-full invisible',
+        )}
+      >
+        <div className="h-16 px-6 flex items-center justify-between border-b border-brand-border shrink-0">
+          {/* prefetch={mobileMenuOpen} on every drawer link: the closed
+              drawer sits just off-canvas, inside the prefetch viewport
+              margin — with the default prefetch these links downloaded
+              four routes on every page load. Opening the drawer flips it
+              on, so opening still prefetches. */}
+          <Link
+            href="/"
+            prefetch={mobileMenuOpen}
+            className="flex items-center gap-3"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <BrandMark variant="icon" height={28} />
+            <span className="font-display text-lg font-bold tracking-tighter uppercase">
+              {site.name}
+            </span>
+          </Link>
+          <button
+            ref={closeRef}
+            type="button"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label={tc('closeMenu')}
+            className="-mr-2 h-11 w-11 flex items-center justify-center rounded-full hover:bg-brand-surface-2 transition-colors"
+          >
+            <X className="w-6 h-6" aria-hidden="true" />
+          </button>
+        </div>
+
+        <div className="flex-1 px-6 py-6 flex flex-col gap-8 overflow-y-auto overscroll-contain">
+          <ul className="flex flex-col gap-1">
+            {drawerLinks.map((l) => (
+              <li key={l.href}>
+                <Link
+                  href={l.href}
+                  prefetch={mobileMenuOpen}
+                  className="py-2 text-3xl font-black uppercase tracking-tighter hover:text-brand-accent transition-colors block"
+                >
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* Ten service links would bury everything else, so they sit
+              behind a collapsed <details>. Native disclosure: keyboard
+              and screen-reader support come for free. */}
+          <details className="group border-t border-brand-border pt-4">
+            <summary className="flex cursor-pointer items-center justify-between py-2 text-sm font-black uppercase tracking-widest text-brand-muted list-none [&::-webkit-details-marker]:hidden">
+              {t('servicesGroup', { count: SERVICES.length })}
+              <ChevronDown
+                aria-hidden="true"
+                className="w-4 h-4 shrink-0 transition-transform duration-300 group-open:rotate-180"
+              />
+            </summary>
+
+            <ul className="flex flex-col gap-1 pt-3 pl-2">
+              <li>
+                <Link
+                  href="/services"
+                  prefetch={mobileMenuOpen}
+                  className="group/all flex items-center justify-between py-2 text-sm font-bold uppercase tracking-tighter text-brand-accent transition-colors"
+                >
+                  {t('servicesEyebrow')}
+                  <ArrowRight
+                    aria-hidden="true"
+                    className="w-4 h-4 opacity-0 -translate-x-4 transition-all group-hover/all:opacity-100 group-hover/all:translate-x-0"
+                  />
+                </Link>
+              </li>
+              {SERVICES.map((s) => (
+                <li key={s.slug}>
+                  <Link
+                    href={`/services/${s.slug}`}
+                    prefetch={mobileMenuOpen}
+                    className="group/item flex items-center justify-between py-2 text-sm font-bold uppercase tracking-tighter text-brand-muted transition-all hover:text-brand-accent"
+                  >
+                    {ts(`${s.slug}.title`)}
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="w-4 h-4 text-brand-accent opacity-0 -translate-x-4 transition-all group-hover/item:opacity-100 group-hover/item:translate-x-0"
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </details>
+
+          <div className="flex items-center gap-4 pt-4 border-t border-brand-border">
+            <LocaleToggle />
+            <ThemeToggle />
+          </div>
+        </div>
+
+        <div className="p-6 border-t border-brand-border shrink-0 bg-brand-primary">
+          <Link
+            href="/contact"
+            prefetch={mobileMenuOpen}
+            className="btn-primary block w-full py-5 text-lg uppercase font-black tracking-tighter"
+          >
+            {tc('getStarted')}
+          </Link>
+          <p className="mt-3 text-center text-xs font-light text-brand-muted">
+            {tc('promise')}
+          </p>
+        </div>
+      </div>
     </nav>
   );
 }

@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import type { CSSProperties } from "react";
 import dynamic from "next/dynamic";
 import { ArrowRight } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/routing";
 import { site, waHref } from "@/config/site.config";
@@ -33,60 +31,13 @@ const TECHNOLOGIES = [
 ] as const;
 
 export function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const t = useTranslations("home.hero");
   const tc = useTranslations("common");
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const ctx = gsap.context(() => {
-      /**
-       * matchMedia, so under `prefers-reduced-motion: reduce` these tweens are
-       * never created and nothing is left parked at opacity 0.
-       */
-      const mm = gsap.matchMedia();
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        // The headline, eyebrow and CTA entrances are CSS (`.enter`, see
-        // globals.css): as GSAP tweens they re-hid text the server had
-        // already painted, then replayed it.
-        gsap.fromTo(
-          ".stat-item",
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            stagger: 0.2,
-            clearProps: "all",
-            // See HomeContent for why immediateRender:false + once:true.
-            immediateRender: false,
-            scrollTrigger: {
-              trigger: ".stats-container",
-              start: "top bottom-=40",
-              toggleActions: "play none none none",
-              once: true,
-            },
-          },
-        );
-      });
-
-      return () => mm.revert();
-    }, containerRef);
-
-    const timer = setTimeout(() => ScrollTrigger.refresh(), 500);
-
-    return () => {
-      ctx.revert();
-      clearTimeout(timer);
-    };
-  }, []);
+  const locale = useLocale();
 
   return (
     <section
       id="hero"
-      ref={containerRef}
       className="relative pt-24 md:pt-40 lg:pt-48 pb-0 overflow-hidden lg:pl-16 min-h-[90vh] flex flex-col"
     >
       <Container className="flex-1 flex flex-col justify-center relative">
@@ -119,11 +70,28 @@ export function Hero() {
               </span>
             </span>
             <span className="block">
-              <span className="enter [--enter-y:100px] [--enter-delay:0.1s] italic font-serif font-light lowercase pr-2 md:pr-4 opacity-80 inline-block">
+              {/*
+                Forced line breaks, scoped to the widths where the fallback
+                font and the webfont would otherwise wrap line 2 differently
+                (fallback is wider, so on a slow connection the h1 paints
+                with 5 lines and snaps to 4/3 when the font lands — a 52 px
+                jump on phones, 143 px on desktop, measured as CLS 0.155).
+                Where the two fonts already agree (640–1280 px, and English
+                everywhere — its words are short) the spans flow naturally,
+                so the design is untouched there. FR gets an explicit <br/>
+                from its message string; EN has none to render.
+              */}
+              <span
+                className={`enter [--enter-y:100px] [--enter-delay:0.1s] italic font-serif font-light lowercase pr-2 md:pr-4 opacity-80 ${
+                  locale === "fr" ? "block sm:max-xl:inline-block" : "inline-block"
+                }`}
+              >
                 {t("titleConnector")}
               </span>
               <span className="enter [--enter-y:100px] [--enter-delay:0.2s] inline-block">
-                {t("titleLine2")}
+                {t.rich("titleLine2", {
+                  br: () => <br className="sm:hidden" />,
+                })}
               </span>
             </span>
             <span className="block">
@@ -135,8 +103,14 @@ export function Hero() {
 
           <div className="enter [--enter-delay:1s] mb-12 md:mb-20">
             <div className="flex flex-wrap items-center gap-4 md:gap-6">
+              {/* No prefetch: this link is in the initial viewport, so the
+                  default viewport-prefetch would download the whole contact
+                  route (form + validation, ~80 KB) on every home visit,
+                  competing with the hero's own bytes. Below-fold contact
+                  links still prefetch on approach. */}
               <Link
                 href="/contact"
+                prefetch={false}
                 className="btn-primary group flex items-center gap-3 px-6 py-3 text-sm md:text-base md:px-8 md:py-4"
               >
                 {t("cta")}
@@ -161,21 +135,38 @@ export function Hero() {
         </div>
       </Container>
 
-      {/* Technologies we deploy */}
-      <div className="lg:pl-16 bg-brand-surface py-12 lg:py-16 border-t border-brand-border">
+      {/*
+        Technologies we deploy. Below `sm` the seven names sit in three
+        EXPLICIT rows (2+2+3) instead of one wrapping flex row: the fallback
+        font is wider than the webfont, so a wrapping row flips between 2
+        and 3 rows when the font lands (and as the items stream in) — a
+        52 px jump measured as CLS. Fixed rows can't rewrap; `min-h`
+        reserves the full three-row height so late-streaming rows fill it
+        instead of growing it. At `sm` and up the row wrappers dissolve
+        (`contents`) and the seven items flow exactly as before — the two
+        fonts already agree there. `text-xs` under 480 px keeps the widest
+        fallback row inside a 360 px viewport.
+      */}
+      <div className="lg:pl-16 bg-brand-surface py-12 lg:py-16 border-t border-brand-border min-h-[270px] sm:min-h-0">
         <Container>
           <p className="text-[11px] md:text-xs uppercase tracking-wide text-brand-muted mb-8 font-black text-center lg:text-left">
             {t("partnersTitle")}
           </p>
-          <div className="flex flex-wrap justify-center lg:justify-between items-center gap-8 md:gap-12 opacity-60 hover:opacity-90 transition-opacity duration-500">
-            {TECHNOLOGIES.map((tech) => (
-              <div
-                key={tech}
-                className="text-sm md:text-lg font-black uppercase tracking-tighter whitespace-nowrap"
-              >
-                {tech}
-              </div>
-            ))}
+          <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-between items-center gap-8 md:gap-12 opacity-60 hover:opacity-90 transition-opacity duration-500">
+            {[TECHNOLOGIES.slice(0, 2), TECHNOLOGIES.slice(2, 4), TECHNOLOGIES.slice(4)].map(
+              (row) => (
+                <div key={row.join("-")} className="flex justify-center gap-8 sm:contents">
+                  {row.map((tech) => (
+                    <div
+                      key={tech}
+                      className="text-sm max-[479px]:text-xs md:text-lg font-black uppercase tracking-tighter whitespace-nowrap"
+                    >
+                      {tech}
+                    </div>
+                  ))}
+                </div>
+              ),
+            )}
           </div>
         </Container>
       </div>
@@ -188,8 +179,13 @@ export function Hero() {
           </p>
         </div>
 
-        <div className="stats-container md:w-1/2 grid grid-cols-2 bg-brand-accent-strong text-brand-on-accent">
-          <div className="stat-item border-r border-white/15 p-8 md:p-12 flex flex-col justify-center">
+        <div className="md:w-1/2 grid grid-cols-2 bg-brand-accent-strong text-brand-on-accent">
+          {/* Scroll reveals are `data-rv` (see RevealRoot): the old GSAP
+              tween cost a ~110 KB dependency for a fade-up. */}
+          <div
+            data-rv
+            className="border-r border-white/15 p-8 md:p-12 flex flex-col justify-center"
+          >
             <span className="text-4xl md:text-5xl font-black mb-1">
               {t("statValue")}
             </span>
@@ -199,7 +195,9 @@ export function Hero() {
           </div>
           <Link
             href="/contact"
-            className="stat-item p-8 md:p-12 flex flex-col justify-center group cursor-pointer relative overflow-hidden"
+            data-rv
+            style={{ "--rv-delay": "0.15s" } as CSSProperties}
+            className="p-8 md:p-12 flex flex-col justify-center group cursor-pointer relative overflow-hidden"
           >
             <div className="relative z-10 flex items-center justify-between gap-4">
               <span className="text-xl md:text-2xl font-black uppercase leading-tight italic text-balance">

@@ -136,7 +136,9 @@ export function ProductPreviewModal({ product, onClose }: ProductPreviewModalPro
                     onClick={() => setActiveTab(idx)}
                     className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
                       activeTab === idx
-                        ? 'bg-brand-accent text-brand-on-accent shadow-md shadow-brand-accent/20'
+                        // accent-strong, not accent: white on the
+                        // electric-cyan accent is ~2:1 in the dark theme.
+                        ? 'bg-brand-accent-strong text-brand-on-accent shadow-md shadow-brand-accent-strong/20'
                         : 'border border-brand-border text-brand-muted hover:border-brand-accent/50 hover:text-brand-text'
                     }`}
                   >

@@ -446,10 +446,16 @@ export const Wavemesh = ({ className = "" }: { className?: string }) => {
     document.addEventListener("visibilitychange", onVis);
     rz();
 
+    // One frame goes up synchronously, BEFORE the idle gate below. This
+    // canvas is the page's largest painted element, so its first frame is
+    // very likely the LCP event — gating it on idle would hold LCP back by
+    // seconds under CPU throttling. Only the animation loop waits for idle.
+    drawOnce();
+
     let idleId: number | null = null;
     let idleTimeoutId: number | null = null;
     if (reducedMotion) {
-      drawOnce();
+      // The static frame is already painted above; nothing more to do.
     } else {
       const beginAnimating = () => {
         idleId = null;

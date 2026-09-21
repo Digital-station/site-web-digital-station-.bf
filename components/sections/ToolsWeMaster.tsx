@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 
@@ -53,9 +54,37 @@ export function ToolsWeMaster() {
   const t = useTranslations("home.tools");
   const reduced = useReducedMotion();
 
+  // The marquee (Motion's useScroll/useVelocity + the whole Motion runtime)
+  // used to load when this section hydrated — i.e. on page load, two screens
+  // below the fold. Now it loads when the section is 400 px from the
+  // viewport. StaticRows renders on the server AND the first client render,
+  // so hydration matches; the swap happens before the visitor gets here.
+  const sectionRef = useRef<HTMLElement>(null);
+  const [marqueeNear, setMarqueeNear] = useState(false);
+  useEffect(() => {
+    if (reduced) return;
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setMarqueeNear(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setMarqueeNear(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "400px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [reduced]);
+
   return (
     <section
       id="tools"
+      ref={sectionRef}
       className="lg:pl-16 border-t border-brand-border py-24 lg:py-32 overflow-hidden"
     >
       <Container>
@@ -81,7 +110,7 @@ export function ToolsWeMaster() {
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 md:w-32 bg-gradient-to-r from-brand-primary to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 md:w-32 bg-gradient-to-l from-brand-primary to-transparent" />
 
-        {reduced ? <StaticRows /> : <ToolsMarquee />}
+        {reduced || !marqueeNear ? <StaticRows /> : <ToolsMarquee />}
       </div>
     </section>
   );

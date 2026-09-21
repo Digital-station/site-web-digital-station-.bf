@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTranslations } from 'next-intl';
 
 import { usePathname } from '@/i18n/routing';
@@ -15,9 +13,10 @@ import { prefersReducedMotion } from '@/lib/use-reduced-motion';
  * The previous version rendered on every route with all four buttons disabled —
  * four dead controls in the tab order that did nothing when clicked.
  *
- * Note the plugin registration sits INSIDE the component rather than at module
- * scope. `gsap.registerPlugin(ScrollTrigger)` touches `document`, so running it
- * while the module is evaluated on the server crashes the render.
+ * The progress head is positioned by a passive scroll listener (rAF-batched)
+ * rather than ScrollTrigger — the old plugin cost a ~110 KB dependency to
+ * map scroll position to a dot offset. The dot eases toward its target with
+ * a CSS transition, so it still glides instead of jumping.
  */
 export function ScrollIndicator() {
   const dotRef = useRef<HTMLDivElement>(null);
@@ -30,33 +29,33 @@ export function ScrollIndicator() {
   useEffect(() => {
     if (!isHome) return;
 
-    gsap.registerPlugin(ScrollTrigger);
-    const reduced = prefersReducedMotion();
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const dot = dotRef.current;
+      const track = trackRef.current;
+      if (!dot || !track) return;
 
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        start: 0,
-        end: 'bottom bottom',
-        onUpdate: (self) => {
-          const dot = dotRef.current;
-          const track = trackRef.current;
-          if (!dot || !track) return;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      // 16 = the p-2 padding above the first mark and below the last one,
+      // so the head lands exactly on the last dot rather than past it.
+      const travel = Math.max(0, track.offsetHeight - dot.offsetHeight - 16);
+      dot.style.translate = `0 ${Math.round(progress * travel)}px`;
+    };
 
-          // 16 = the p-2 padding above the first mark and below the last one,
-          // so the head lands exactly on the last dot rather than past it.
-          const travel = Math.max(0, track.offsetHeight - dot.offsetHeight - 16);
-          const y = self.progress * travel;
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
 
-          // Reduced motion: move it, but without the easing tween.
-          if (reduced) gsap.set(dot, { y });
-          else gsap.to(dot, { y, duration: 0.3, ease: 'circ.out' });
-        },
-      });
-
-      ScrollTrigger.refresh();
-    });
-
-    return () => ctx.revert();
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, [isHome, pathname]);
 
   if (!isHome) return null;
@@ -101,7 +100,7 @@ export function ScrollIndicator() {
         <div
           ref={dotRef}
           aria-hidden="true"
-          className="absolute top-2 left-1/2 -ml-[3px] w-1.5 h-1.5 bg-brand-accent z-10 pointer-events-none"
+          className="absolute top-2 left-1/2 -ml-[3px] w-1.5 h-1.5 bg-brand-accent z-10 pointer-events-none transition-[translate] duration-300 ease-out motion-reduce:transition-none"
           style={{ boxShadow: '0 0 15px var(--ds-accent)' }}
         />
       </div>

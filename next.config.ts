@@ -44,6 +44,17 @@ const nextConfig: NextConfig = {
     root: __dirname,
   },
 
+  /**
+   * Import only the icons actually used from the lucide-react barrel
+   * (~30 modules import it; without this each of them pays to parse
+   * every icon). `motion` is deliberately NOT listed: its barrel is
+   * unshakable, so the flag is a no-op there — the fix was removing
+   * Motion from the initial graph instead (see MotionProvider docs).
+   */
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
+
   /** Do not advertise the framework and its version to every scanner. */
   poweredByHeader: false,
 
@@ -64,10 +75,27 @@ const nextConfig: NextConfig = {
      * next/image never needs to be told about a third-party host.
      */
     formats: ['image/avif', 'image/webp'],
+    // Optimized images are content-hashed upstream (same bytes, same URL),
+    // so the optimizer cache can live far longer than the 60 s default.
+    minimumCacheTTL: 86400,
   },
 
   async headers() {
     return [
+      {
+        // Brand, logo and content assets under public/. Not `immutable`:
+        // unlike /_next/static (which Next already serves immutable),
+        // these filenames carry no content hash, so a day-long max-age
+        // with stale-while-revalidate is the safe ceiling.
+        source:
+          '/:prefix(brand|logo|process|team|placeholders|docs)/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, stale-while-revalidate=604800',
+          },
+        ],
+      },
       {
         // Every path, including static assets and the API route.
         source: '/(.*)',

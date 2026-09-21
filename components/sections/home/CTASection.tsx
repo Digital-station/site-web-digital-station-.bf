@@ -1,15 +1,17 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 import { Link } from '@/i18n/routing';
 import { waHref } from '@/config/site.config';
 import { Container } from '@/components/layout/Container';
 import { WhatsAppIcon } from '@/components/ui/icons/WhatsApp';
 
-export function CTASection() {
-  const t = useTranslations('home.cta');
-  const tc = useTranslations('common');
+/**
+ * Closing call-to-action. A server component — no interactivity, so it
+ * ships zero JS. The scroll reveal is `data-rv` (see RevealRoot).
+ */
+export async function CTASection() {
+  const t = await getTranslations('home.cta');
+  const tc = await getTranslations('common');
 
   return (
     <section
@@ -20,7 +22,7 @@ export function CTASection() {
         aria-hidden="true"
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-96 bg-brand-accent/10 rounded-full blur-[120px]"
       />
-      <Container className="cta-content relative z-10">
+      <Container data-rv className="relative z-10">
         <h2 className="text-5xl md:text-7xl lg:text-[8vw] font-black italic uppercase leading-[1.15] tracking-tighter mb-10 md:mb-16 text-balance break-words">
           {t.rich('title', {
             br: () => <br />,

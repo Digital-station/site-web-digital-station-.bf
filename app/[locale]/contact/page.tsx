@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { routing } from '@/i18n/routing';
-import { ContactForm } from '@/components/sections/contact/ContactForm';
 import { ContactInfo } from '@/components/sections/contact/ContactInfo';
 import { MeetingScheduler } from '@/components/sections/contact/MeetingScheduler';
 import { site } from '@/config/site.config';
@@ -27,6 +27,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: t('description'),
   });
 }
+
+/**
+ * The form (react-hook-form + zod, ~340 KB) gets its own chunk. It still
+ * renders on the server — the point is the JS payload, not the HTML — and
+ * the placeholder matches the form shell's own dimensions so the swap does
+ * not move the layout.
+ *
+ * This also keeps the home page fast: the hero links to /contact, so Next
+ * prefetches this route on every home visit, and that prefetch used to
+ * drag the whole form library along with it.
+ */
+const ContactForm = dynamic(
+  () =>
+    import('@/components/sections/contact/ContactForm').then(
+      (m) => m.ContactForm,
+    ),
+  {
+    loading: () => (
+      <div
+        aria-hidden="true"
+        className="bg-brand-surface border border-brand-border p-8 md:p-12 rounded-[2rem] relative overflow-hidden min-h-[640px]"
+      />
+    ),
+  },
+);
 
 export default async function ContactPage({ params }: Props) {
   const { locale } = await params;
