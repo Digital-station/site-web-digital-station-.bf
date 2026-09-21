@@ -1,8 +1,6 @@
-'use client';
-
-import { motion } from 'motion/react';
+import type { CSSProperties } from 'react';
 import { Building2, Globe2, Landmark, ArrowRight } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 import { Link } from '@/i18n/routing';
 
@@ -10,14 +8,17 @@ import { Link } from '@/i18n/routing';
  * Audience segmentation — structure lives here, ALL prose lives in
  * messages under `home.segments`, so the section renders in both
  * languages like every other part of the site.
+ *
+ * A server component: the old Motion `whileInView` fade is `data-rv`
+ * (see RevealRoot), so this ships zero JS.
  */
 const SEGMENT_IDS = ['regional', 'nearshore', 'public'] as const;
 const SEGMENT_ICONS = [Building2, Globe2, Landmark] as const;
 const SEGMENT_LINKS = ['/services', '/contact', '/services/cybersecurite-conformite'] as const;
 
-export function AudienceSegmentation() {
-  const t = useTranslations('home.segments');
-  const ti = useTranslations('home.segments.items');
+export async function AudienceSegmentation() {
+  const t = await getTranslations('home.segments');
+  const ti = await getTranslations('home.segments.items');
 
   return (
     <section className="py-20 lg:py-24 border-t border-brand-border bg-brand-primary/40 relative">
@@ -38,12 +39,10 @@ export function AudienceSegmentation() {
           {SEGMENT_IDS.map((id, idx) => {
             const Icon = SEGMENT_ICONS[idx];
             return (
-              <motion.div
+              <div
                 key={id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
+                data-rv
+                style={{ '--rv-delay': `${idx * 0.1}s` } as CSSProperties}
                 className="bg-brand-surface border border-brand-border rounded-2xl p-7 flex flex-col justify-between hover:border-brand-accent/50 transition-all group shadow-card"
               >
                 <div className="space-y-4">
@@ -82,7 +81,7 @@ export function AudienceSegmentation() {
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>

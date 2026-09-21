@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
+import { MotionProvider } from '@/components/providers/MotionProvider';
 import { SERVICES } from '@/content/services';
 import { SOLUTIONS } from '@/content/solutions';
 import { FAQ_KEYS } from '@/content/faq';
@@ -37,9 +38,14 @@ type SubmitState = 'idle' | 'sending' | 'sent' | 'error';
  */
 export function ContactForm() {
   return (
-    <Suspense fallback={<FormShell />}>
-      <ContactFormInner />
-    </Suspense>
+    // MotionConfig lives on each motion subtree (not the layout): importing
+    // it globally would drag the whole Motion barrel into every page's
+    // initial bundle. See providers/MotionProvider.tsx.
+    <MotionProvider>
+      <Suspense fallback={<FormShell />}>
+        <ContactFormInner />
+      </Suspense>
+    </MotionProvider>
   );
 }
 

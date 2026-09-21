@@ -1,13 +1,17 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useState, type CSSProperties } from 'react';
 import { useTranslations } from 'next-intl';
 
 /**
  * Interactive architecture explorer — structure and tech chips live here
  * (proper nouns, deliberately untranslated); every sentence lives in
  * messages under `home.architecture`.
+ *
+ * The tab-panel fade/slide is the `.enter` CSS animation (see globals.css),
+ * re-triggered by `key={activeTab}` — the old `AnimatePresence` + `motion`
+ * version pulled the whole ~126 KB Motion runtime into this below-fold
+ * island's preload chain for a 250 ms opacity tween it didn't need.
  */
 const TAB_IDS = ['ticketia', 'alimgesto', 'cloud', 'security'] as const;
 type TabId = (typeof TAB_IDS)[number];
@@ -43,7 +47,8 @@ export function ArchitectureDiagrams() {
           <p className="text-brand-muted text-sm sm:text-base font-light mt-3">{t('subtitle')}</p>
         </div>
 
-        {/* Tabs */}
+        {/* Tabs — the active tab uses accent-strong, not accent: white on the
+            electric-cyan accent is ~2:1 in the dark theme (fails WCAG AA). */}
         <div className="flex flex-wrap justify-center gap-2 mb-10" role="tablist" aria-label={t('title')}>
           {TAB_IDS.map((id) => (
             <button
@@ -54,7 +59,7 @@ export function ArchitectureDiagrams() {
               onClick={() => setActiveTab(id)}
               className={`px-4 py-2.5 rounded-xl text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider transition-all ${
                 activeTab === id
-                  ? 'bg-brand-accent text-brand-on-accent shadow-md shadow-brand-accent/20'
+                  ? 'bg-brand-accent-strong text-brand-on-accent shadow-md shadow-brand-accent-strong/20'
                   : 'border border-brand-border text-brand-muted hover:border-brand-accent/50 hover:text-brand-text'
               }`}
             >
@@ -63,71 +68,69 @@ export function ArchitectureDiagrams() {
           ))}
         </div>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
-            className="bg-brand-surface border border-brand-border rounded-3xl p-6 sm:p-10 shadow-card"
-          >
-            <div className="mb-8">
-              <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-balance">
-                {ti(`${activeTab}.title`)}
-              </h3>
-              <p className="text-xs sm:text-sm text-brand-muted font-light mt-2">
-                {ti(`${activeTab}.subtitle`)}
-              </p>
-            </div>
+        {/* key remounts the panel per tab, restarting `.enter`; matches the
+            old motion tween (opacity 0→1, y 12→0, 0.25 s). The exit fade is
+            gone — the incoming panel animating in reads the same. */}
+        <div
+          key={activeTab}
+          className="enter bg-brand-surface border border-brand-border rounded-3xl p-6 sm:p-10 shadow-card"
+          style={{ '--enter-y': '12px', '--enter-duration': '0.25s' } as CSSProperties}
+        >
+          <div className="mb-8">
+            <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-balance">
+              {ti(`${activeTab}.title`)}
+            </h3>
+            <p className="text-xs sm:text-sm text-brand-muted font-light mt-2">
+              {ti(`${activeTab}.subtitle`)}
+            </p>
+          </div>
 
-            {/* Stats */}
-            <div className="grid sm:grid-cols-3 gap-4 mb-10">
-              {stats.map((s) => (
-                <div
-                  key={s.label}
-                  className="p-4 rounded-2xl bg-brand-primary/60 border border-brand-border"
-                >
-                  <div className="text-lg font-bold text-brand-accent font-mono">{s.value}</div>
-                  <div className="text-[11px] text-brand-muted uppercase font-mono mt-1">
-                    {s.label}
-                  </div>
+          {/* Stats */}
+          <div className="grid sm:grid-cols-3 gap-4 mb-10">
+            {stats.map((s) => (
+              <div
+                key={s.label}
+                className="p-4 rounded-2xl bg-brand-primary/60 border border-brand-border"
+              >
+                <div className="text-lg font-bold text-brand-accent font-mono">{s.value}</div>
+                <div className="text-[11px] text-brand-muted uppercase font-mono mt-1">
+                  {s.label}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
+          </div>
 
-            {/* Flow */}
-            <ol className="grid md:grid-cols-2 gap-6 mb-10">
-              {flow.map((f) => (
-                <li key={f.step} className="flex gap-4">
-                  <span className="text-2xl font-black font-mono text-brand-accent/70 shrink-0">
-                    {f.step}
-                  </span>
-                  <div>
-                    <div className="text-sm font-bold uppercase tracking-tight text-brand-text">
-                      {f.title}
-                    </div>
-                    <p className="text-xs text-brand-muted font-light leading-relaxed mt-1">
-                      {f.desc}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-
-            {/* Tech chips — proper nouns, identical in both languages */}
-            <div className="flex flex-wrap gap-2 pt-6 border-t border-brand-border/60">
-              {TECH_CHIPS[activeTab].map((chip) => (
-                <span
-                  key={chip}
-                  className="text-[11px] font-mono px-3 py-1 rounded-lg bg-brand-primary border border-brand-border text-brand-muted"
-                >
-                  {chip}
+          {/* Flow */}
+          <ol className="grid md:grid-cols-2 gap-6 mb-10">
+            {flow.map((f) => (
+              <li key={f.step} className="flex gap-4">
+                <span className="text-2xl font-black font-mono text-brand-accent/70 shrink-0">
+                  {f.step}
                 </span>
-              ))}
-            </div>
-          </motion.div>
-        </AnimatePresence>
+                <div>
+                  <div className="text-sm font-bold uppercase tracking-tight text-brand-text">
+                    {f.title}
+                  </div>
+                  <p className="text-xs text-brand-muted font-light leading-relaxed mt-1">
+                    {f.desc}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          {/* Tech chips — proper nouns, identical in both languages */}
+          <div className="flex flex-wrap gap-2 pt-6 border-t border-brand-border/60">
+            {TECH_CHIPS[activeTab].map((chip) => (
+              <span
+                key={chip}
+                className="text-[11px] font-mono px-3 py-1 rounded-lg bg-brand-primary border border-brand-border text-brand-muted"
+              >
+                {chip}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

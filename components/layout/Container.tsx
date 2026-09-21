@@ -1,4 +1,4 @@
-import type { ElementType, ReactNode } from 'react';
+import type { ElementType, HTMLAttributes, ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -13,18 +13,22 @@ import { cn } from '@/lib/utils';
  * The 64px LeftRail gutter is NOT part of this — sections keep their own
  * `lg:pl-16` so a full-bleed element (the tools marquee, the hero's stat
  * band) can opt out of the measure while still clearing the rail.
+ *
+ * Extra props (e.g. `data-rv` for scroll reveals) pass straight through to
+ * the underlying element.
  */
 export function Container({
   as: Tag = 'div',
   className,
   children,
+  ...rest
 }: {
   as?: ElementType;
   className?: string;
   children: ReactNode;
-}) {
+} & HTMLAttributes<HTMLElement>) {
   return (
-    <Tag className={cn('mx-auto w-full max-w-[1400px] px-6 lg:px-12', className)}>
+    <Tag className={cn('mx-auto w-full max-w-[1400px] px-6 lg:px-12', className)} {...rest}>
       {children}
     </Tag>
   );

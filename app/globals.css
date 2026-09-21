@@ -193,19 +193,45 @@
     background-color: var(--ds-accent);
   }
 
-  /* GSAP animation prep.
-     KEEP IN SYNC with the class names GSAP targets — the animation code
-     selects by class, so a new animated card class must be added here too. */
+  /* GSAP animation prep (service / about / services pages still reveal
+     through GSAP — KEEP IN SYNC with the class names that code targets).
+     The home page reveals through [data-rv] instead (see below). */
   .service-card,
   .trend-card,
   .benefit-card,
   .knowledge-item,
-  .stat-item,
-  .home-service-card,
   .portfolio-item,
-  .cta-content,
   .knowledge-hub-item {
     will-change: transform, opacity;
+  }
+
+  /* Scroll reveals for [data-rv], driven by components/ui/RevealRoot.tsx.
+     The hidden state ONLY applies while <html> carries .rv-armed, which
+     RevealRoot adds from an effect — so server HTML, no-JS renders and
+     reduced-motion visitors always see the content. Stagger with
+     style={{ '--rv-delay': '0.15s' }}. */
+  @media (prefers-reduced-motion: no-preference) {
+    .rv-armed [data-rv]:not(.rv-in) {
+      opacity: 0;
+      translate: var(--rv-x, 0) var(--rv-y, 28px);
+      will-change: transform, opacity;
+    }
+
+    .rv-armed [data-rv] {
+      transition:
+        opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+        translate 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: var(--rv-delay, 0s);
+    }
+
+    /* The stagger delay must not leak into later transitions on the same
+       element (a card's hover state). RevealRoot adds .rv-done when the
+       reveal transition finishes; resetting the delay on .rv-in instead
+       would kill the stagger itself, because transition timing always
+       comes from the after-change style. */
+    .rv-armed [data-rv].rv-done {
+      transition-delay: 0s;
+    }
   }
 
   .text-balance {

@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { routing } from '@/i18n/routing';
 import { SERVICES, getService } from '@/content/services';
+import { MotionProvider } from '@/components/providers/MotionProvider';
 import { ServiceDetail } from '@/components/sections/service/ServiceDetail';
 import { site } from '@/config/site.config';
 import { pageMeta } from '@/lib/seo';
@@ -76,7 +77,9 @@ export default async function ServiceDetailPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: ldJson(breadcrumb) }}
       />
-      <ServiceDetail service={service} />
+      <MotionProvider>
+        <ServiceDetail service={service} />
+      </MotionProvider>
     </>
   );
 }

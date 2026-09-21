@@ -5,6 +5,7 @@ import { statSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { routing } from '@/i18n/routing';
+import { MotionProvider } from '@/components/providers/MotionProvider';
 import { AboutContent } from '@/components/sections/about/AboutContent';
 import { site } from '@/config/site.config';
 import { pageMeta } from '@/lib/seo';
@@ -69,7 +70,9 @@ export default async function AboutPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: ldJson(breadcrumb) }}
       />
-      <AboutContent trustDocSizes={docSizes()} />
+      <MotionProvider>
+        <AboutContent trustDocSizes={docSizes()} />
+      </MotionProvider>
     </>
   );
 }

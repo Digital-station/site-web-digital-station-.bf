@@ -10,7 +10,6 @@ import { OG_LOCALE, ogAlternateLocales, ogImage } from '@/lib/seo';
 import { organizationLd, ldJson } from '@/lib/schema';
 import { fontVariables } from '@/lib/fonts';
 import { ThemeProvider, ThemeScript } from '@/components/providers/ThemeProvider';
-import { MotionProvider } from '@/components/providers/MotionProvider';
 import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvider';
 import { LeftRail } from '@/components/layout/LeftRail';
 import { Navbar } from '@/components/layout/Navbar';
@@ -129,7 +128,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             server-rendered and readable without JS; this only explains what
             will not work (form, theme toggle) and where to go instead. */}
         <noscript>
-          <p role="status" className="bg-brand-accent px-4 py-3 text-center text-sm text-white">
+          <p role="status" className="bg-brand-accent-strong px-4 py-3 text-center text-sm text-white">
             {t('noscript')}
           </p>
         </noscript>
@@ -141,33 +140,31 @@ export default async function LocaleLayout({ children, params }: Props) {
         />
         <ThemeProvider>
           <NextIntlClientProvider>
-            <MotionProvider>
-              <RouteAnnouncer />
-              <a
-                href="#main-content"
-                className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-20 focus:z-[100] focus:bg-brand-accent-strong focus:text-brand-on-accent focus:px-6 focus:py-3 focus:rounded-full focus:font-black focus:uppercase focus:text-xs"
-              >
-                {t('skipToContent')}
-              </a>
+            <RouteAnnouncer />
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-20 focus:z-[100] focus:bg-brand-accent-strong focus:text-brand-on-accent focus:px-6 focus:py-3 focus:rounded-full focus:font-black focus:uppercase focus:text-xs"
+            >
+              {t('skipToContent')}
+            </a>
 
-              <SmoothScrollProvider>
-                <StickyCTA />
+            <SmoothScrollProvider>
+              <StickyCTA />
 
-                <div className="min-h-screen relative bg-brand-primary">
-                  <LeftRail />
-                  <Navbar />
-                  <ScrollIndicator />
-                  {/* tabIndex={-1} makes the skip link's focus land reliably:
-                      without it some browsers move the scroll position but
-                      leave focus where it was, so the next Tab resumed inside
-                      the navbar instead of the page content. */}
-                  <main id="main-content" tabIndex={-1}>
-                    {children}
-                  </main>
-                  <Footer />
-                </div>
-              </SmoothScrollProvider>
-            </MotionProvider>
+              <div className="min-h-screen relative bg-brand-primary">
+                <LeftRail />
+                <Navbar />
+                <ScrollIndicator />
+                {/* tabIndex={-1} makes the skip link's focus land reliably:
+                    without it some browsers move the scroll position but
+                    leave focus where it was, so the next Tab resumed inside
+                    the navbar instead of the page content. */}
+                <main id="main-content" tabIndex={-1}>
+                  {children}
+                </main>
+                <Footer />
+              </div>
+            </SmoothScrollProvider>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

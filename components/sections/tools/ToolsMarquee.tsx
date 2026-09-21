@@ -8,6 +8,8 @@ import {
   useThreeDScrollTriggerControls,
 } from '@/components/lib/ThreeDScrollTrigger';
 
+import { MotionProvider } from '@/components/providers/MotionProvider';
+
 import { ToolCard } from './ToolCard';
 import { TOOLS_ROW_1, TOOLS_ROW_2 } from './tools-data';
 
@@ -47,6 +49,10 @@ function MarquePauseButton() {
  */
 export function ToolsMarquee() {
   return (
+    // MotionConfig lives on each motion subtree (not the layout): importing
+    // it globally would drag the whole Motion barrel into every page's
+    // initial bundle. See providers/MotionProvider.tsx.
+    <MotionProvider>
     <ThreeDScrollTriggerContainer className="pr-12">
       <MarquePauseButton />
 
@@ -62,5 +68,6 @@ export function ToolsMarquee() {
         ))}
       </ThreeDScrollTriggerRow>
     </ThreeDScrollTriggerContainer>
+    </MotionProvider>
   );
 }

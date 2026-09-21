@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import type { CSSProperties } from "react";
 import dynamic from "next/dynamic";
 import { ArrowRight } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/routing";
@@ -33,60 +31,12 @@ const TECHNOLOGIES = [
 ] as const;
 
 export function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const t = useTranslations("home.hero");
   const tc = useTranslations("common");
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const ctx = gsap.context(() => {
-      /**
-       * matchMedia, so under `prefers-reduced-motion: reduce` these tweens are
-       * never created and nothing is left parked at opacity 0.
-       */
-      const mm = gsap.matchMedia();
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        // The headline, eyebrow and CTA entrances are CSS (`.enter`, see
-        // globals.css): as GSAP tweens they re-hid text the server had
-        // already painted, then replayed it.
-        gsap.fromTo(
-          ".stat-item",
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            stagger: 0.2,
-            clearProps: "all",
-            // See HomeContent for why immediateRender:false + once:true.
-            immediateRender: false,
-            scrollTrigger: {
-              trigger: ".stats-container",
-              start: "top bottom-=40",
-              toggleActions: "play none none none",
-              once: true,
-            },
-          },
-        );
-      });
-
-      return () => mm.revert();
-    }, containerRef);
-
-    const timer = setTimeout(() => ScrollTrigger.refresh(), 500);
-
-    return () => {
-      ctx.revert();
-      clearTimeout(timer);
-    };
-  }, []);
 
   return (
     <section
       id="hero"
-      ref={containerRef}
       className="relative pt-24 md:pt-40 lg:pt-48 pb-0 overflow-hidden lg:pl-16 min-h-[90vh] flex flex-col"
     >
       <Container className="flex-1 flex flex-col justify-center relative">
@@ -135,8 +85,14 @@ export function Hero() {
 
           <div className="enter [--enter-delay:1s] mb-12 md:mb-20">
             <div className="flex flex-wrap items-center gap-4 md:gap-6">
+              {/* No prefetch: this link is in the initial viewport, so the
+                  default viewport-prefetch would download the whole contact
+                  route (form + validation, ~80 KB) on every home visit,
+                  competing with the hero's own bytes. Below-fold contact
+                  links still prefetch on approach. */}
               <Link
                 href="/contact"
+                prefetch={false}
                 className="btn-primary group flex items-center gap-3 px-6 py-3 text-sm md:text-base md:px-8 md:py-4"
               >
                 {t("cta")}
@@ -188,8 +144,13 @@ export function Hero() {
           </p>
         </div>
 
-        <div className="stats-container md:w-1/2 grid grid-cols-2 bg-brand-accent-strong text-brand-on-accent">
-          <div className="stat-item border-r border-white/15 p-8 md:p-12 flex flex-col justify-center">
+        <div className="md:w-1/2 grid grid-cols-2 bg-brand-accent-strong text-brand-on-accent">
+          {/* Scroll reveals are `data-rv` (see RevealRoot): the old GSAP
+              tween cost a ~110 KB dependency for a fade-up. */}
+          <div
+            data-rv
+            className="border-r border-white/15 p-8 md:p-12 flex flex-col justify-center"
+          >
             <span className="text-4xl md:text-5xl font-black mb-1">
               {t("statValue")}
             </span>
@@ -199,7 +160,9 @@ export function Hero() {
           </div>
           <Link
             href="/contact"
-            className="stat-item p-8 md:p-12 flex flex-col justify-center group cursor-pointer relative overflow-hidden"
+            data-rv
+            style={{ "--rv-delay": "0.15s" } as CSSProperties}
+            className="p-8 md:p-12 flex flex-col justify-center group cursor-pointer relative overflow-hidden"
           >
             <div className="relative z-10 flex items-center justify-between gap-4">
               <span className="text-xl md:text-2xl font-black uppercase leading-tight italic text-balance">

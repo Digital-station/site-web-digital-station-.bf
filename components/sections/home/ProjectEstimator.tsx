@@ -148,7 +148,9 @@ export function ProjectEstimator() {
                     <span
                       className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors shrink-0 ${
                         selectedDeliverables.includes(id)
-                          ? 'bg-brand-accent border-brand-accent text-brand-on-accent'
+                          // accent-strong, not accent: white on the
+                          // electric-cyan accent is ~2:1 in the dark theme.
+                          ? 'bg-brand-accent-strong border-brand-accent-strong text-brand-on-accent'
                           : 'border-brand-border'
                       }`}
                     >

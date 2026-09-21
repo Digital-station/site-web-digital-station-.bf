@@ -1,16 +1,20 @@
-'use client';
-
+import type { CSSProperties } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 import { Link } from '@/i18n/routing';
 import { SERVICES } from '@/content/services';
 import { getServiceIcon } from '@/lib/service-icons';
 
-export function HomeServices() {
-  const ts = useTranslations('services.items');
-  const t = useTranslations('home.services');
-  const tn = useTranslations('nav');
+/**
+ * Service catalogue grid. A server component — no interactivity, so it ships
+ * zero JS. The scroll reveal is `data-rv` (see RevealRoot), staggered down
+ * the grid the way the old GSAP tween was.
+ */
+export async function HomeServices() {
+  const ts = await getTranslations('services.items');
+  const t = await getTranslations('home.services');
+  const tn = await getTranslations('nav');
 
   return (
     <section
@@ -29,14 +33,16 @@ export function HomeServices() {
 
       <div className="mx-auto w-full max-w-[1400px]">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {SERVICES.map((s) => {
+          {SERVICES.map((s, i) => {
             const Icon = getServiceIcon(s.slug);
             const title = ts(`${s.slug}.title`);
 
             return (
               <div
                 key={s.slug}
-                className="home-service-card group p-6 sm:p-8 md:p-10 lg:p-14 border-r border-b border-brand-border hover:bg-brand-accent-soft transition-all duration-500 relative h-full flex flex-col"
+                data-rv
+                style={{ '--rv-delay': `${Math.min(i * 0.06, 0.4)}s` } as CSSProperties}
+                className="group p-6 sm:p-8 md:p-10 lg:p-14 border-r border-b border-brand-border hover:bg-brand-accent-soft transition-all duration-500 relative h-full flex flex-col"
               >
                 <Icon className="w-5 h-5 md:w-8 md:h-8 text-brand-accent mb-4 md:mb-8 opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
 
