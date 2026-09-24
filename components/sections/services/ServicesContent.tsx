@@ -343,11 +343,6 @@ export function ServicesContent() {
 
         {/* CTA */}
         <section className="mt-24 lg:mt-32 text-center">
-          <div className="inline-block px-8 py-3 bg-brand-surface border border-brand-border rounded-full mb-10 md:mb-12">
-            <span className="text-[11px] md:text-xs font-black uppercase text-brand-muted tracking-wide">
-              {t("ctaEyebrow")}
-            </span>
-          </div>
           <h2 className="text-5xl md:text-7xl lg:text-[8vw] font-black uppercase tracking-tighter mb-16 md:mb-20 leading-[1.15] text-balance break-words">
             {t("ctaTitleLead")}{" "}
             <span className="text-brand-accent italic font-serif lowercase">

@@ -28,7 +28,8 @@ import { Container } from "@/components/layout/Container";
 import { WhatsAppIcon } from "@/components/ui/icons/WhatsApp";
 import { DirectorWord } from "./DirectorWord";
 import { Process } from "./Process";
-import { TrustDocuments, type TrustDocSizes } from "./TrustDocuments";
+import { TrustDocSizes } from "./TrustDocuments";
+// {import { TrustDocuments, type TrustDocSizes } from "./TrustDocuments" };
 
 /* ── DATA (icons + keys only; all prose lives in messages) ── */
 
@@ -92,7 +93,11 @@ function yearsInBusiness(): number {
   return new Date().getFullYear() - Number(site.foundingDate);
 }
 
-export function AboutContent({ trustDocSizes }: { trustDocSizes: TrustDocSizes }) {
+export function AboutContent({
+  trustDocSizes,
+}: {
+  trustDocSizes: TrustDocSizes;
+}) {
   return (
     <>
       <Hero />
@@ -103,7 +108,7 @@ export function AboutContent({ trustDocSizes }: { trustDocSizes: TrustDocSizes }
       */}
       <TeamPreview />
       <DirectorWord />
-      <TrustDocuments sizes={trustDocSizes} />
+      {/* <TrustDocuments sizes={trustDocSizes} /> */}
       <Process />
       <AboutCta />
     </>
@@ -182,7 +187,10 @@ function Hero() {
             {quickStats.map((s) => (
               <div key={s.label} className="flex items-center gap-3">
                 <div className="w-11 h-11 rounded-full bg-brand-accent-soft flex items-center justify-center shrink-0">
-                  <s.icon className="w-5 h-5 text-brand-accent" aria-hidden="true" />
+                  <s.icon
+                    className="w-5 h-5 text-brand-accent"
+                    aria-hidden="true"
+                  />
                 </div>
                 <div>
                   {s.value && (
@@ -391,7 +399,7 @@ function Timeline() {
                   key={year}
                   className="relative"
                   initial={{ opacity: 0, y: 24 }}
-                  animate={inView ?{ opacity: 1, y: 0 } : {}}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: i * 0.1, duration: 0.6 }}
                 >
                   <div className="w-12 h-12 rounded-full border border-brand-border bg-brand-primary flex items-center justify-center mb-5 relative z-10">
@@ -436,7 +444,7 @@ function TeamPreview() {
         <div className="grid lg:grid-cols-2 gap-12 md:gap-20 items-center">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
-            animate={inView ?{ opacity: 1, y: 0 } : {}}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
           >
             <p className="text-brand-accent text-[11px] md:text-xs uppercase tracking-wide mb-6 font-mono font-bold flex items-center gap-2">
@@ -464,7 +472,7 @@ function TeamPreview() {
           */}
           <motion.ul
             initial={{ opacity: 0, y: 24 }}
-            animate={inView ?{ opacity: 1, y: 0 } : {}}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="grid grid-cols-2 gap-4"
           >

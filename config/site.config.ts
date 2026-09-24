@@ -44,7 +44,7 @@ export const site = {
     whatsapp: '+226 66 16 97 62',
 
     address: {
-      street: 'Avenue Kwame Nkrumah, Immeuble Digital',
+      street: '',
       locality: 'Ouagadougou',
       region: 'Kadiogo / Centre',
       /** ISO 3166-1 alpha-2 country code. BF = Burkina Faso. */
@@ -105,7 +105,7 @@ export const site = {
    */
   leadership: {
     director: {
-      name: 'Landry P. KABORE',
+      name: 'Landry .P. KABORE',
       role: 'Gérant / Managing Director',
       linkedin: 'https://www.linkedin.com/in/landry-kabore',
       email: 'landry.kabore@digitalstation.bf',

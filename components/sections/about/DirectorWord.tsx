@@ -5,7 +5,14 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Quote, Sparkles, Linkedin, Mail, ShieldCheck, CheckCircle2 } from "lucide-react";
+import {
+  Quote,
+  Sparkles,
+  MessageCircle,
+  Mail,
+  ShieldCheck,
+  CheckCircle2,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { site, addressLine } from "@/config/site.config";
@@ -20,7 +27,9 @@ export const DirectorWord = () => {
     name: t("name"),
     role: t("role"),
   };
-  const MESSAGE = t("message");
+  const MESSAGE = t.rich("message", {
+    br: () => <br />,
+  });
 
   const ref = useRef<HTMLElement>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -152,7 +161,7 @@ export const DirectorWord = () => {
           </div>
 
           {/* Right Column - Direct Leadership & Accountability Card */}
-          <div className="lg:sticky lg:top-32 space-y-6">
+          <div className="lg:sticky lg:top-100 space-y-6">
             <motion.div
               className="dw-signature mt-6 lg:mt-0 bg-brand-surface border border-brand-border rounded-2xl p-6 md:p-8 hover:border-brand-accent/50 transition-all duration-500 relative overflow-hidden group shadow-card"
               whileHover={{ scale: 1.01 }}
@@ -179,7 +188,10 @@ export const DirectorWord = () => {
                       <p className="text-xl font-black uppercase tracking-tight text-brand-text group-hover:text-brand-accent transition-colors">
                         {DIRECTOR.name}
                       </p>
-                      <span title="Identité vérifiée" className="text-brand-accent">
+                      <span
+                        title="Identité vérifiée"
+                        className="text-brand-accent"
+                      >
                         <CheckCircle2 className="w-4 h-4 fill-brand-accent text-brand-surface" />
                       </span>
                     </div>
@@ -188,32 +200,21 @@ export const DirectorWord = () => {
                     </p>
                     <div className="flex items-center gap-1.5 text-[11px] text-brand-faint font-mono">
                       <Sparkles className="w-3 h-3 text-brand-accent" />
-                      <span>{site.name} • {addressLine()}</span>
+                      <span>{site.name}</span>
                     </div>
                   </div>
-                </div>
-
-                {/* Direct Accountability Commitment */}
-                <div className="p-4 rounded-xl bg-brand-primary/60 border border-brand-border/60 space-y-2">
-                  <div className="text-xs font-mono uppercase tracking-wider text-brand-accent flex items-center gap-1.5">
-                    <ShieldCheck className="w-4 h-4" />
-                    <span>{t('commitment.title')}</span>
-                  </div>
-                  <p className="text-xs text-brand-muted leading-relaxed font-light">
-                    {t('commitment.body')}
-                  </p>
                 </div>
 
                 {/* Verified Direct Channels */}
                 <div className="flex items-center gap-3 pt-2 border-t border-brand-border">
                   <a
-                    href={site.leadership.director.linkedin}
+                    href="https://wa.me/22670719366"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 py-2.5 px-3 rounded-xl border border-brand-border hover:border-brand-accent hover:bg-brand-accent-soft transition-all text-xs font-mono font-bold flex items-center justify-center gap-2 text-brand-muted hover:text-brand-text"
                   >
-                    <Linkedin className="w-4 h-4 text-[#0077b5]" />
-                    <span>Profil LinkedIn</span>
+                    <MessageCircle className="w-4 h-4 text-[#25D366]" />
+                    <span>Chat WhatsApp</span>
                   </a>
 
                   <a
@@ -228,15 +229,6 @@ export const DirectorWord = () => {
             </motion.div>
           </div>
         </div>
-
-        {/* Bottom decorative line */}
-        <motion.div
-          className="mt-20 h-[1px] bg-gradient-to-r from-transparent via-brand-accent/30 to-transparent"
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.5, delay: 0.5 }}
-        />
       </div>
     </section>
   );

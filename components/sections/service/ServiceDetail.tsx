@@ -398,7 +398,7 @@ function BenefitsSection({ service, content }: SectionProps) {
           className="mb-16 max-w-2xl"
         >
           <div className="flex items-center gap-4 mb-6">
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter leading-[1.15] text-balance break-words">
+            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight leading-[1.15] text-balance break-words">
               {content.whyUsTitle}
             </h2>
           </div>
@@ -745,7 +745,10 @@ function CtaSection({
   const tc = useTranslations("common");
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 relative overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="py-24 lg:py-32 relative overflow-hidden"
+    >
       <div
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none motion-safe:animate-breathe"

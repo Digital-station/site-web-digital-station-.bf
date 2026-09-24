@@ -3,7 +3,7 @@
 import type { CSSProperties } from "react";
 import dynamic from "next/dynamic";
 import { ArrowRight } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/routing";
 import { site, waHref } from "@/config/site.config";
@@ -33,8 +33,6 @@ const TECHNOLOGIES = [
 export function Hero() {
   const t = useTranslations("home.hero");
   const tc = useTranslations("common");
-  const locale = useLocale();
-
   return (
     <section
       id="hero"
@@ -70,22 +68,7 @@ export function Hero() {
               </span>
             </span>
             <span className="block">
-              {/*
-                Forced line breaks, scoped to the widths where the fallback
-                font and the webfont would otherwise wrap line 2 differently
-                (fallback is wider, so on a slow connection the h1 paints
-                with 5 lines and snaps to 4/3 when the font lands — a 52 px
-                jump on phones, 143 px on desktop, measured as CLS 0.155).
-                Where the two fonts already agree (640–1280 px, and English
-                everywhere — its words are short) the spans flow naturally,
-                so the design is untouched there. FR gets an explicit <br/>
-                from its message string; EN has none to render.
-              */}
-              <span
-                className={`enter [--enter-y:100px] [--enter-delay:0.1s] italic font-serif font-light lowercase pr-2 md:pr-4 opacity-80 ${
-                  locale === "fr" ? "block sm:max-xl:inline-block" : "inline-block"
-                }`}
-              >
+              <span className="enter [--enter-y:100px] [--enter-delay:0.1s] italic font-serif font-light lowercase pr-2 md:pr-4 opacity-80 inline">
                 {t("titleConnector")}
               </span>
               <span className="enter [--enter-y:100px] [--enter-delay:0.2s] inline-block">
@@ -153,20 +136,25 @@ export function Hero() {
             {t("partnersTitle")}
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-between items-center gap-8 md:gap-12 opacity-60 hover:opacity-90 transition-opacity duration-500">
-            {[TECHNOLOGIES.slice(0, 2), TECHNOLOGIES.slice(2, 4), TECHNOLOGIES.slice(4)].map(
-              (row) => (
-                <div key={row.join("-")} className="flex justify-center gap-8 sm:contents">
-                  {row.map((tech) => (
-                    <div
-                      key={tech}
-                      className="text-sm max-[479px]:text-xs md:text-lg font-black uppercase tracking-tighter whitespace-nowrap"
-                    >
-                      {tech}
-                    </div>
-                  ))}
-                </div>
-              ),
-            )}
+            {[
+              TECHNOLOGIES.slice(0, 2),
+              TECHNOLOGIES.slice(2, 4),
+              TECHNOLOGIES.slice(4),
+            ].map((row) => (
+              <div
+                key={row.join("-")}
+                className="flex justify-center gap-8 sm:contents"
+              >
+                {row.map((tech) => (
+                  <div
+                    key={tech}
+                    className="text-sm max-[479px]:text-xs md:text-lg font-black uppercase tracking-tighter whitespace-nowrap"
+                  >
+                    {tech}
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
         </Container>
       </div>

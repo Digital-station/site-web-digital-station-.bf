@@ -480,7 +480,7 @@
         "heroSubtitle": "Fast, modern digital products that look sharp and perform flawlessly.",
         "heroDescription": "From polished websites to powerful web and mobile apps, we shape technical solutions around your business goals, your users, and your growth plan.",
         "heroCtaLabel": "Start a project",
-        "whyUsTitle": "Why choose our team ?",
+        "whyUsTitle": "Why choose our team?",
         "whyUsIntro": "We combine product thinking, design discipline, and engineering execution to build software that feels effortless for your users and reliable for your business.",
         "whyUsItems": [
           "We build for performance, scalability, and long-term maintainability.",
@@ -632,25 +632,26 @@
         "featureTitle": "Security by design",
         "featureDesc": "We build security best practice into every stage of your projects, for an information system resilient to today's threats and tomorrow's."
       },
-      "cloud-hebergement": {
+"cloud-hebergement": {
         "title": "Cloud & Hosting",
-        "desc": "Cloud migration and infrastructure management on AWS, Azure and Google Cloud for a more agile IT.",
-        "audience": "Companies with ageing infrastructure, or whose needs vary from one month to the next.",
-        "longDesc": "We support businesses through their migration to the cloud and the management of their infrastructure on AWS, Microsoft Azure and Google Cloud Platform. Our approach aims for a controlled, secure transition, optimised for lower costs and maximum agility.",
+        "desc": "Sovereign hosting and hybrid cloud infrastructure with local data residency in Ouagadougou (Ouaga 2000).",
+        "audience": "Companies with ageing infrastructure or variable needs that require data sovereignty.",
+        "longDesc": "We support businesses through their migration to the cloud and the management of their infrastructure on AWS, Microsoft Azure and Google Cloud Platform. Our unique hybrid approach combines the power of global hyperscalers with local data residency: through our strategic partners, we leverage data centres located in Ouagadougou, in the Ouaga 2000 area, ensuring data sovereignty and compliance with Burkinabè and West African regulations.",
         "benefits": [
           "Secure cloud migration with minimal downtime",
+          "Local data residency (Ouaga 2000) via strategic partners",
           "Lower infrastructure costs",
           "Scalability and high availability",
-          "Multi-cloud and hybrid cloud"
+          "Multi-cloud and hybrid cloud with local sovereignty"
         ],
         "process": [
           "Audit of the existing infrastructure",
-          "Migration strategy",
-          "Migration and configuration",
-          "Optimisation and ongoing management"
+          "Migration and data residency strategy",
+          "Migration, configuration & local synchronisation",
+          "Optimisation, ongoing management & compliance"
         ],
-        "featureTitle": "Agile IT that serves your growth",
-        "featureDesc": "Our team deploys on AWS, Azure and GCP and helps you get the most out of the cloud while keeping your costs and your security under control.",
+        "featureTitle": "Agile, sovereign IT that serves your growth",
+        "featureDesc": "Our team deploys on AWS, Azure and GCP while ensuring your sensitive data stays hosted locally in Ouaga 2000, for full compliance and minimal latency.",
         "platforms": [
           {
             "name": "Amazon Web Services",
@@ -680,7 +681,7 @@
               "Kubernetes Engine (GKE)"
             ],
             "color": "text-emerald-400",
-            "insight": "Leading-edge infrastructure for data, AI and cloud-native projects that demand performance and innovation."
+"insight": "Leading-edge infrastructure for data, AI and cloud-native projects that demand performance and innovation."
           }
         ]
       },
@@ -703,6 +704,27 @@
         ],
         "featureTitle": "AI applied to the real world",
         "featureDesc": "We don't sell AI for its own sake — we identify the high-impact use cases in your organisation and deploy solutions that genuinely make a difference."
+      },
+      "negoce": {
+        "title": "IT Hardware Trading & Procurement",
+        "desc": "Acquisition and sale of IT hardware: computers, tablets, printers and related peripherals.",
+        "audience": "Businesses and institutions that need to equip their teams with reliable, warranted hardware delivered quickly.",
+        "longDesc": "We simplify the procurement and refresh of your IT fleet. As an authorised reseller, we offer a curated selection of professional hardware (laptops, desktops, tablets, printers, accessories and peripherals) suited to your workloads, with manufacturer warranty, pre-configuration on delivery and local support.",
+        "benefits": [
+          "Professional-grade hardware, selected and tested",
+          "Manufacturer warranty with extension options",
+          "Zero-touch configuration & deployment",
+          "Fast delivery across Ouagadougou and regions",
+          "Trade-in & valorisation of legacy assets"
+        ],
+        "process": [
+          "Needs assessment & sizing",
+          "Selection & procurement",
+          "Configuration, asset tagging & inventory",
+          "Delivery, installation & user onboarding"
+        ],
+        "featureTitle": "Your IT fleet, managed end-to-end",
+        "featureDesc": "From workstations to mobile fleets, we equip you with performant, warranted hardware ready to use — no middlemen, one single point of contact."
       }
     }
   },
@@ -863,8 +885,7 @@
     "scalePoint2Desc": "Continuous monitoring and fast intervention to keep interruptions short.",
     "vizLabel": "System diagnostic",
     "vizValue": "Optimised.",
-    "ctaEyebrow": "Ready to start?",
-    "ctaTitleLead": "Let's build",
+    "ctaTitleLead": "Let's work",
     "ctaTitleAccent": "together.",
     "ctaPrimary": "Start a project",
     "ctaSecondary": "See our solutions"
@@ -911,7 +932,7 @@
       "title": "We are the technology <accent>partner</accent> you have been waiting for.",
       "body1": "Digital Station supports businesses and institutions across West Africa through their digital transformation. From custom software engineering to continuous managed services, strategic consulting and cybersecurity, we offer a complete ecosystem of services led by a team of committed experts.",
       "body2": "Our approach rests on three pillars: technical excellence, mutual trust, and an obsession with concrete results.",
-      "moreExpertises": "+{count} more",
+      "moreExpertises": "+ 10 more",
       "statServices": "Expert services",
       "expertises": {
         "webMobile": "Web & Mobile Development",
@@ -978,13 +999,13 @@
       }
     },
     "director": {
-      "name": "Landry P. KABORE",
+      "name": "Landry .P. KABORE",
       "role": "Managing Director & Founder",
       "initials": "LPK",
       "sectionTitle": "A word from the Managing Director",
       "visionTitle": "Our vision",
       "pillarsTitle": "The pillars of our growth strategy",
-      "message": "Technology is not an end in itself. It is a lever in the service of human ambition. Since we started in 2018 our conviction has not changed: treat every client as a long-term partner, deliver technical excellence, and never lose sight of what actually matters to them. In Burkina Faso and across West Africa, we are building tomorrow's digital, one project at a time.",
+      "message": "The digital revolution isn’t just on the horizon, it’s already a reality,, and we’re here to help shape it.<br></br>We help businesses turn technology into a competitive advantage through innovative solutions, reliable technology, and partnerships designed to drive growth.<br></br>From Burkina Faso to the global market, we develop digital solutions that create real added value for businesses, open up new opportunities, and turn ambitious ideas into sustainable results.<br></br>We don’t just keep up with the future. We build it together with you.",
       "vision": {
         "vision": {
           "title": "Vision 2030",

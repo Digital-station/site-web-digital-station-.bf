@@ -1,27 +1,26 @@
-import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import type { Metadata } from "next";
+import dynamic from "next/dynamic";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { Hero } from '@/components/sections/home/Hero';
-import { HomeServices } from '@/components/sections/home/HomeServices';
-import { AudienceSegmentation } from '@/components/sections/home/AudienceSegmentation';
-import { ProjectEstimator } from '@/components/sections/home/ProjectEstimator';
-import { CTASection } from '@/components/sections/home/CTASection';
-import { RevealRoot } from '@/components/ui/RevealRoot';
-import { pageMeta } from '@/lib/seo';
-import { webSiteLd, ldJson } from '@/lib/schema';
+import { Hero } from "@/components/sections/home/Hero";
+import { HomeServices } from "@/components/sections/home/HomeServices";
+import { AudienceSegmentation } from "@/components/sections/home/AudienceSegmentation";
+import { CTASection } from "@/components/sections/home/CTASection";
+import { RevealRoot } from "@/components/ui/RevealRoot";
+import { pageMeta } from "@/lib/seo";
+import { webSiteLd, ldJson } from "@/lib/schema";
 
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'home.meta' });
+  const t = await getTranslations({ locale, namespace: "home.meta" });
 
   return pageMeta({
     locale,
-    path: '',
-    title: t('title'),
-    description: t('description'),
+    path: "",
+    title: t("title"),
+    description: t("description"),
     /**
      * The `%s | Digital Station` template in app/[locale]/layout.tsx does NOT
      * apply here: Next.js applies a title template to CHILD route segments
@@ -46,20 +45,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
  */
 const IndustriesWeServe = dynamic(
   () =>
-    import('@/components/sections/IndustriesWeServe').then(
+    import("@/components/sections/IndustriesWeServe").then(
       (m) => m.IndustriesWeServe,
     ),
   { loading: () => <SectionPlaceholder /> },
 );
 
 const ToolsWeMaster = dynamic(
-  () => import('@/components/sections/ToolsWeMaster').then((m) => m.ToolsWeMaster),
+  () =>
+    import("@/components/sections/ToolsWeMaster").then((m) => m.ToolsWeMaster),
   { loading: () => <SectionPlaceholder /> },
 );
 
 const ArchitectureDiagrams = dynamic(
   () =>
-    import('@/components/sections/home/ArchitectureDiagrams').then(
+    import("@/components/sections/home/ArchitectureDiagrams").then(
       (m) => m.ArchitectureDiagrams,
     ),
   { loading: () => <SectionPlaceholder /> },
@@ -78,8 +78,8 @@ export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t = await getTranslations('home.meta');
-  const description = t('description');
+  const t = await getTranslations("home.meta");
+  const description = t("description");
 
   return (
     <>
@@ -101,7 +101,6 @@ export default async function HomePage({ params }: Props) {
         <HomeServices />
         <ArchitectureDiagrams />
         <IndustriesWeServe />
-        <ProjectEstimator />
         <ToolsWeMaster />
         <CTASection />
       </RevealRoot>

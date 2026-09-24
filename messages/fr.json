@@ -70,7 +70,7 @@
       "ctaAria": "Nous contacter pour démarrer votre projet",
       "partnersTitle": "Technologies que nous déployons",
       "statement": "Nous conseillons, concevons et développons des solutions technologiques pour répondre avec précision aux enjeux de votre entreprise.",
-      "statValue": "10",
+      "statValue": "+ 10",
       "statLabel": "Pôles d'expertise",
       "workWithUs": "Travailler<br></br>avec nous"
     },
@@ -137,7 +137,7 @@
     },
     "tools": {
       "eyebrow": "Notre stack",
-      "titleLead": "Les outils",
+      "titleLead": "Quelques outils",
       "titleAccent": "que nous maîtrisons",
       "body": "Des langages aux plateformes d'entreprise, voici les technologies sur lesquelles nous livrons au quotidien.",
       "logoAlt": "Logo {name}",
@@ -480,7 +480,7 @@
         "heroSubtitle": "Des produits numériques modernes et rapides, au design soigné et aux performances irréprochables.",
         "heroDescription": "Du site vitrine soigné aux applications web et mobiles les plus exigeantes, nous façonnons des solutions techniques autour de vos objectifs métiers, de vos utilisateurs et de votre plan de croissance.",
         "heroCtaLabel": "Démarrer un projet",
-        "whyUsTitle": "Pourquoi choisir notre équipe ?",
+        "whyUsTitle": "Pourquoi choisir notre équipe\u00a0?",
         "whyUsIntro": "Nous associons vision produit, rigueur de conception et exécution technique pour livrer un logiciel fluide pour vos utilisateurs et fiable pour votre entreprise.",
         "whyUsItems": [
           "Nous concevons pour la performance, l'évolutivité et la maintenabilité sur le long terme.",
@@ -634,23 +634,24 @@
       },
       "cloud-hebergement": {
         "title": "Cloud & hébergement",
-        "desc": "Migration vers le cloud et gestion d'infrastructures sur AWS, Azure et Google Cloud pour une IT agile.",
-        "audience": "Entreprises dont l'infrastructure vieillit ou dont les besoins varient d'un mois à l'autre.",
-        "longDesc": "Nous accompagnons les entreprises dans leur migration vers le cloud et la gestion de leurs infrastructures sur les plateformes AWS, Microsoft Azure et Google Cloud Platform. Notre approche vise une transition maîtrisée, sécurisée et optimisée pour des coûts réduits et une agilité maximale.",
+        "desc": "Hébergement souverain et infrastructures cloud hybrides avec résidence des données locale à Ouagadougou (Ouaga 2000).",
+        "audience": "Entreprises dont l'infrastructure vieillit ou dont les besoins varient, et qui exigent la souveraineté de leurs données.",
+        "longDesc": "Nous accompagnons les entreprises dans leur migration vers le cloud et la gestion de leurs infrastructures sur AWS, Microsoft Azure et Google Cloud Platform. Notre approche hybride unique combine la puissance des hyperscalers mondiaux avec une résidence des données locale : grâce à nos partenaires stratégiques, nous exploitons des centres de données situés à Ouagadougou, dans la zone Ouaga 2000, garantissant la souveraineté des données et la conformité aux réglementations burkinabè et ouest-africaines.",
         "benefits": [
           "Migration cloud sécurisée, avec un minimum d'interruption",
+          "Résidence des données locale (Ouaga 2000) via partenaires stratégiques",
           "Réduction des coûts d'infrastructure",
           "Montée en charge & haute disponibilité",
-          "Multi-cloud & cloud hybride"
+          "Multi-cloud & cloud hybride avec souveraineté locale"
         ],
         "process": [
           "Audit de l'infrastructure existante",
-          "Stratégie de migration",
-          "Migration & configuration",
-          "Optimisation & gestion continue"
+          "Stratégie de migration et de résidence des données",
+          "Migration, configuration & synchronisation locale",
+          "Optimisation, gestion continue & conformité"
         ],
-        "featureTitle": "L'IT agile au service de votre croissance",
-        "featureDesc": "Notre équipe déploie sur AWS, Azure et GCP et vous accompagne pour tirer le meilleur parti du cloud tout en maîtrisant vos coûts et votre sécurité.",
+        "featureTitle": "L'IT agile et souveraine au service de votre croissance",
+        "featureDesc": "Notre équipe déploie sur AWS, Azure et GCP tout en garantissant que vos données sensibles restent hébergées localement à Ouaga 2000, pour une conformité totale et une latence minimale.",
         "platforms": [
           {
             "name": "Amazon Web Services",
@@ -684,11 +685,11 @@
           }
         ]
       },
-      "intelligence-artificielle": {
+"intelligence-artificielle": {
         "title": "Intelligence artificielle appliquée",
         "desc": "Intégration de solutions IA : chatbots, automatisation et traitement de documents pour accroître votre productivité.",
         "audience": "Équipes qui passent trop de temps sur des tâches répétitives ou sur du traitement de documents.",
-        "longDesc": "L'intelligence artificielle transforme les façons de travailler. Nous intégrons des solutions IA concrètes et opérationnelles dans vos processus métiers : agents conversationnels intelligents, automatisation des tâches répétitives et traitement intelligent de documents pour libérer le potentiel de vos équipes.",
+        "longDesc": "L'intelligence artificielle transforme les façons de travailler. Nous intégrons des solutions IA concrètes et opérationnelles dans vos processus métiers : agents conversationnels intelligents, automatisation des tâches répétitives et traitement intelligent de documents pour libérer le potentiel de vos équipes.",
         "benefits": [
           "Chatbots & assistants virtuels sur mesure",
           "Automatisation des processus métiers (RPA + IA)",
@@ -703,6 +704,27 @@
         ],
         "featureTitle": "L'IA au service du réel",
         "featureDesc": "Nous ne vendons pas de l'IA pour l'IA — nous identifions les cas d'usage à fort impact dans votre organisation et déployons des solutions qui font vraiment la différence."
+      },
+      "negoce": {
+        "title": "Négoce & équipement IT",
+        "desc": "Acquisition et vente de matériel informatique : ordinateurs, tablettes, imprimantes et périphériques associés.",
+        "audience": "Entreprises et institutions qui ont besoin d'équiper leurs équipes en matériel fiable, garanti et livré rapidement.",
+        "longDesc": "Nous facilitons l'acquisition et le renouvellement de votre parc informatique. Avec nos partenaires revendeur agréé, nous vous proposons une sélection de matériels professionnels (ordinateurs portables et fixes, tablettes, imprimantes, accessoires et périphériques) adaptés à vos usages, avec garantie constructeur, configuration à la livraison et support de proximité.",
+        "benefits": [
+          "Matériel professionnel sélectionné et testé",
+          "Garantie constructeur & extension possible",
+          "Configuration & déploiement clés en main",
+          "Livraison rapide à Ouagadougou et en région",
+          "Reprise & valorisation de l'ancien parc"
+        ],
+        "process": [
+          "Audit des besoins & dimensionnement",
+          "Sélection & commande du matériel",
+          "Configuration, étiquetage & inventaire",
+          "Livraison, installation & formation utilisateur"
+        ],
+        "featureTitle": "Votre parc IT, géré de A à Z",
+        "featureDesc": "Du poste de travail au parc mobile, nous vous équipons en matériel performant, garanti et prêt à l'emploi — sans intermédiaire, avec un interlocuteur unique."
       }
     }
   },
@@ -826,14 +848,14 @@
   "servicesPage": {
     "meta": {
       "title": "Nos services",
-      "description": "Développement logiciel, intégration, cloud, cybersécurité, IA et transformation digitale. Découvrez les dix pôles d'expertise de Digital Station."
+      "description": "Développement logiciel, intégration, cloud, cybersécurité, IA et transformation digitale. Découvrez les  pôles d'expertise de Digital Station."
     },
     "eyebrow": "Nos métiers",
     "titleLine1": "Concevoir",
     "titleLine2": "des systèmes",
     "titleLine3": "qui durent.",
     "intro": "Nous concevons des CRM sur mesure, des plateformes ERP, des sites d'entreprise et des solutions e-commerce pour aider les organisations à croître et à opérer efficacement.",
-    "stat2Value": "10",
+    "stat2Value": "+10",
     "stat2Label": "Pôles d'expertise",
     "philosophy": {
       "first": {
@@ -856,15 +878,14 @@
     "scaleEyebrow": "Performance",
     "scaleTitleLead": "Conçu pour",
     "scaleTitleAccent": "durer.",
-    "scaleBody": "Que vous opériez à Ouagadougou ou sur plusieurs marchés, nos systèmes sont conçus pour s'adapter et tenir dans la durée.",
+    "scaleBody": "Que vous opériez au Burkina Faso , en Afrique ou sur plusieurs marchés a l'international, nos systèmes sont conçus pour s'adapter et tenir dans la durée.",
     "scalePoint1Title": "Sécurité intégrée",
     "scalePoint1Desc": "La protection des données pensée dès la conception, pas ajoutée après coup.",
     "scalePoint2Title": "Disponibilité",
     "scalePoint2Desc": "Supervision continue et interventions rapides pour limiter les interruptions.",
     "vizLabel": "Diagnostic système",
     "vizValue": "Optimisé.",
-    "ctaEyebrow": "Prêt à démarrer ?",
-    "ctaTitleLead": "Construisons",
+    "ctaTitleLead": "Travaillons",
     "ctaTitleAccent": "ensemble.",
     "ctaPrimary": "Démarrer un projet",
     "ctaSecondary": "Voir nos solutions"
@@ -876,7 +897,7 @@
       "heroBadgeLabel": "Expertise détaillée",
       "heroSubtitle": "Nous transformons vos objectifs en systèmes qui fonctionnent.",
       "heroCtaLabel": "Démarrer un projet",
-      "whyUsTitle": "Pourquoi nous choisir",
+      "whyUsTitle": "Pourquoi nous choisir\u00a0?",
       "whyUsIntro": "Ce que vous obtenez à chaque mission.",
       "featureCtaLabel": "Découvrir nos solutions",
       "ctaTitle": "Construisons-le",
@@ -904,15 +925,15 @@
       "ctaServices": "Nos services",
       "ctaContact": "Nous contacter",
       "statYears": "Années d'expérience",
-      "statLocal": "Basé au Burkina"
+      "statLocal": "Basé au Burkina Faso"
     },
     "mission": {
       "eyebrow": "Notre mission",
       "title": "Nous sommes le <accent>partenaire</accent> technologique que vous attendiez.",
-      "body1": "Digital Station accompagne les entreprises et institutions à travers l'Afrique de l'Ouest dans leur transformation numérique. De l'ingénierie logicielle sur mesure à l'infogérance continue, en passant par le conseil stratégique et la cybersécurité, nous offrons un écosystème complet de services piloté par une équipe d'experts passionnés.",
+      "body1": "Digital Station accompagne les entreprises et institutions à travers le Burkina Faso , l'afrique et le monde dans leur transformation numérique. De l'ingénierie logicielle sur mesure à l'infogérance continue, en passant par le conseil stratégique et la cybersécurité, nous offrons un écosystème complet de services piloté par une équipe d'experts passionnés.",
       "body2": "Notre approche repose sur trois piliers : l'excellence technique, la confiance mutuelle et une obsession pour les résultats concrets.",
-      "moreExpertises": "+{count} autres",
-      "statServices": "Services experts",
+      "moreExpertises": "+ 10 autres",
+      "statServices": "Domaines d'expertise",
       "expertises": {
         "webMobile": "Développement web & mobile",
         "cloud": "Solutions cloud & DevOps",
@@ -934,7 +955,7 @@
         },
         "innovation": {
           "title": "Innovation continue",
-          "desc": "Nous anticipons les mutations technologiques pour offrir des solutions d'avant-garde adaptées au marché africain."
+          "desc": "Nous anticipons les mutations technologiques pour offrir des solutions d'avant-garde adaptées aux besoins du client."
         },
         "partnership": {
           "title": "Partenariat durable",
@@ -978,14 +999,14 @@
       }
     },
     "director": {
-      "name": "Landry P. KABORE",
+      "name": "Landry .P. KABORE",
       "role": "Gérant",
       "initials": "LPK",
       "sectionTitle": "Mot du Gérant",
       "visionTitle": "Notre vision",
       "pillarsTitle": "Les piliers de notre stratégie de croissance",
-      "message": "La technologie n'est pas une fin en soi. C'est un levier au service d'une ambition humaine. Depuis notre création, notre conviction reste inchangée : accompagner chaque client comme un partenaire de long terme, lui offrir l'excellence technique sans jamais perdre de vue ses enjeux réels. Au Burkina Faso et en Afrique de l'Ouest, nous bâtissons le numérique de demain.",
-      "vision": {
+ "message" : "La révolution numérique n'est pas à l'horizon, c'est déjà une réalité, et nous sommes là pour contribuer à la façonner. <br></br>Nous aidons les entreprises à transformer la technologie en avantage concurrentiel grâce à des solutions innovantes, une technologie fiable et des partenariats conçus pour stimuler la croissance.<br></br>Du Burkina Faso au marché mondial, nous développons des solutions numériques qui créent une réelle valeur ajoutée pour les entreprises, ouvrent de nouvelles opportunités et transforment des idées ambitieuses en résultats durables.<br></br>Nous ne nous contentons pas de suivre le rythme de l’avenir. Nous le construisons avec vous.",
+       "vision": {
         "vision": {
           "title": "Vision 2030",
           "desc": "Devenir la référence IT en Afrique de l'Ouest"

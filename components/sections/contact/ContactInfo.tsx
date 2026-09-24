@@ -1,6 +1,6 @@
 'use client';
 
-import { type CSSProperties, useEffect, useState } from 'react';
+import { type CSSProperties } from 'react';
 import { Mail, MapPin, Phone, ExternalLink } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -10,7 +10,6 @@ import {
   mailHref,
   waHref,
   addressLine,
-  isOpenNow,
   formatTime,
 } from '@/config/site.config';
 import { cn } from '@/lib/utils';
@@ -20,21 +19,6 @@ export function ContactInfo({ locale }: { locale: string }) {
   const t = useTranslations('contact.info');
   const ts = useTranslations('contact.schedule');
   const tm = useTranslations('contact.meta');
-
-  /**
-   * Starts as null rather than a guess, so the server-rendered HTML and the
-   * first client render agree. The badge appears once the browser has told us
-   * the visitor's local time.
-   */
-  const [isOpen, setIsOpen] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const update = () => setIsOpen(isOpenNow());
-    update();
-    const interval = setInterval(update, 60_000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   /**
    * The column slides in with the CSS `.enter` animation (see globals.css),
@@ -107,26 +91,6 @@ export function ContactInfo({ locale }: { locale: string }) {
         </h1>
         <p className="text-brand-muted text-base md:text-lg mb-8">{t('intro')}</p>
       </div>
-
-      {/* Live availability */}
-      {isOpen !== null && (
-        <div className="mb-8 inline-flex items-center gap-3 rounded-full border border-brand-border px-4 py-2">
-          <span className="relative flex h-2.5 w-2.5">
-            {isOpen && (
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 light:bg-green-600 opacity-70" />
-            )}
-            <span
-              className={cn(
-                'relative inline-flex h-2.5 w-2.5 rounded-full',
-                isOpen ? 'bg-green-400 light:bg-green-600' : 'bg-brand-faint',
-              )}
-            />
-          </span>
-          <span className="text-[11px] md:text-xs font-black uppercase tracking-wide">
-            {isOpen ? t('statusOpen') : t('statusClosed')}
-          </span>
-        </div>
-      )}
 
       {/* The methods list needs a heading of its own; `contact.meta.title`
           ("Contact") is exactly that string and already exists. */}

@@ -1,24 +1,28 @@
-'use client';
+"use client";
 
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
-import { AlertCircle, ArrowRight, Mail, Send } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { AlertCircle, ArrowRight, Mail, Send } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 
-import { cn } from '@/lib/utils';
-import { MotionProvider } from '@/components/providers/MotionProvider';
-import { SERVICES } from '@/content/services';
-import { SOLUTIONS } from '@/content/solutions';
-import { FAQ_KEYS } from '@/content/faq';
-import { buildLeadSchema, LEAD_LIMITS, type LeadInput } from '@/lib/lead-schema';
-import { mailHref, waHref } from '@/config/site.config';
-import { trackEvent } from '@/lib/analytics';
-import { WhatsAppIcon } from '@/components/ui/icons/WhatsApp';
+import { cn } from "@/lib/utils";
+import { MotionProvider } from "@/components/providers/MotionProvider";
+import { SERVICES } from "@/content/services";
+import { SOLUTIONS } from "@/content/solutions";
+import { FAQ_KEYS } from "@/content/faq";
+import {
+  buildLeadSchema,
+  LEAD_LIMITS,
+  type LeadInput,
+} from "@/lib/lead-schema";
+import { mailHref, waHref } from "@/config/site.config";
+import { trackEvent } from "@/lib/analytics";
+import { WhatsAppIcon } from "@/components/ui/icons/WhatsApp";
 
-const BUDGET_KEYS = ['low', 'mid', 'high'] as const;
+const BUDGET_KEYS = ["low", "mid", "high"] as const;
 
 /**
  * `aria-describedby` takes a space-separated *id list*, not a class list. This
@@ -27,9 +31,9 @@ const BUDGET_KEYS = ['low', 'mid', 'high'] as const;
  * `contact-hint-sm` could have been silently dropped as a conflicting class.
  */
 const describedBy = (...ids: (string | false | undefined)[]) =>
-  ids.filter(Boolean).join(' ') || undefined;
+  ids.filter(Boolean).join(" ") || undefined;
 
-type SubmitState = 'idle' | 'sending' | 'sent' | 'error';
+type SubmitState = "idle" | "sending" | "sent" | "error";
 
 /**
  * `useSearchParams()` opts the whole subtree into client-side rendering, so
@@ -51,7 +55,7 @@ export function ContactForm() {
 
 function FormShell({ children }: { children?: React.ReactNode }) {
   return (
-    <div className="form-reveal bg-brand-surface border border-brand-border p-8 md:p-12 rounded-[2rem] relative overflow-hidden shadow-card min-h-[640px]">
+    <div className="form-reveal bg-brand-surface border border-brand-border p-8 md:p-12 rounded-[2rem] relative overflow-hidden  min-h-[640px]">
       <div
         aria-hidden="true"
         className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl -z-10"
@@ -62,12 +66,12 @@ function FormShell({ children }: { children?: React.ReactNode }) {
 }
 
 function ContactFormInner() {
-  const t = useTranslations('contact.form');
-  const tf = useTranslations('contact.faq');
-  const tm = useTranslations('contact.meta');
-  const tc = useTranslations('common');
-  const tsvc = useTranslations('services.items');
-  const tsol = useTranslations('solutions.items');
+  const t = useTranslations("contact.form");
+  const tf = useTranslations("contact.faq");
+  const tm = useTranslations("contact.meta");
+  const tc = useTranslations("common");
+  const tsvc = useTranslations("services.items");
+  const tsol = useTranslations("solutions.items");
   const searchParams = useSearchParams();
   // Motion's own hook (not @/lib/use-reduced-motion): `initial` is read once at
   // mount, so the value has to be right synchronously on the first render.
@@ -81,11 +85,14 @@ function ContactFormInner() {
    * from the catalogue again.
    */
   const objectiveOptions = useMemo(
-    () => [...SERVICES.map((s) => tsvc(`${s.slug}.title`)), t('objectives.other')],
+    () => [
+      ...SERVICES.map((s) => tsvc(`${s.slug}.title`)),
+      t("objectives.other"),
+    ],
     [tsvc, t],
   );
 
-  const [state, setState] = useState<SubmitState>('idle');
+  const [state, setState] = useState<SubmitState>("idle");
   const [showFAQ, setShowFAQ] = useState(false);
 
   /**
@@ -96,12 +103,12 @@ function ContactFormInner() {
   const schema = useMemo(
     () =>
       buildLeadSchema({
-        name: t('errors.name'),
-        email: t('errors.email'),
-        phone: t('errors.phone'),
-        contactRequired: t('errors.contactRequired'),
-        brief: t('errors.brief'),
-        tooLong: t('errors.tooLong'),
+        name: t("errors.name"),
+        email: t("errors.email"),
+        phone: t("errors.phone"),
+        contactRequired: t("errors.contactRequired"),
+        brief: t("errors.brief"),
+        tooLong: t("errors.tooLong"),
       }),
     [t],
   );
@@ -130,11 +137,11 @@ function ContactFormInner() {
   const sendingRef = useRef(false);
 
   useEffect(() => {
-    if (state === 'sent') {
+    if (state === "sent") {
       successHeadingRef.current?.focus();
-    } else if (state === 'idle' && refocusNameRef.current) {
+    } else if (state === "idle" && refocusNameRef.current) {
       refocusNameRef.current = false;
-      setFocus('name');
+      setFocus("name");
     }
   }, [state, setFocus]);
 
@@ -144,7 +151,7 @@ function ContactFormInner() {
    * then spread `{ ...data, budget }`, so the state copy silently won. One
    * source now; `reset()` clears the chips along with everything else.
    */
-  const budget = watch('budget') ?? '';
+  const budget = watch("budget") ?? "";
 
   /**
    * `/contact?product=<solution-slug>` — arriving from a "Demander une démo"
@@ -152,37 +159,40 @@ function ContactFormInner() {
    * seeds the brief with the product name, so the visitor starts from a
    * sentence instead of a blank box.
    */
-  const product = searchParams.get('product');
+  const product = searchParams.get("product");
 
   useEffect(() => {
     if (!product) return;
     const solution = SOLUTIONS.find((s) => s.id === product);
     if (!solution) return;
 
-    setValue('objective', tsvc('software-development.title'));
-    if (!getValues('brief')) {
-      setValue('brief', t('demoBrief', { product: tsol(`${solution.id}.name`) }));
+    setValue("objective", tsvc("software-development.title"));
+    if (!getValues("brief")) {
+      setValue(
+        "brief",
+        t("demoBrief", { product: tsol(`${solution.id}.name`) }),
+      );
     }
   }, [product, setValue, getValues, t, tsvc, tsol]);
 
   const onSubmit = async (data: LeadInput) => {
     if (sendingRef.current) return;
     sendingRef.current = true;
-    setState('sending');
+    setState("sending");
     try {
-      const response = await fetch('/api/leads', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
       if (!response.ok) {
         // The old build showed the success screen regardless of the response.
-        setState('error');
+        setState("error");
         return;
       }
 
-      setState('sent');
+      setState("sent");
       reset();
 
       /**
@@ -190,13 +200,13 @@ function ContactFormInner() {
        * The provider-specific guard lives in lib/analytics.ts rather than
        * being open-coded here, so call sites cannot forget it.
        */
-      trackEvent('contact_form_submitted', {
-        service: data.objective || 'unspecified',
-        budget: data.budget || 'unspecified',
+      trackEvent("contact_form_submitted", {
+        service: data.objective || "unspecified",
+        budget: data.budget || "unspecified",
       });
     } catch (error) {
-      console.error('Submission failed', error);
-      setState('error');
+      console.error("Submission failed", error);
+      setState("error");
     } finally {
       sendingRef.current = false;
     }
@@ -206,12 +216,12 @@ function ContactFormInner() {
      The light-theme reds are darker because red-500 is 3.8:1 on cream. */
   const fieldClass = (hasError: boolean) =>
     cn(
-      'w-full bg-brand-primary/50 border border-brand-field rounded-xl px-5 py-3.5 md:px-6 md:py-4 transition-all placeholder:text-brand-muted focus:border-brand-accent',
-      hasError && 'border-red-500/60 focus:border-red-500 light:border-red-700',
+      "w-full bg-brand-primary/50 border border-brand-field rounded-xl px-5 py-3.5 md:px-6 md:py-4 transition-all placeholder:text-brand-muted focus:border-brand-accent",
+      hasError && "border-red-500/60 focus:border-red-500 light:border-red-700",
     );
 
   const labelClass =
-    'text-[11px] md:text-xs uppercase tracking-wide font-black text-brand-muted ml-4';
+    "text-[11px] md:text-xs uppercase tracking-wide font-black text-brand-muted ml-4";
 
   /**
    * Fallbacks for the "the send failed, here are two other ways" panel.
@@ -219,21 +229,21 @@ function ContactFormInner() {
    */
   const retryText = () => {
     const v = getValues();
-    return [v.name, v.brief].filter(Boolean).join(' — ');
+    return [v.name, v.brief].filter(Boolean).join(" — ");
   };
 
   const retryMailHref = () => {
     const v = getValues();
-    const subject = `${tm('title')}${v.name ? ` — ${v.name}` : ''}`;
+    const subject = `${tm("title")}${v.name ? ` — ${v.name}` : ""}`;
     const body = [v.name, v.email, v.phone, v.objective, v.budget, v.brief]
       .filter(Boolean)
-      .join('\n');
+      .join("\n");
     return `${mailHref(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
     <FormShell>
-      {state === 'sent' ? (
+      {state === "sent" ? (
         <motion.div
           initial={reduced ? false : { opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -249,24 +259,24 @@ function ContactFormInner() {
             tabIndex={-1}
             className="text-3xl md:text-4xl font-black uppercase mb-4 text-balance outline-none"
           >
-            {t('successTitle')}
+            {t("successTitle")}
           </h2>
-          <p className="text-brand-muted text-sm mb-2">{t('successBody')}</p>
-          <p className="text-brand-muted text-xs mb-8">{t('successSpam')}</p>
+          <p className="text-brand-muted text-sm mb-2">{t("successBody")}</p>
+          <p className="text-brand-muted text-xs mb-8">{t("successSpam")}</p>
           <button
             type="button"
             onClick={() => {
               refocusNameRef.current = true;
-              setState('idle');
+              setState("idle");
             }}
             className="mt-4 text-brand-accent font-bold uppercase tracking-wide text-[11px] md:text-xs border-b-2 border-brand-accent pb-1 hover:text-brand-text hover:border-brand-text transition-colors min-h-11 px-2"
           >
-            {t('sendAnother')}
+            {t("sendAnother")}
           </button>
         </motion.div>
       ) : (
         <>
-          <h2 className="sr-only">{t('submit')}</h2>
+          <h2 className="sr-only">{t("submit")}</h2>
 
           {/* FAQ */}
           <div className="mb-8 bg-brand-primary/30 rounded-2xl p-5 border border-brand-border">
@@ -278,12 +288,12 @@ function ContactFormInner() {
               className="flex items-center justify-between w-full text-left group min-h-11"
             >
               <span className="text-xs font-bold uppercase tracking-wider">
-                {tf('title')}
+                {tf("title")}
               </span>
               <ArrowRight
                 className={cn(
-                  'w-4 h-4 transition-transform text-brand-accent',
-                  showFAQ && 'rotate-90',
+                  "w-4 h-4 transition-transform text-brand-accent",
+                  showFAQ && "rotate-90",
                 )}
               />
             </button>
@@ -293,7 +303,7 @@ function ContactFormInner() {
                 <motion.div
                   id="contact-faq-panel"
                   initial={reduced ? false : { height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
+                  animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: reduced ? 0 : 0.3 }}
                   className="overflow-hidden"
@@ -318,11 +328,19 @@ function ContactFormInner() {
             </AnimatePresence>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-6 md:space-y-8"
+          >
             {/* Honeypot — hidden from people, irresistible to bots. */}
             <div className="absolute -left-[9999px]" aria-hidden="true">
               <label htmlFor="company">Company</label>
-              <input id="company" tabIndex={-1} autoComplete="off" {...register('company')} />
+              <input
+                id="company"
+                tabIndex={-1}
+                autoComplete="off"
+                {...register("company")}
+              />
             </div>
 
             {/*
@@ -332,21 +350,23 @@ function ContactFormInner() {
             */}
             <div className="space-y-2">
               <label htmlFor="name" className={labelClass}>
-                {t('name')} <RequiredMark />
+                {t("name")} <RequiredMark />
               </label>
               <input
                 id="name"
                 type="text"
                 autoComplete="name"
                 maxLength={LEAD_LIMITS.name}
-                placeholder={t('namePlaceholder')}
+                placeholder={t("namePlaceholder")}
                 aria-required="true"
                 aria-invalid={!!errors.name}
-                aria-describedby={errors.name ? 'name-error' : undefined}
+                aria-describedby={errors.name ? "name-error" : undefined}
                 className={fieldClass(!!errors.name)}
-                {...register('name')}
+                {...register("name")}
               />
-              {errors.name && <FieldError id="name-error" message={errors.name.message} />}
+              {errors.name && (
+                <FieldError id="name-error" message={errors.name.message} />
+              )}
             </div>
 
             {/*
@@ -358,65 +378,79 @@ function ContactFormInner() {
               <div className="grid md:grid-cols-2 gap-6 md:gap-8">
                 <div className="space-y-2">
                   <label htmlFor="email" className={labelClass}>
-                    {t('email')}
+                    {t("email")}
                   </label>
                   <input
                     id="email"
                     type="email"
                     autoComplete="email"
                     maxLength={LEAD_LIMITS.email}
-                    placeholder={t('emailPlaceholder')}
+                    placeholder={t("emailPlaceholder")}
                     aria-invalid={!!errors.email}
-                    aria-describedby={
-                      describedBy(errors.email && 'email-error', 'contact-hint')
-                    }
+                    aria-describedby={describedBy(
+                      errors.email && "email-error",
+                      "contact-hint",
+                    )}
                     className={fieldClass(!!errors.email)}
-                    {...register('email')}
+                    {...register("email")}
                   />
                   {errors.email && (
-                    <FieldError id="email-error" message={errors.email.message} />
+                    <FieldError
+                      id="email-error"
+                      message={errors.email.message}
+                    />
                   )}
                 </div>
 
                 <div className="space-y-2">
                   <label htmlFor="phone" className={labelClass}>
-                    {t('phone')}
+                    {t("phone")}
                   </label>
                   <input
                     id="phone"
                     type="tel"
                     autoComplete="tel"
                     maxLength={LEAD_LIMITS.phone}
-                    placeholder={t('phonePlaceholder')}
+                    placeholder={t("phonePlaceholder")}
                     aria-invalid={!!errors.phone}
-                    aria-describedby={
-                      describedBy(errors.phone && 'phone-error', 'contact-hint')
-                    }
+                    aria-describedby={describedBy(
+                      errors.phone && "phone-error",
+                      "contact-hint",
+                    )}
                     className={fieldClass(!!errors.phone)}
-                    {...register('phone')}
+                    {...register("phone")}
                   />
                   {errors.phone && (
-                    <FieldError id="phone-error" message={errors.phone.message} />
+                    <FieldError
+                      id="phone-error"
+                      message={errors.phone.message}
+                    />
                   )}
                 </div>
               </div>
 
-              <p id="contact-hint" className="text-[11px] md:text-xs text-brand-muted ml-4">
-                {t('contactHint')}
+              <p
+                id="contact-hint"
+                className="text-[11px] md:text-xs text-brand-muted ml-4"
+              >
+                {t("contactHint")}
               </p>
             </div>
 
             <div className="space-y-2">
               <label htmlFor="objective" className={labelClass}>
-                {t('objective')}
+                {t("objective")}
               </label>
               <div className="relative">
                 <select
                   id="objective"
-                  className={cn(fieldClass(false), 'appearance-none cursor-pointer')}
-                  {...register('objective')}
+                  className={cn(
+                    fieldClass(false),
+                    "appearance-none cursor-pointer",
+                  )}
+                  {...register("objective")}
                 >
-                  <option value="">{t('objectivePlaceholder')}</option>
+                  <option value="">{t("objectivePlaceholder")}</option>
                   {objectiveOptions.map((label) => (
                     <option key={label} value={label}>
                       {label}
@@ -431,9 +465,13 @@ function ContactFormInner() {
 
             <div className="space-y-3">
               <span id="budget-label" className={labelClass}>
-                {t('budget')}
+                {t("budget")}
               </span>
-              <div role="group" aria-labelledby="budget-label" className="grid grid-cols-3 gap-3">
+              <div
+                role="group"
+                aria-labelledby="budget-label"
+                className="grid grid-cols-3 gap-3"
+              >
                 {BUDGET_KEYS.map((key) => {
                   const label = t(`budgets.${key}`);
                   const selected = budget === label;
@@ -442,15 +480,16 @@ function ContactFormInner() {
                       key={key}
                       type="button"
                       aria-pressed={selected}
-                      onClick={() => setValue('budget', label)}
+                      onClick={() => setValue("budget", label)}
                       className={cn(
-                        'min-h-11 py-3 rounded-xl border-2 transition-all text-xs font-bold uppercase tracking-wide',
+                        "min-h-11 py-3 rounded-xl border-2 transition-all text-xs font-bold uppercase tracking-wide",
                         selected
-                          ? 'border-brand-accent bg-brand-accent-soft text-brand-accent scale-105'
-                          : 'border-brand-border text-brand-muted hover:border-brand-accent/50 hover:text-brand-text',
+                          ? "border-brand-accent bg-brand-accent-soft text-brand-accent scale-105"
+                          : "border-brand-border text-brand-muted hover:border-brand-accent/50 hover:text-brand-text",
                       )}
                     >
-                      {label} <span className="text-[11px]">{t('currency')}</span>
+                      {label}{" "}
+                      <span className="text-[11px]">{t("currency")}</span>
                     </button>
                   );
                 })}
@@ -459,20 +498,22 @@ function ContactFormInner() {
 
             <div className="space-y-2">
               <label htmlFor="brief" className={labelClass}>
-                {t('brief')} <RequiredMark />
+                {t("brief")} <RequiredMark />
               </label>
               <textarea
                 id="brief"
                 rows={5}
                 maxLength={LEAD_LIMITS.brief}
-                placeholder={t('briefPlaceholder')}
+                placeholder={t("briefPlaceholder")}
                 aria-required="true"
                 aria-invalid={!!errors.brief}
-                aria-describedby={errors.brief ? 'brief-error' : undefined}
-                className={cn(fieldClass(!!errors.brief), 'resize-none')}
-                {...register('brief')}
+                aria-describedby={errors.brief ? "brief-error" : undefined}
+                className={cn(fieldClass(!!errors.brief), "resize-none")}
+                {...register("brief")}
               />
-              {errors.brief && <FieldError id="brief-error" message={errors.brief.message} />}
+              {errors.brief && (
+                <FieldError id="brief-error" message={errors.brief.message} />
+              )}
             </div>
 
             {/*
@@ -480,14 +521,17 @@ function ContactFormInner() {
               email address to copy by hand. Now the two channels that always
               work are one tap away, prefilled with what was already typed.
             */}
-            {state === 'error' && (
+            {state === "error" && (
               <div
                 role="alert"
                 className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-4 space-y-4"
               >
                 <p className="flex items-start gap-2 text-xs text-red-400 light:text-red-700">
-                  <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0 mt-px" />
-                  {t('errors.submit')}
+                  <AlertCircle
+                    aria-hidden="true"
+                    className="w-4 h-4 shrink-0 mt-px"
+                  />
+                  {t("errors.submit")}
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <a
@@ -497,14 +541,14 @@ function ContactFormInner() {
                     className="btn-outline inline-flex items-center gap-2 px-5 py-3 text-xs"
                   >
                     <WhatsAppIcon size={18} className="text-green-500" />
-                    {t('retryWhatsapp')}
+                    {t("retryWhatsapp")}
                   </a>
                   <a
                     href={retryMailHref()}
                     className="btn-outline inline-flex items-center gap-2 px-5 py-3 text-xs"
                   >
                     <Mail className="w-4 h-4" />
-                    {t('retryEmail')}
+                    {t("retryEmail")}
                   </a>
                 </div>
               </div>
@@ -513,29 +557,31 @@ function ContactFormInner() {
             {/* Always in the DOM, so screen readers are already watching it
                 when "Envoi…" appears. */}
             <p role="status" className="sr-only">
-              {state === 'sending' ? t('sending') : ''}
+              {state === "sending" ? t("sending") : ""}
             </p>
 
             <motion.button
               type="submit"
-              aria-disabled={state === 'sending'}
-              whileHover={{ scale: state === 'sending' ? 1 : 1.02 }}
-              whileTap={{ scale: state === 'sending' ? 1 : 0.98 }}
+              aria-disabled={state === "sending"}
+              whileHover={{ scale: state === "sending" ? 1 : 1.02 }}
+              whileTap={{ scale: state === "sending" ? 1 : 0.98 }}
               className={cn(
-                'btn-primary w-full py-5 flex items-center justify-center gap-3 text-base md:text-lg uppercase font-black',
-                state === 'sending' && 'opacity-70 pointer-events-none',
+                "btn-primary w-full py-5 flex items-center justify-center gap-3 text-base md:text-lg uppercase font-black",
+                state === "sending" && "opacity-70 pointer-events-none",
               )}
             >
-              {state === 'sending' ? t('sending') : t('submit')}
-              {state !== 'sending' && <Send className="w-5 h-5" />}
+              {state === "sending" ? t("sending") : t("submit")}
+              {state !== "sending" && <Send className="w-5 h-5" />}
             </motion.button>
 
             {/* The promise sits directly under the button, where it answers
                 "and then what happens?" at the moment of clicking. */}
             <p className="text-center text-xs md:text-sm text-brand-muted">
-              {tc('promise')}
+              {tc("promise")}
             </p>
-            <p className="text-center text-xs text-brand-muted">{t('privacyNote')}</p>
+            <p className="text-center text-xs text-brand-muted">
+              {t("privacyNote")}
+            </p>
           </form>
         </>
       )}

@@ -85,7 +85,7 @@ export function ToolsWeMaster() {
     <section
       id="tools"
       ref={sectionRef}
-      className="lg:pl-16 border-t border-brand-border py-24 lg:py-32 overflow-hidden"
+      className="lg:pl-16 border-t border-brand-border py-12 lg:py-16 overflow-hidden"
     >
       <Container>
         <div className="mb-14 md:mb-20 text-center">

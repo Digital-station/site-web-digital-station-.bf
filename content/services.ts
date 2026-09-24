@@ -86,6 +86,12 @@ export const SERVICES: readonly ServiceMeta[] = [
     accentColor: 'text-blue-500 light:text-blue-700',
     image: '/placeholders/service-intelligence-artificielle.jpg',
   },
+  {
+    slug: 'negoce',
+    num: '11',
+    accentColor: 'text-orange-400 light:text-orange-700',
+    image: '/placeholders/service-negoce.jpg',
+  },
 ] as const;
 
 /** Look up a service by slug. Returns undefined for unknown slugs. */

@@ -98,7 +98,7 @@ export function ThemeToggle({
       className={cn(
         'h-11 w-11 shrink-0 rounded-full flex items-center justify-center',
         'text-brand-muted transition-colors duration-300',
-        isLight ? 'hover:text-brand-accent' : 'hover:text-amber-400',
+        'hover:text-brand-accent',
         'focus-visible:ring-2 focus-visible:ring-brand-accent',
         className,
       )}

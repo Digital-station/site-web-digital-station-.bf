@@ -1,4 +1,5 @@
 import {
+  Box,
   Cloud,
   Code2,
   Cpu,
@@ -36,6 +37,7 @@ export const SERVICE_ICONS: Record<string, LucideIcon> = {
   'cybersecurite-conformite': ShieldCheck,
   'cloud-hebergement': Cloud,
   'intelligence-artificielle': Cpu,
+  'negoce': Box,
 };
 
 export const getServiceIcon = (slug: string): LucideIcon =>
