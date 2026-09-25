@@ -10,12 +10,11 @@ import {
   Sparkles,
   MessageCircle,
   Mail,
-  ShieldCheck,
   CheckCircle2,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { site, addressLine } from "@/config/site.config";
+import { site } from "@/config/site.config";
 
 /**
  * « Mot du Gérant » — the director's message and signature card with verified leadership accountability.
@@ -189,7 +188,7 @@ export const DirectorWord = () => {
                         {DIRECTOR.name}
                       </p>
                       <span
-                        title="Identité vérifiée"
+                        title={t("verifiedIdentity")}
                         className="text-brand-accent"
                       >
                         <CheckCircle2 className="w-4 h-4 fill-brand-accent text-brand-surface" />
@@ -214,7 +213,7 @@ export const DirectorWord = () => {
                     className="flex-1 py-2.5 px-3 rounded-xl border border-brand-border hover:border-brand-accent hover:bg-brand-accent-soft transition-all text-xs font-mono font-bold flex items-center justify-center gap-2 text-brand-muted hover:text-brand-text"
                   >
                     <MessageCircle className="w-4 h-4 text-[#25D366]" />
-                    <span>Chat WhatsApp</span>
+                    <span>{t("chatWhatsApp")}</span>
                   </a>
 
                   <a
@@ -222,7 +221,7 @@ export const DirectorWord = () => {
                     className="flex-1 py-2.5 px-3 rounded-xl border border-brand-border hover:border-brand-accent hover:bg-brand-accent-soft transition-all text-xs font-mono font-bold flex items-center justify-center gap-2 text-brand-muted hover:text-brand-text"
                   >
                     <Mail className="w-4 h-4 text-brand-accent" />
-                    <span>Email Direct</span>
+                    <span>{t("directEmail")}</span>
                   </a>
                 </div>
               </div>

@@ -12,7 +12,6 @@ export type ProductPreviewData = {
   tags: string[];
   metrics: { label: string; value: string }[];
   features: { title: string; desc: string }[];
-  techStack: string[];
   demoType: 'live' | 'guided';
   mockupScreens: {
     title: string;
@@ -136,8 +135,6 @@ export function ProductPreviewModal({ product, onClose }: ProductPreviewModalPro
                     onClick={() => setActiveTab(idx)}
                     className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
                       activeTab === idx
-                        // accent-strong, not accent: white on the
-                        // electric-cyan accent is ~2:1 in the dark theme.
                         ? 'bg-brand-accent-strong text-brand-on-accent shadow-md shadow-brand-accent-strong/20'
                         : 'border border-brand-border text-brand-muted hover:border-brand-accent/50 hover:text-brand-text'
                     }`}
@@ -186,23 +183,6 @@ export function ProductPreviewModal({ product, onClose }: ProductPreviewModalPro
                   </div>
                 </div>
               )}
-            </div>
-
-            {/* Tech Stack Chips */}
-            <div className="space-y-2">
-              <span className="text-xs font-mono uppercase text-brand-muted tracking-wider">
-                {ts('modal.archTitle')}
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {product.techStack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="text-xs font-mono px-3 py-1 rounded-lg bg-brand-primary border border-brand-border text-brand-muted"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
             </div>
           </div>
 

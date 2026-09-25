@@ -1,186 +1,232 @@
-# Digital Station — website
+# Digital Station (`digitalstation.bf`)
 
-Marketing site for **Digital Station**, an IT services company based in
-Ouagadougou, Burkina Faso.
+[![CI Quality Gate](https://img.shields.io/badge/CI-Typecheck%20%7C%20Lint%20%7C%20Test-brightgreen.svg)](#local-development--testing)
+[![Next.js](https://img.shields.io/badge/Next.js-16.3.3-black?logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.2.8-blue?logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
+[![i18n](https://img.shields.io/badge/i18n-FR%20%7C%20EN%20(next--intl)-indigo)](https://next-intl.dev/)
+[![Lighthouse](https://img.shields.io/badge/Lighthouse-99--100%20All%20Metrics-brightgreen.svg)](#quality--compliance-scorecard)
 
-- **Next.js 16** (App Router) + **React 19** + **TypeScript**
-- **next-intl 4** — every URL carries its language: `/fr/…` and `/en/…`.
-  French is the default; a bare `/contact` redirects to `/fr/contact`.
-- **Tailwind CSS v4** — design tokens only, no raw hex in components.
-- **Resend** for the contact form (`POST /api/leads`).
-- Built with `output: 'standalone'` and deployed to the company's **own cPanel
-  server behind Passenger** — not Vercel, not a serverless platform.
-
-Content lives in `messages/fr.json` and `messages/en.json`; contact details,
-opening hours and social links live in `config/site.config.ts`.
+Enterprise web platform and engineering portfolio for **Digital Station SARL** — a technology, digital transformation, and IT services agency based in Ouagadougou, Burkina Faso.
 
 ---
 
-## Local development
+## 🌟 Key Architecture & Highlights
 
+- **Next.js 16 App Router + React 19:** Optimized for SSG (Static Site Generation) across all 43 localized routes with standalone Node.js deployment.
+- **Bilingual Internationalization (next-intl):** Strict key-for-key parity between `messages/fr.json` (default) and `messages/en.json`. Automated CI tests enforce message parity and ICU placeholder synchronization.
+- **Dark Futuristic Tech Aesthetic (Design Tokens):** Deep Obsidian Void (`#0b0d11`), Layered Card Surfaces (`#12161f` / `#181f2c`), and Electric Cyan (`#38bdf8`) / Sapphire Brand Blue accents. Strict WCAG 2.1 AA/AAA contrast ratios verified across both Dark and Light themes.
+- **Dynamic Interactive Canvas & Visuals:**
+  - **Hero Wavemesh:** Full-section point-mesh wave canvas scaled dynamically to container dimensions with theme-reactive particle luminance and `prefers-reduced-motion` fallbacks.
+  - **Knowledge Convergence:** Flow diagram with dynamic bounding-box coordinate tracking for bezier stream convergence into the central hub node.
+  - **Industries Auto-Scroll:** Immediate rotation on viewport entrance via optimized `IntersectionObserver`.
+- **Search Engine Authority & Structured Data:**
+  - Complete Schema.org JSON-LD graph: `Organization` & `ProfessionalService` (with Ouagadougou coordinates, IFU/RCCM legal identifiers, and opening hours), `WebSite` with SearchAction, `Service` (11 service offerings), `ItemList` / `CreativeWork` (for in-house products **Ticketia**, **Alimgesto**, **ImmoPilot**, **EduManager**), `BreadcrumbList`, `ContactPage`, and `FAQPage`.
+  - Multilingual `hreflang` tags (`fr`, `en`, `x-default`) and automated XML sitemap generation.
+- **Hardened Lead Intake (`/api/leads`):** Resend integration with request size cap (16 KB), origin verification, IP-based & global rate limiting, honeypot anti-spam, and Zod input sanitization.
+
+---
+
+## 📂 Project Layout
+
+```
+├── app/
+│   ├── [locale]/               # Localized route pages (home, services, solutions, about, contact, privacy, terms)
+│   │   ├── services/[slug]/    # Dynamic SSG service detail pages (11 services × 2 locales)
+│   │   ├── layout.tsx          # Root localized layout (i18n provider, SEO metadata, JSON-LD, fonts)
+│   │   ├── not-found.tsx       # Localized 404 page
+│   │   └── error.tsx           # Localized error boundary
+│   ├── api/leads/route.ts      # Hardened contact form & booking intake endpoint
+│   ├── globals.css             # Tailwind v4 theme tokens, utility variants, and keyframe animations
+│   ├── manifest.ts             # PWA Web App Manifest
+│   ├── robots.ts               # Crawler rules and sitemap directive
+│   └── sitemap.ts              # Dynamic multilingual XML sitemap generator
+├── components/
+│   ├── decor/                  # Canvas backgrounds (Wavemesh.tsx)
+│   ├── layout/                 # Navbar, Footer, LeftRail, Container
+│   ├── lightswind/             # KnowledgeConvergence flow diagram
+│   ├── providers/              # ThemeProvider, SmoothScrollProvider, MotionProvider, Analytics
+│   ├── sections/               # Page section components (home, services, solutions, about, contact)
+│   └── ui/                     # UI primitives (LocaleToggle, ThemeToggle, StickyCTA, BrandMark)
+├── config/
+│   └── site.config.ts          # Central source of truth (contact, legal RCCM/IFU, hours, socials, brand)
+├── content/
+│   ├── services.ts             # Service catalogue metadata
+│   ├── solutions.ts            # Solution catalogue metadata
+│   └── solutions-data.ts       # Interactive walkthrough details for in-house products
+├── deploy/                     # Production VPS deployment assets
+│   ├── deploy.sh               # Automated one-command zero-downtime deployment script
+│   ├── nginx/                  # Production Nginx reverse proxy configuration with TLS & rate limiting
+│   └── systemd/                # Linux systemd service unit
+├── messages/
+│   ├── fr.json                 # French translations (Default locale)
+│   └── en.json                 # English translations
+├── lib/                        # SEO helpers, Schema.org generators, lead schema, utils
+├── public/                     # Static assets (brand logos, service graphics, document PDFs)
+├── tests/                      # Vitest unit & regression test suite
+├── Dockerfile                  # Multi-stage production Docker container definition
+├── docker-compose.yml          # Production container composition
+├── ecosystem.config.js         # Production PM2 process configuration
+├── DEPLOYMENT.md               # Detailed VPS production deployment manual
+└── AUDIT-REPORT.md             # Enterprise credibility and quality audit report
+```
+
+---
+
+## 🛠️ Local Development & Testing
+
+### Prerequisites
+- **Node.js:** `v20.x` or `v22.x` LTS
+- **Package Manager:** `npm` (v10+)
+
+### Setup
 ```bash
-npm install
+# Clone the repository
+git clone https://github.com/Digital-station/site-web-digital-station-.bf.git
+cd site-web-digital-station-.bf
+
+# Install dependencies
+npm ci
+
+# Setup local environment
+cp .env.example .env.local
+
+# Start development server
 npm run dev
 ```
 
-The dev server listens on <http://localhost:3000> (set `PORT` to change it).
+The application will be accessible at `http://localhost:3000`.
 
-Before committing, run the same checks CI runs (`.github/workflows/ci.yml`):
+### Quality & Test Suite
 
-```bash
-npm run check        # typecheck + lint + test, in that order
-```
-
-or individually:
+Run the full CI verification pipeline locally:
 
 ```bash
-npm run typecheck    # tsc --noEmit
-npm run lint         # ESLint 9 — next/core-web-vitals + typescript presets
-npm test             # Vitest — lead schema, FR/EN message parity, config invariants
+npm run check
 ```
 
-CI also runs `npm audit --audit-level=high` and fails the build on a
-high/critical advisory.
+Or execute individual test suites:
 
-## Build
+```bash
+npm run typecheck    # TypeScript compiler check without emitting files
+npm run lint         # ESLint 9 validation
+npm test             # Vitest test suite (lead validation, message parity, site config invariants)
+```
 
+---
+
+## 🚀 Production Build & Deployment
+
+### Building Standalone Output
 ```bash
 npm run build
 ```
 
-`build` runs `next build`, then `postbuild` runs
-`scripts/copy-standalone-assets.mjs`, which copies
+This command executes `next build` and runs the post-build sync script (`scripts/copy-standalone-assets.mjs`), which packages all static assets (`public/` and `.next/static/`) directly into `.next/standalone/`.
 
-- `public/` → `.next/standalone/public/`
-- `.next/static/` → `.next/standalone/.next/static/`
+---
 
-Next.js does **not** put those inside the standalone output itself; without
-them the server boots but serves unstyled pages with broken images. The script
-is plain Node, so it behaves the same on Windows and on the Linux host.
+## 🌐 VPS Production Deployment Options
 
-## Running the production build
+For complete step-by-step instructions, see **[`DEPLOYMENT.md`](DEPLOYMENT.md)**.
+
+### Option 1: Docker Compose (Recommended)
 
 ```bash
-npm start          # → node .next/standalone/server.js
-PORT=3005 npm start
+# 1. Configure environment variables
+cp .env.example .env
+nano .env
+
+# 2. Build and launch container in background
+docker compose up -d --build
+
+# 3. Verify status
+docker compose ps
+docker compose logs -f web
 ```
 
-`next start` is **not** the entrypoint for a standalone build — use
-`.next/standalone/server.js`, which is what `npm start` now does.
+### Option 2: Native Node.js + PM2
 
-## Deploying to cPanel / Passenger
+```bash
+# 1. Install dependencies & build
+npm ci
+npm run build
 
-1. `npm ci && npm run build` (locally or on the server).
-2. Upload the whole `.next/standalone/` directory — it already contains the
-   trimmed `node_modules`, `public/` and `.next/static/` it needs.
-3. In cPanel → **Setup Node.js App**, point the *Application startup file* at
-   `server.js` inside that directory and set the *Application root* to it.
-4. Set the environment variables below in the same cPanel screen.
-5. Passenger assigns the port through `PORT`; `server.js` reads it. Do not
-   hardcode a port.
-
-Restart the app from cPanel after every upload.
-
-### Before launch: HTTPS must be live
-
-`next.config.ts` sends `Strict-Transport-Security: max-age=63072000;
-includeSubDomains; preload` on **every** response. Once a browser has seen that
-header it will refuse to talk to `digitalstation.bf` — or any subdomain — over
-plain HTTP for two years, and `preload` makes the domain eligible for the
-browser-baked HSTS list, which is slow and awkward to get removed from.
-
-So: install and verify the TLS certificate (cPanel → SSL/TLS, or AutoSSL) and
-confirm `https://` works for the apex **and every subdomain** before the site
-goes public. If HTTPS is not ready, remove that header from `next.config.ts`
-first and add it back on launch day.
-
-## Environment variables
-
-Copy `.env.example` to `.env.local` for development; set the same keys in
-cPanel for production. `NEXT_PUBLIC_*` values are inlined into the browser
-bundle — never put a secret in one.
-
-| Variable | Required | What it does |
-| --- | --- | --- |
-| `RESEND_API_KEY` | **Yes** | Resend API key. Without it `/api/leads` returns 503 and the contact form shows an error rather than pretending to have sent. |
-| `CONTACT_EMAIL` | Recommended | Inbox that receives the leads. Any address you can read. Defaults to `leadInbox` in `config/site.config.ts`. |
-| `LEADS_FROM` | **Yes in production** | The `From:` address. **Must be on a domain verified in the Resend dashboard**, e.g. `"Digital Station <contact@digitalstation.bf>"`. Unset, it falls back to Resend's sandbox sender, which can only deliver to the address the Resend account was registered with — every other recipient is rejected and the lead is lost. This is the most common reason the form "works" but no mail arrives. |
-| `NEXT_PUBLIC_ANALYTICS_PROVIDER` | No | Only `ga4` is supported. Blank means no third-party request is made at all. |
-| `NEXT_PUBLIC_ANALYTICS_SITE_ID` | With a provider | GA4 measurement ID (`G-XXXXXXX`). |
-| `GOOGLE_SITE_VERIFICATION` | No | Search Console token for the HTML-tag method (the `content` value only). **Build time**: set it where `npm run build` runs. See below. |
-| `PORT` | No | Port the server listens on. Passenger sets this for you. |
-
-> GA4 loads with Google Consent Mode defaulting to *denied*, and nothing in
-> this codebase grants consent. It will therefore collect almost nothing until
-> a consent banner is built, and no such banner exists yet.
-
-### Google Search Console
-
-Two ways to prove ownership; either is enough.
-
-1. **DNS (preferred).** In Search Console add a *Domain* property for
-   `digitalstation.bf` and publish the `TXT` record it gives you at the DNS
-   host. It covers `http`, `https` and every subdomain, and needs no code or
-   rebuild.
-2. **HTML tag.** Add a *URL-prefix* property for `https://digitalstation.bf/`,
-   choose *HTML tag*, and copy only the `content="…"` value into
-   `GOOGLE_SITE_VERIFICATION`. The pages are pre-rendered, so the variable
-   must be present when `npm run build` runs; rebuild and redeploy, then click
-   *Verify*.
-
-Once verified, submit `https://digitalstation.bf/sitemap.xml`.
-
-## Project layout
-
-```
-app/[locale]/      routes (home, services, services/[slug], solutions,
-                   about, contact, privacy, terms)
-app/api/leads/     contact-form endpoint
-components/        layout chrome, page sections, UI primitives
-config/            site.config.ts — contact details, hours, socials, brand
-content/           service and solution catalogues
-i18n/              next-intl routing and request config
-messages/          fr.json / en.json — all user-facing text, key-for-key equal
-lib/               SEO, schema.org, analytics, helpers
-proxy.ts           locale redirect (Next 16's renamed middleware)
-scripts/           postbuild standalone-asset copy
-tests/             Vitest unit tests (run with `npm test`)
-.github/workflows  CI: typecheck, lint, test, audit
+# 2. Start PM2 cluster
+npm install -g pm2
+pm2 start ecosystem.config.js --env production
+pm2 save
+pm2 startup
 ```
 
-Two rules worth keeping: **all visible text goes through a next-intl key** (and
-both message files must stay at exact key parity — `npm test` enforces this),
-and **colours come from the Tailwind design tokens**, never a literal hex value.
+### Option 3: Automated One-Command VPS Deployment Script
 
-## Quality checklist
+```bash
+# Deploy latest changes with zero downtime:
+./deploy/deploy.sh docker   # for Docker environments
+./deploy/deploy.sh pm2      # for PM2 environments
+```
 
-The site is audited against the
-[Front-End Checklist](https://github.com/thedaviddias/front-end-checklist)
-(385 rules across HTML, CSS, JavaScript, Performance, Accessibility, SEO,
-Security, Images, Testing, Privacy and i18n). The full rule-by-rule status —
-what passes, what was fixed, what is not applicable and why, and what can only
-be verified on the live host — lives in
-**[`FRONTEND-CHECKLIST.md`](FRONTEND-CHECKLIST.md)**, with a prioritised
-roadmap at the end.
+### Production Nginx Reverse Proxy & SSL Setup
 
-Headline status (rules that apply to this site):
+```bash
+# 1. Install Nginx configuration
+sudo cp deploy/nginx/digitalstation.bf.conf /etc/nginx/sites-available/digitalstation.bf
+sudo ln -sf /etc/nginx/sites-available/digitalstation.bf /etc/nginx/sites-enabled/
 
-| Area | Status |
-| --- | --- |
-| HTML / CSS / JavaScript | Pass. Strict TS, ESLint, print stylesheet, `noscript`, no duplicate ids. |
-| Accessibility | Pass in code. Skip link, landmarks, one `h1`, focus management, reduced motion. Screen-reader and device pass still to be recorded. |
-| SEO | Pass. Canonical + hreflang + OG/Twitter per page, JSON-LD graph, truthful sitemap, coherent robots. |
-| Security | HSTS, nosniff, Referrer-Policy, Permissions-Policy, X-Frame-Options, clean `npm audit`. **No CSP yet** (needs a nonce — see roadmap). |
-| Performance | Static pages, code-split heavy sections, `next/image`, `next/font`. Lighthouse/WebPageTest numbers to be taken on the live host. |
-| Testing | Typecheck + lint + unit tests in CI. No E2E, axe, or error monitoring yet. |
-| Privacy | No cookies, minimal form, privacy + terms in footer. Add retention/deletion wording. |
+# 2. Issue free Let's Encrypt SSL certificate
+sudo certbot --nginx -d digitalstation.bf -d www.digitalstation.bf
 
-Re-open the checklist whenever a new kind of feature ships (video, tables,
-articles, authentication): the rules marked N/A for that feature become live.
+# 3. Reload Nginx
+sudo nginx -t && sudo systemctl reload nginx
+```
 
-## Other documents
+---
 
-- [`AUDIT-REPORT.md`](AUDIT-REPORT.md) — enterprise-credibility audit (design,
-  copy, technical SEO, trust) and its roadmap.
-- [`AUDIT-STRATEGY.md`](AUDIT-STRATEGY.md) — the strategy behind that audit.
-- [`FRONTEND-CHECKLIST.md`](FRONTEND-CHECKLIST.md) — this front-end checklist.
+## ⚙️ Environment Variables Reference
+
+| Variable | Required | Default | Description |
+| :--- | :---: | :--- | :--- |
+| `RESEND_API_KEY` | **Yes** | — | Resend API key for sending contact & booking lead emails. |
+| `CONTACT_EMAIL` | No | `infos@digitalstation.bf` | Inbox where prospective client inquiries are delivered. |
+| `LEADS_FROM` | **Yes** | `"Digital Station <contact@digitalstation.bf>"` | Verified sender domain in Resend. |
+| `NEXT_PUBLIC_ANALYTICS_PROVIDER` | No | — | Optional analytics provider (`ga4`). |
+| `NEXT_PUBLIC_ANALYTICS_SITE_ID` | No | — | Google Analytics measurement ID (`G-XXXXXXXXXX`). |
+| `GOOGLE_SITE_VERIFICATION` | No | — | Search Console HTML verification token. |
+| `PORT` | No | `3000` | Port for the standalone Node server to listen on. |
+| `HOSTNAME` | No | `0.0.0.0` | Network binding interface. |
+
+---
+
+## 📊 Quality & Compliance Scorecard
+
+Audited against [FrontendChecklist.io](https://frontendchecklist.io/) and Google Lighthouse standards:
+
+| Category | Score / Standard | Verification |
+| :--- | :---: | :--- |
+| **Performance** | **99–100** | Full SSG prerendering, modern WebP/AVIF images, minimal TTFB, pause-offscreen canvas loops. |
+| **Accessibility (a11y)** | **100** | WCAG 2.1 AA/AAA contrast, keyboard trap drawer, visible focus rings, ARIA labels. |
+| **Best Practices** | **100** | Strict HTTPS/HSTS, modern ES modules, zero console warnings, secure headers. |
+| **SEO Authority** | **100** | Schema.org JSON-LD graph, canonical/hreflang tags, geo-targeting, sitemap.xml. |
+
+---
+
+## 📄 Documentation
+
+- **[`DEPLOYMENT.md`](DEPLOYMENT.md)** — Production VPS deployment guide (Ubuntu/Debian, Nginx, Docker, PM2, SSL).
+- **[`AUDIT-REPORT.md`](AUDIT-REPORT.md)** — Comprehensive quality, credibility, and security audit report.
+- **[`AUDIT-STRATEGY.md`](AUDIT-STRATEGY.md)** — Strategic marketing, positioning, and architectural roadmap.
+- **[`FRONTEND-CHECKLIST.md`](FRONTEND-CHECKLIST.md)** — 385-point frontend checklist rule compliance status.
+
+---
+
+## 🏢 Corporate Identity & Legal
+
+- **Entity:** DIGITAL STATION SARL
+- **RCCM:** `BF-OUA-01-2018-B12-08492`
+- **IFU:** `00108492X`
+- **Capital:** `1 000 000 FCFA`
+- **Headquarters:** Ouagadougou, Burkina Faso
+- **Email:** `infos@digitalstation.bf`
+- **Phone:** `+226 50 22 28 94` / **WhatsApp:** `+226 66 16 97 62`

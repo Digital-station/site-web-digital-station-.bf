@@ -124,36 +124,21 @@ export function IndustriesWeServe() {
   const [activeIndex, setActiveIndex] = useState(-1);
 
   /**
-   * Why the rotation is stopped. Kept as separate flags: a single `isPaused`
-   * was set by hover, focus and search and cleared by the scroll timer, so
-   * any scroll restarted a carousel the visitor was hovering or had just
-   * searched. Hover and keyboard focus are the pause control (WCAG 2.2.2);
+   * Why the rotation is stopped.
+   * Hover and keyboard focus provide pause control (WCAG 2.2.2);
    * a non-empty search holds the chosen industry in the centre.
    */
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
-  const [scrolling, setScrolling] = useState(false);
-  const isPaused = hovered || focused || scrolling || searchTerm !== "";
+  const isPaused = hovered || focused || searchTerm !== "";
 
   const inputRef = useRef<HTMLInputElement>(null);
   const listId = useId();
   const optionId = (id: string) => `${listId}-${id}`;
 
-  /**
-   * The in-view observer MUST sit on a stationary element.
-   *
-   * It used to be attached to the right-hand carousel, which starts at
-   * `x: '100%'` — i.e. translated one full width to the right. On a 1280px
-   * viewport that put it at left:1282px, two pixels outside the screen, so it
-   * never intersected, `isInView` never became true, and the animation that
-   * would have slid it into view never ran. The element was waiting for
-   * itself. Observing the stationary wrapper breaks that deadlock.
-   */
   const carouselRowRef = useRef<HTMLDivElement>(null);
-  // Was Motion's useInView: a one-shot native observer does the same job.
-  // useState starts false on the server AND the first client render, so the
-  // pre-reveal markup hydrates cleanly.
   const [isInView, setIsInView] = useState(false);
+
   useEffect(() => {
     const el = carouselRowRef.current;
     if (!el || typeof IntersectionObserver === "undefined") return;
@@ -161,10 +146,9 @@ export function IndustriesWeServe() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
-          io.disconnect();
         }
       },
-      { rootMargin: "-100px 0px -100px 0px" },
+      { rootMargin: "50px 0px 50px 0px", threshold: 0.05 },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -185,8 +169,7 @@ export function IndustriesWeServe() {
   const totalItems = industries.length;
 
   /* ── Auto-scroll ─────────────────────────────── */
-  // Only while the carousel is on screen: off screen the interval re-rendered
-  // the whole section every 1.8s for nobody.
+  // Begins immediately upon reaching the section and advances smoothly.
   useEffect(() => {
     if (reduced || isPaused || !isInView || totalItems === 0) return;
     const interval = setInterval(() => {
@@ -194,21 +177,6 @@ export function IndustriesWeServe() {
     }, 1800);
     return () => clearInterval(interval);
   }, [reduced, isPaused, isInView, totalItems]);
-
-  /* ── Pause while the user is scrolling ───────── */
-  useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout>;
-    const handleScroll = () => {
-      setScrolling(true);
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => setScrolling(false), 500);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(timeoutId);
-    };
-  }, []);
 
   /* ── Visible items (mirrored left/right) ─────── */
   const getVisibleItems = useCallback((): AnimatedItem[] => {

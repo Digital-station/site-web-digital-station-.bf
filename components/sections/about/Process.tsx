@@ -1,33 +1,15 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 
-/**
- * "How we work" — the Vite build's `processsteps.tsx` layout, kept verbatim.
- *
- * Same illustrations, same grid, same responsive behaviour. Two things differ,
- * on purpose:
- *
- *   • Copy — Digital Station's own five-phase engagement, driven by the
- *     `about.process` messages, instead of the original English copy. The
- *     Creative Momentum testimonial and their Clutch referral link are not
- *     reproduced.
- *   • Colour — the SVGs now live in `public/process/` rather than being
- *     hotlinked from thecreativemomentum.com, and their palette was remapped
- *     to the brand: #314DDC → #3b82f6 (accent), #A8A8A8 → #afaba1 (ornament),
- *     #101010 → accent on the aside illustration so it reads on dark ground.
- */
-
 /* ── Illustrations (self-hosted, brand-recoloured) ────────────────────────── */
 
-/** Intrinsic dimensions, from each SVG's own viewBox — kept alongside the
- *  src so `<img>` can declare a correct aspect ratio and avoid CLS, even
- *  though the rendered size is set by the `h-*` / `w-auto` CSS classes. */
 const ICONS = {
   meet: { src: "/process/meet.svg", width: 139, height: 77 },
   plan: { src: "/process/plan.svg", width: 66, height: 62 },
@@ -39,18 +21,12 @@ const ICONS = {
 };
 
 const ARROWS = {
-  /* horizontal: step 1 → step 2 (top row) */
   top: { src: "/process/arrow-top.svg", width: 134, height: 45 },
-  /* vertical curve: top row → middle */
   down1: { src: "/process/arrow-down-1.svg", width: 187, height: 89 },
-  /* vertical curve: middle → bottom row */
   down2: { src: "/process/arrow-down-2.svg", width: 97, height: 86 },
-  /* horizontal pair: step 4 → step 5 (bottom row) */
   bottom1: { src: "/process/arrow-bottom-1.svg", width: 185, height: 41 },
   bottom2: { src: "/process/arrow-bottom-2.svg", width: 89, height: 90 },
 };
-
-/* ── STEP ─────────────────────────────────────────────────────────────────── */
 
 type IconAsset = { src: string; width: number; height: number };
 
@@ -70,14 +46,14 @@ const Step = ({
       align === "right" ? "md:flex-row-reverse md:text-right" : ""
     }`}
   >
-    <img
+    <Image
       src={icon.src}
       width={icon.width}
       height={icon.height}
       alt=""
       aria-hidden="true"
-      loading="lazy"
       className="h-14 md:h-20 w-auto shrink-0 transition-transform duration-500 group-hover:scale-105"
+      unoptimized
     />
     <div>
       <h3 className="text-lg md:text-2xl font-black uppercase tracking-tighter text-brand-text mb-3 transition-colors duration-500 group-hover:text-brand-accent">
@@ -90,7 +66,6 @@ const Step = ({
   </div>
 );
 
-/* tiny vertical/horizontal arrow helper */
 const Arrow = ({
   icon,
   className = "",
@@ -98,25 +73,22 @@ const Arrow = ({
   icon: IconAsset;
   className?: string;
 }) => (
-  <img
+  <Image
     src={icon.src}
     width={icon.width}
     height={icon.height}
     alt=""
     aria-hidden="true"
-    loading="lazy"
     className={`h-8 md:h-10 w-auto opacity-80 ${className}`}
+    unoptimized
   />
 );
-
-/* ── SECTION ──────────────────────────────────────────────────────────────── */
 
 export function Process() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const t = useTranslations("about.process");
 
-  /** The section's own entrance, kept from the Next build. Layout-neutral. */
   const reveal = (i: number) => ({
     initial: { opacity: 0, y: 24 },
     animate: inView ? { opacity: 1, y: 0 } : {},
@@ -128,12 +100,14 @@ export function Process() {
       ref={ref}
       className="lg:pl-16 border-t border-brand-border bg-brand-primary py-10 md:py-16 relative overflow-hidden"
     >
-      {/* Planar lines backdrop (original Polygon 2, kept faint) */}
-      <img
+      <Image
         src={ICONS.polygon}
         alt=""
+        width={1000}
+        height={600}
         aria-hidden
         className="pointer-events-none select-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[1000px] opacity-[0.06]"
+        unoptimized
       />
 
       <Container className="relative">
@@ -182,10 +156,7 @@ export function Process() {
           className="hidden md:block mx-auto my-8 md:my-12"
         />
 
-        {/* MIDDLE — Développement (centered).
-            `mt-10 md:mt-0`: below `md` the connectors above are display:none, so
-            their `my-8` margin collapses and the rows would otherwise touch.
-            Desktop spacing is unchanged — it still comes from the arrows. */}
+        {/* MIDDLE — Développement (centered) */}
         <div className="flex justify-center mt-10 md:mt-0">
           <motion.div {...reveal(2)} className="max-w-md text-center">
             <Step
@@ -225,21 +196,21 @@ export function Process() {
           </motion.div>
         </div>
 
-        {/* ASIDE — the original's closing panel, our own content */}
+        {/* ASIDE */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.6, duration: 0.6 }}
           className="mt-16 md:mt-24 mx-auto max-w-md border border-brand-border rounded-2xl bg-brand-surface p-8 flex flex-col items-center text-center gap-5"
         >
-          <img
+          <Image
             src={ICONS.aside.src}
             width={ICONS.aside.width}
             height={ICONS.aside.height}
             alt=""
             aria-hidden="true"
-            loading="lazy"
             className="h-16 md:h-24 w-auto"
+            unoptimized
           />
           <div>
             <p className="text-brand-muted font-light mb-3">{t("footnote")}</p>

@@ -6,7 +6,6 @@ export type ProductDetail = {
   tags: string[];
   metrics: { label: string; value: string }[];
   features: { title: string; desc: string }[];
-  techStack: string[];
   demoType: 'live' | 'guided';
   mockupScreens: {
     title: string;
@@ -35,7 +34,6 @@ export const SOLUTIONS_INTERACTIVE_DATA: Record<string, Record<'fr' | 'en', Prod
         { title: 'Suivi des marges & pertes', desc: 'Calcul automatique des bénéfices nets et détection des écarts de caisse.' },
         { title: 'Alertes stock minimum', desc: 'Notifications automatiques avant rupture ou dépassement de date limite.' },
       ],
-      techStack: ['React / Electron', 'Node.js', 'SQLite (Local)', 'PostgreSQL (Cloud)', 'WebSockets'],
       demoType: 'guided',
       mockupScreens: [
         {
@@ -75,7 +73,6 @@ export const SOLUTIONS_INTERACTIVE_DATA: Record<string, Record<'fr' | 'en', Prod
         { title: 'Margin & discrepancy tracking', desc: 'Automated net profit calculation and cash drawer audit logs.' },
         { title: 'Low-stock automated alerts', desc: 'Proactive warnings before stockouts or expiry dates are reached.' },
       ],
-      techStack: ['React / Electron', 'Node.js', 'SQLite (Local)', 'PostgreSQL (Cloud)', 'WebSockets'],
       demoType: 'guided',
       mockupScreens: [
         {
@@ -117,7 +114,6 @@ export const SOLUTIONS_INTERACTIVE_DATA: Record<string, Record<'fr' | 'en', Prod
         { title: 'Paiement Mobile Money direct', desc: 'Achat instantané par Orange Money, Moov Money et Wave avec réception SMS/Email.' },
         { title: 'Rapports d’affluence en temps réel', desc: 'Jauge en direct, flux par porte et statistiques de billetterie heure par heure.' },
       ],
-      techStack: ['Next.js', 'Golang Engine', 'Redis', 'PostgreSQL', 'Flutter Mobile Scanner'],
       demoType: 'live',
       mockupScreens: [
         {
@@ -157,7 +153,6 @@ export const SOLUTIONS_INTERACTIVE_DATA: Record<string, Record<'fr' | 'en', Prod
         { title: 'Mobile Money checkouts', desc: 'Instant local purchases via Orange Money, Moov Money, and Wave with SMS/PDF delivery.' },
         { title: 'Real-time occupancy analytics', desc: 'Live headcount by gate, throughput rate, and financial reconciliation reports.' },
       ],
-      techStack: ['Next.js', 'Golang Engine', 'Redis', 'PostgreSQL', 'Flutter Mobile Scanner'],
       demoType: 'live',
       mockupScreens: [
         {
@@ -199,7 +194,6 @@ export const SOLUTIONS_INTERACTIVE_DATA: Record<string, Record<'fr' | 'en', Prod
         { title: 'Espace propriétaire bailleur', desc: 'Portail transparent permettant aux propriétaires de suivre l\'occupation et les versements.' },
         { title: 'Gestion des travaux & sinistres', desc: 'Tickets d\'intervention pour prestataires (plomberie, électricité) avec devis et photos.' },
       ],
-      techStack: ['React', 'TypeScript', 'Tailwind', 'PostgreSQL', 'WhatsApp Business API'],
       demoType: 'guided',
       mockupScreens: [
         {
@@ -239,7 +233,6 @@ export const SOLUTIONS_INTERACTIVE_DATA: Record<string, Record<'fr' | 'en', Prod
         { title: 'Landlord client portal', desc: 'Real-time occupancy status, net payout calculations, and maintenance audits.' },
         { title: 'Work orders & ticket triage', desc: 'Maintenance dispatch system with photo inspection logs and contractor quotes.' },
       ],
-      techStack: ['React', 'TypeScript', 'Tailwind', 'PostgreSQL', 'WhatsApp Business API'],
       demoType: 'guided',
       mockupScreens: [
         {
@@ -281,7 +274,6 @@ export const SOLUTIONS_INTERACTIVE_DATA: Record<string, Record<'fr' | 'en', Prod
         { title: 'Portail & alertes parents', desc: 'Accès mobile pour suivre l\'assiduité, les notes et les devoirs en temps réel.' },
         { title: 'Emplois du temps & présences', desc: 'Feuille d\'appel numérique pour les enseignants avec signalement des absences.' },
       ],
-      techStack: ['Next.js', 'FastAPI (Python)', 'PostgreSQL', 'Docker', 'SMS Gateway API'],
       demoType: 'guided',
       mockupScreens: [
         {
@@ -321,7 +313,6 @@ export const SOLUTIONS_INTERACTIVE_DATA: Record<string, Record<'fr' | 'en', Prod
         { title: 'Parent mobile portal & SMS', desc: 'Real-time attendance logs, exam schedules, and academic progress updates.' },
         { title: 'Digital attendance roll call', desc: 'Teacher portal for instant absent/tardy roll-call with automated parent notification.' },
       ],
-      techStack: ['Next.js', 'FastAPI (Python)', 'PostgreSQL', 'Docker', 'SMS Gateway API'],
       demoType: 'guided',
       mockupScreens: [
         {

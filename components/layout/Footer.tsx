@@ -242,7 +242,7 @@ export async function Footer() {
               © {year} / {site.contact.legal.entity}. {t("rights")}
             </p>
             <p className="text-[10px] text-brand-faint font-mono">
-              RCCM : {site.contact.legal.rccm} • IFU : {site.contact.legal.ifu} • Siège : Ouagadougou (Burkina Faso)
+              RCCM : {site.contact.legal.rccm} • IFU : {site.contact.legal.ifu} • {t("headquarters")} : Ouagadougou (Burkina Faso)
             </p>
           </div>
           <div className="flex gap-8">

@@ -1,0 +1,36 @@
+name: Docker Build Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+      - '.dockerignore'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'next.config.ts'
+      - 'app/**'
+      - 'components/**'
+      - 'lib/**'
+      - 'messages/**'
+
+jobs:
+  docker:
+    name: Verify Docker Container Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: digitalstation-web:test

@@ -77,6 +77,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: t('defaultDescription'),
       images: [ogImage(locale).url],
     },
+    other: {
+      'geo.region': 'BF-03',
+      'geo.placename': 'Ouagadougou',
+      'geo.position': '12.3714;-1.5197',
+      'ICBM': '12.3714, -1.5197',
+    },
   };
 }
 

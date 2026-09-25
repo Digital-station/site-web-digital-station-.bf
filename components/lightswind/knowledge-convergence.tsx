@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useId, useEffect, useRef } from "react";
+import React, { useState, useId, useEffect, useRef, useCallback } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
@@ -22,15 +22,9 @@ export interface KnowledgeConvergenceProps {
   dotColor?: string;
 }
 
-/* Nothing renders without an explicit `sources` list; the vendor's demo
-   list (YouTube / Medium / GitHub / Leetcode / docs) and its icons are gone —
-   every call site passes its own sources.
-
-   Also removed from the vendored component: its header logo, version badge,
-   `theme` switch and `glowIntensity` / `onTargetClick` props — none of them
-   rendered anything. Colours come from the brand tokens, so the panel
-   follows the site's light/dark theme instead of staying dark. */
 const NO_SOURCES: SourceItem[] = [];
+
+type Point = { x: number; y: number };
 
 export const KnowledgeConvergence: React.FC<KnowledgeConvergenceProps> = ({
   className,
@@ -40,21 +34,69 @@ export const KnowledgeConvergence: React.FC<KnowledgeConvergenceProps> = ({
 }) => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const filterId = useId();
-  /**
-   * SMIL (<animate>, <animateMotion>) is not covered by the global
-   * `prefers-reduced-motion` CSS block in globals.css — that only slams CSS
-   * animations and transitions. The beams have to be dropped in JS instead.
-   */
   const reduced = useReducedMotion();
 
-  /**
-   * SMIL loops also ignore CSS `animation-play-state`, so `usePauseOffscreen`
-   * (which toggles that property) can't stop them either — the beams have to
-   * be unmounted in React while the panel is off screen instead.
-   */
   const containerRef = useRef<HTMLDivElement>(null);
+  const sourceDotRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const hubDotRef = useRef<HTMLDivElement>(null);
+
   const [offscreen, setOffscreen] = useState(false);
   const beamsActive = !reduced && !offscreen;
+
+  const [coords, setCoords] = useState<{
+    leftDots: Point[];
+    hubDot: Point;
+    width: number;
+    height: number;
+  }>({
+    leftDots: [],
+    hubDot: { x: 635, y: 300 },
+    width: 1000,
+    height: 600,
+  });
+
+  const updateCoordinates = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const containerRect = container.getBoundingClientRect();
+    if (containerRect.width === 0 || containerRect.height === 0) return;
+
+    let hubPoint: Point = {
+      x: containerRect.width * 0.65,
+      y: containerRect.height * 0.5,
+    };
+
+    if (hubDotRef.current) {
+      const hubRect = hubDotRef.current.getBoundingClientRect();
+      hubPoint = {
+        x: hubRect.left - containerRect.left + hubRect.width / 2,
+        y: hubRect.top - containerRect.top + hubRect.height / 2,
+      };
+    }
+
+    const dots: Point[] = sources.map((_, i) => {
+      const dotEl = sourceDotRefs.current[i];
+      if (dotEl) {
+        const dotRect = dotEl.getBoundingClientRect();
+        return {
+          x: dotRect.left - containerRect.left + dotRect.width / 2,
+          y: dotRect.top - containerRect.top + dotRect.height / 2,
+        };
+      }
+      return {
+        x: 232,
+        y: 80 + (i * 440) / Math.max(1, sources.length - 1),
+      };
+    });
+
+    setCoords({
+      leftDots: dots,
+      hubDot: hubPoint,
+      width: containerRect.width,
+      height: containerRect.height,
+    });
+  }, [sources]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -62,28 +104,40 @@ export const KnowledgeConvergence: React.FC<KnowledgeConvergenceProps> = ({
 
     const io = new IntersectionObserver(([entry]) => {
       setOffscreen(!entry.isIntersecting);
+      if (entry.isIntersecting) {
+        updateCoordinates();
+      }
     });
     io.observe(el);
 
     return () => io.disconnect();
-  }, []);
+  }, [updateCoordinates]);
 
-  // Normalized 1000 x 600 viewBox layout coordinate system
-  const viewBoxWidth = 1000;
-  const viewBoxHeight = 600;
+  useEffect(() => {
+    updateCoordinates();
+    const timer = setTimeout(updateCoordinates, 150);
 
-  // Left card connection point coordinates directly centered on pill dots
-  const leftX = 232;
-  const targetX = 635;
-  const targetY = 300;
+    const handleResize = () => {
+      updateCoordinates();
+    };
 
-  // Vertical distribution centered around 300
-  const sourceCount = sources.length;
-  const totalHeight = 440;
-  const startY = 80;
-  const stepY = sourceCount > 1 ? totalHeight / (sourceCount - 1) : 0;
+    window.addEventListener("resize", handleResize);
 
-  const getSourceY = (index: number) => startY + index * stepY;
+    const ro =
+      typeof ResizeObserver !== "undefined" && containerRef.current
+        ? new ResizeObserver(updateCoordinates)
+        : null;
+
+    if (containerRef.current && ro) {
+      ro.observe(containerRef.current);
+    }
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", handleResize);
+      ro?.disconnect();
+    };
+  }, [updateCoordinates]);
 
   return (
     <div
@@ -93,145 +147,152 @@ export const KnowledgeConvergence: React.FC<KnowledgeConvergenceProps> = ({
         className,
       )}
     >
-      {/* Responsive Hub Canvas */}
-      <div className="relative w-full max-w-5xl h-full flex flex-col md:flex-row items-center justify-between gap-6 z-10 min-w-0">
-        {/* SVG Bezier Beams & Animated Energy Trails */}
-        <svg
-          className="absolute inset-0 w-full h-full pointer-events-none hidden md:block"
-          viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
-          preserveAspectRatio="xMidYMid meet"
-        >
-          <defs>
-            {/* Beam Stream Gradient */}
-            <linearGradient
-              id={`${filterId}-stream-grad`}
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="0%"
-            >
-              <stop offset="0%" stopColor={dotColor} stopOpacity="0.2" />
-              <stop offset="45%" stopColor={dotColor} stopOpacity="0.72" />
-              <stop offset="80%" stopColor={dotColor} stopOpacity="0.9" />
-              <stop offset="100%" stopColor={dotColor} stopOpacity="0.98" />
-            </linearGradient>
+      {/* SVG Bezier Beams & Animated Energy Trails precisely connecting nodes */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none hidden md:block z-10"
+        viewBox={`0 0 ${coords.width} ${coords.height}`}
+      >
+        <defs>
+          {/* Beam Stream Gradient */}
+          <linearGradient
+            id={`${filterId}-stream-grad`}
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="0%"
+          >
+            <stop offset="0%" stopColor={dotColor} stopOpacity="0.3" />
+            <stop offset="45%" stopColor={dotColor} stopOpacity="0.75" />
+            <stop offset="85%" stopColor={dotColor} stopOpacity="0.95" />
+            <stop offset="100%" stopColor={dotColor} stopOpacity="1" />
+          </linearGradient>
 
-            {/* Soft Glow Filter for Electric Beams */}
-            <filter
-              id={`${filterId}-glow`}
-              x="-20%"
-              y="-20%"
-              width="140%"
-              height="140%"
-            >
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
+          {/* Soft Glow Filter for Electric Beams */}
+          <filter
+            id={`${filterId}-glow`}
+            x="-20%"
+            y="-20%"
+            width="140%"
+            height="140%"
+          >
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
 
-            {/* Glowing Particle Filter */}
-            <filter
-              id={`${filterId}-dot-glow`}
-              x="-50%"
-              y="-50%"
-              width="200%"
-              height="200%"
-            >
-              <feGaussianBlur stdDeviation="3.5" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
+          {/* Glowing Particle Filter */}
+          <filter
+            id={`${filterId}-dot-glow`}
+            x="-50%"
+            y="-50%"
+            width="200%"
+            height="200%"
+          >
+            <feGaussianBlur stdDeviation="3.5" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
 
-          {/* Render Bezier Stream Lines */}
-          <g>
-            {sources.map((src, i) => {
-              const srcY = getSourceY(i);
-              const isHovered = hoveredId === src.id;
-              const isAnyHovered = hoveredId !== null;
+        {/* Render Bezier Stream Lines converging accurately into the central blue hub node */}
+        <g>
+          {sources.map((src, i) => {
+            const startPt = coords.leftDots[i] || {
+              x: 232,
+              y: 80 + (i * 440) / Math.max(1, sources.length - 1),
+            };
+            const endPt = coords.hubDot;
 
-              // Bezier curve calculations connecting pill node dots to hub node
-              const pathD = `M ${leftX} ${srcY} C ${leftX + 180} ${srcY}, ${targetX - 180} ${targetY}, ${targetX} ${targetY}`;
+            const isHovered = hoveredId === src.id;
+            const isAnyHovered = hoveredId !== null;
 
-              return (
-                <g key={src.id}>
-                  {/* Vector Stream */}
-                  <path
-                    d={pathD}
-                    fill="none"
-                    stroke={`url(#${filterId}-stream-grad)`}
-                    strokeWidth={isHovered ? 3.8 : 2}
-                    strokeOpacity={isHovered ? 1 : isAnyHovered ? 0.25 : 0.6}
-                    filter={`url(#${filterId}-glow)`}
-                    className="transition-all duration-300"
-                  />
+            const dx = Math.max(40, endPt.x - startPt.x);
+            const c1x = startPt.x + dx * 0.45;
+            const c1y = startPt.y;
+            const c2x = endPt.x - dx * 0.45;
+            const c2y = endPt.y;
 
-                  {/* Pulsing Light Dotted Stream */}
-                  <path
-                    d={pathD}
-                    fill="none"
-                    stroke={dotColor}
-                    strokeWidth={isHovered ? 2.5 : 1.3}
-                    strokeDasharray="8 16"
-                    strokeOpacity={isHovered ? 1 : 0.4}
-                    className="transition-all duration-300"
-                  >
-                    {beamsActive && (
-                      <animate
-                        attributeName="stroke-dashoffset"
-                        from="48"
-                        to="0"
-                        dur={isHovered ? "0.9s" : "2.2s"}
-                        repeatCount="indefinite"
-                      />
-                    )}
-                  </path>
+            const pathD = `M ${startPt.x} ${startPt.y} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${endPt.x} ${endPt.y}`;
 
-                  {/* Primary Energy Flow Dot */}
-                  <circle
-                    r={isHovered ? 4.5 : 3.5}
-                    fill={dotColor}
-                    filter={`url(#${filterId}-dot-glow)`}
-                  >
-                    {beamsActive && (
-                      <animateMotion
-                        path={pathD}
-                        dur={isHovered ? "1.3s" : `${2.0 + (i % 3) * 0.4}s`}
-                        repeatCount="indefinite"
-                        begin={`${(i * 0.3) % 2}s`}
-                      />
-                    )}
-                  </circle>
+            return (
+              <g key={src.id}>
+                {/* Vector Stream */}
+                <path
+                  d={pathD}
+                  fill="none"
+                  stroke={`url(#${filterId}-stream-grad)`}
+                  strokeWidth={isHovered ? 3.8 : 2}
+                  strokeOpacity={isHovered ? 1 : isAnyHovered ? 0.25 : 0.65}
+                  filter={`url(#${filterId}-glow)`}
+                  className="transition-all duration-300"
+                />
 
-                  {/* Secondary Energy Particle */}
-                  <circle r="2.2" fill={dotColor} opacity="0.9">
-                    {beamsActive && (
-                      <animateMotion
-                        path={pathD}
-                        dur={isHovered ? "1.3s" : `${2.0 + (i % 3) * 0.4}s`}
-                        repeatCount="indefinite"
-                        begin={`${((i * 0.3) % 2) + 1.0}s`}
-                      />
-                    )}
-                  </circle>
-                </g>
-              );
-            })}
-          </g>
-        </svg>
+                {/* Pulsing Light Dotted Stream */}
+                <path
+                  d={pathD}
+                  fill="none"
+                  stroke={dotColor}
+                  strokeWidth={isHovered ? 2.5 : 1.3}
+                  strokeDasharray="8 16"
+                  strokeOpacity={isHovered ? 1 : 0.45}
+                  className="transition-all duration-300"
+                >
+                  {beamsActive && (
+                    <animate
+                      attributeName="stroke-dashoffset"
+                      from="48"
+                      to="0"
+                      dur={isHovered ? "0.9s" : "2.2s"}
+                      repeatCount="indefinite"
+                    />
+                  )}
+                </path>
 
+                {/* Primary Energy Flow Dot */}
+                <circle
+                  r={isHovered ? 4.5 : 3.5}
+                  fill={dotColor}
+                  filter={`url(#${filterId}-dot-glow)`}
+                >
+                  {beamsActive && (
+                    <animateMotion
+                      path={pathD}
+                      dur={isHovered ? "1.3s" : `${2.0 + (i % 3) * 0.4}s`}
+                      repeatCount="indefinite"
+                      begin={`${(i * 0.3) % 2}s`}
+                    />
+                  )}
+                </circle>
+
+                {/* Secondary Energy Particle */}
+                <circle r="2.2" fill={dotColor} opacity="0.9">
+                  {beamsActive && (
+                    <animateMotion
+                      path={pathD}
+                      dur={isHovered ? "1.3s" : `${2.0 + (i % 3) * 0.4}s`}
+                      repeatCount="indefinite"
+                      begin={`${((i * 0.3) % 2) + 1.0}s`}
+                    />
+                  )}
+                </circle>
+              </g>
+            );
+          })}
+        </g>
+      </svg>
+
+      {/* Responsive Hub Canvas Content */}
+      <div className="relative w-full max-w-5xl h-full flex flex-col md:flex-row items-center justify-between gap-6 z-20 min-w-0">
         {/* Left Side: Source Nodes Stack */}
         <div className="relative z-20 flex flex-col justify-between h-[440px] w-full md:w-auto min-w-[235px]">
-          {sources.map((src) => {
+          {sources.map((src, i) => {
             const isHovered = hoveredId === src.id;
 
             return (
-              /* Hover only highlights the matching beam; the cards are not
-                 links, so they no longer show a pointer cursor. */
               <motion.div
                 key={src.id}
                 onMouseEnter={() => setHoveredId(src.id)}
@@ -254,7 +315,12 @@ export const KnowledgeConvergence: React.FC<KnowledgeConvergenceProps> = ({
                 </div>
 
                 {/* Glowing Connection Dot */}
-                <div className="relative flex items-center justify-center shrink-0">
+                <div
+                  ref={(el) => {
+                    sourceDotRefs.current[i] = el;
+                  }}
+                  className="relative flex items-center justify-center shrink-0"
+                >
                   <div
                     className={cn(
                       "w-2.5 h-2.5 rounded-full transition-transform duration-300",
@@ -278,7 +344,10 @@ export const KnowledgeConvergence: React.FC<KnowledgeConvergenceProps> = ({
         {/* Right Side: Target Node & Title */}
         <div className="relative z-20 flex items-center gap-5 my-auto md:pl-8 min-w-0 max-w-full">
           {/* Central Hub Node Pulsing Dot */}
-          <div className="relative flex items-center justify-center shrink-0">
+          <div
+            ref={hubDotRef}
+            className="relative flex items-center justify-center shrink-0"
+          >
             {/* Glowing Halo */}
             <div
               className="absolute w-14 h-14 rounded-full opacity-70 animate-pulse pointer-events-none"
@@ -298,9 +367,6 @@ export const KnowledgeConvergence: React.FC<KnowledgeConvergenceProps> = ({
             <div className="absolute w-9 h-9 rounded-full border border-brand-accent/50 animate-ping pointer-events-none" />
           </div>
 
-          {/* A <p>, not a heading: the title repeats the page's h1, and a
-              second h2 with the same text broke the heading outline. The
-              width was a fixed 375px, which overflowed phone screens. */}
           {title && (
             <p className="min-w-0 w-full max-w-[375px] text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-brand-text leading-[1.05] break-words">
               {title}

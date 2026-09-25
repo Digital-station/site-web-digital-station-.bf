@@ -1,0 +1,22 @@
+[Unit]
+Description=Digital Station Next.js Web Application
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/digitalstation.bf
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOSTNAME=127.0.0.1
+EnvironmentFile=-/var/www/digitalstation.bf/.env
+ExecStart=/usr/bin/node .next/standalone/server.js
+Restart=always
+RestartSec=5
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=digitalstation-web
+
+[Install]
+WantedBy=multi-user.target
