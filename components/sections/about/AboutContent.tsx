@@ -94,9 +94,10 @@ function yearsInBusiness(): number {
 }
 
 export function AboutContent({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   trustDocSizes,
 }: {
-  trustDocSizes: TrustDocSizes;
+  trustDocSizes?: TrustDocSizes;
 }) {
   return (
     <>
@@ -120,13 +121,10 @@ export function AboutContent({
 function Hero() {
   const t = useTranslations("about.hero");
 
-  /*
-    Two facts only, both verifiable: years since the founding date in
-    site.config, and where the company is based. The "50+ Experts passionnés"
-    tile is gone — there was nothing behind the number — and the "100%" that
-    used to prefix "Basé au Burkina" was decoration, not a measurement.
-  */
-  const quickStats = [{ icon: MapPin, value: null, label: t("statLocal") }];
+  const quickStats = [
+    { icon: Calendar, value: `${yearsInBusiness()}+`, label: t("statYears") },
+    { icon: MapPin, value: null, label: t("statLocal") },
+  ];
 
   return (
     /* The hero's entrances are the CSS `.enter` animation (see globals.css):
@@ -360,6 +358,8 @@ function Values() {
 
 /* ──────────────────────────── TIMELINE ──────────────────────────── */
 
+// Preserved component ready for activation
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Timeline() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });

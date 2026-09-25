@@ -35,6 +35,7 @@
     "contactsTitle": "Contacts",
     "hoursTitle": "Horaires",
     "rights": "Tous droits réservés.",
+    "headquarters": "Siège",
     "privacy": "Politique de confidentialité",
     "terms": "Conditions d'utilisation",
     "followUs": "Suivez-nous sur {network}"
@@ -848,7 +849,7 @@
   "servicesPage": {
     "meta": {
       "title": "Nos services",
-      "description": "Développement logiciel, intégration, cloud, cybersécurité, IA et transformation digitale. Découvrez les  pôles d'expertise de Digital Station."
+      "description": "Développement logiciel, intégration, cloud, cybersécurité, IA et transformation digitale. Découvrez les 10 pôles d'expertise de Digital Station."
     },
     "eyebrow": "Nos métiers",
     "titleLine1": "Concevoir",
@@ -1003,6 +1004,9 @@
       "role": "Gérant",
       "initials": "LPK",
       "sectionTitle": "Mot du Gérant",
+      "verifiedIdentity": "Identité vérifiée",
+      "chatWhatsApp": "Chat WhatsApp",
+      "directEmail": "Email Direct",
       "visionTitle": "Notre vision",
       "pillarsTitle": "Les piliers de notre stratégie de croissance",
  "message" : "La révolution numérique n'est pas à l'horizon, c'est déjà une réalité, et nous sommes là pour contribuer à la façonner. <br></br>Nous aidons les entreprises à transformer la technologie en avantage concurrentiel grâce à des solutions innovantes, une technologie fiable et des partenariats conçus pour stimuler la croissance.<br></br>Du Burkina Faso au marché mondial, nous développons des solutions numériques qui créent une réelle valeur ajoutée pour les entreprises, ouvrent de nouvelles opportunités et transforment des idées ambitieuses en résultats durables.<br></br>Nous ne nous contentons pas de suivre le rythme de l’avenir. Nous le construisons avec vous.",

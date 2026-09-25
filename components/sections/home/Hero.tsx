@@ -38,10 +38,10 @@ export function Hero() {
       id="hero"
       className="relative pt-24 md:pt-40 lg:pt-48 pb-0 overflow-hidden lg:pl-16 min-h-[90vh] flex flex-col"
     >
-      <Container className="flex-1 flex flex-col justify-center relative">
-        {/* Woven-wave canvas backdrop */}
-        <Wavemesh />
+      {/* Woven-wave canvas backdrop covering the entire hero section */}
+      <Wavemesh className="absolute inset-0 w-full h-full pointer-events-none z-0" />
 
+      <Container className="flex-1 flex flex-col justify-center relative z-10">
         <div
           aria-hidden="true"
           className="absolute -top-12 md:-top-20 left-4 text-[15vw] md:text-[240px] font-black opacity-[0.03] leading-none select-none tracking-tighter pointer-events-none uppercase"

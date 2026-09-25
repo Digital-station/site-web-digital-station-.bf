@@ -35,6 +35,7 @@
     "contactsTitle": "Contacts",
     "hoursTitle": "Hours",
     "rights": "All rights reserved.",
+    "headquarters": "Headquarters",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "followUs": "Follow us on {network}"
@@ -1003,9 +1004,12 @@
       "role": "Managing Director & Founder",
       "initials": "LPK",
       "sectionTitle": "A word from the Managing Director",
+      "verifiedIdentity": "Verified identity",
+      "chatWhatsApp": "WhatsApp Chat",
+      "directEmail": "Direct Email",
       "visionTitle": "Our vision",
       "pillarsTitle": "The pillars of our growth strategy",
-      "message": "The digital revolution isn’t just on the horizon, it’s already a reality,, and we’re here to help shape it.<br></br>We help businesses turn technology into a competitive advantage through innovative solutions, reliable technology, and partnerships designed to drive growth.<br></br>From Burkina Faso to the global market, we develop digital solutions that create real added value for businesses, open up new opportunities, and turn ambitious ideas into sustainable results.<br></br>We don’t just keep up with the future. We build it together with you.",
+      "message": "The digital revolution isn’t just on the horizon, it’s already a reality, and we’re here to help shape it.<br></br>We help businesses turn technology into a competitive advantage through innovative solutions, reliable technology, and partnerships designed to drive growth.<br></br>From Burkina Faso to the global market, we develop digital solutions that create real added value for businesses, open up new opportunities, and turn ambitious ideas into sustainable results.<br></br>We don’t just keep up with the future. We build it together with you.",
       "vision": {
         "vision": {
           "title": "Vision 2030",

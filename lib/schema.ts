@@ -8,18 +8,9 @@ import {
 /**
  * JSON-LD builders.
  *
- * The pages used to each declare their own Organization node. Three of them
- * did, with different fields, and search engines had no way to know they were
- * the same company — so the entity signal was split three ways.
- *
- * The fix is the standard one: ONE canonical Organization node at a stable
- * `@id`, and every other node referencing it by that `@id` instead of
- * restating it.
- *
- * The node is emitted by app/[locale]/layout.tsx, so it is on EVERY page. It
- * used to be on the home page only, but a crawler reads each page on its own:
- * a service page's `provider: { '@id': … }` pointed at a node that page did
- * not contain.
+ * Canonical schema.org graph providing structured data for search engines:
+ * Organization / ProfessionalService, WebSite, Service, BreadcrumbList,
+ * ContactPage, FAQPage, ItemList, and SoftwareApplication entities.
  */
 
 /** The single identifier every other node points at. */
@@ -34,7 +25,6 @@ const postalAddress = (): Json => {
   const { street, locality, region, country } = site.contact.address;
   return {
     '@type': 'PostalAddress',
-    // An empty streetAddress is worse than none — omit it rather than ship "".
     ...(street ? { streetAddress: street } : {}),
     addressLocality: locality,
     ...(region ? { addressRegion: region } : {}),
@@ -43,19 +33,16 @@ const postalAddress = (): Json => {
 };
 
 /**
- * The canonical company node, on every page (see above).
- *
- * Plain Organization, not ProfessionalService. ProfessionalService is a
- * LocalBusiness, and Google expects a LocalBusiness to have a street address a
- * visitor can go to; there is none to publish yet (`address.street` is empty).
- * Once there is one, add 'ProfessionalService' back to `@type` and move the
- * opening hours from the contact point onto the node itself.
+ * The canonical company node, rendered on every page layout.
+ * Declares both Organization and ProfessionalService with geo-coordinates,
+ * tax registration, opening hours, and service domains for maximum local & global ranking authority.
  */
 export const organizationLd = (description: string): Json => ({
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': ['Organization', 'ProfessionalService'],
   '@id': ORG_ID,
   name: site.name,
+  legalName: site.contact.legal.entity,
   url: site.url,
   logo: {
     '@type': 'ImageObject',
@@ -66,7 +53,15 @@ export const organizationLd = (description: string): Json => ({
   foundingDate: site.foundingDate,
   email: site.contact.email,
   telephone: site.contact.phone,
+  taxID: site.contact.legal.ifu,
+  vatID: site.contact.legal.ifu,
   address: postalAddress(),
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 12.3714,
+    longitude: -1.5197,
+  },
+  priceRange: '$$',
   contactPoint: [
     {
       '@type': 'ContactPoint',
@@ -74,22 +69,38 @@ export const organizationLd = (description: string): Json => ({
       email: site.contact.email,
       telephone: site.contact.phone,
       availableLanguage: ['fr', 'en'],
-      // On the contact point, where schema.org defines it for an Organization.
       hoursAvailable: openingHoursSpec(),
     },
   ],
-  areaServed: {
-    '@type': 'Country',
-    name: site.contact.address.countryName,
-  },
+  areaServed: [
+    {
+      '@type': 'Country',
+      name: site.contact.address.countryName,
+    },
+    {
+      '@type': 'Place',
+      name: 'West Africa',
+    },
+    {
+      '@type': 'Place',
+      name: 'Global',
+    },
+  ],
+  knowsAbout: [
+    'Digital Transformation',
+    'Custom Software Development',
+    'ERP Integration (Odoo, Oracle, Microsoft)',
+    'Cybersecurity & ISO/IEC Compliance',
+    'Cloud Architecture & Hosting',
+    'Artificial Intelligence & Process Automation',
+    'IT Managed Services & Support',
+    'IT Equipment Procurement & Hardware',
+  ],
   sameAs: activeSocials().map((s) => s.url),
 });
 
 /**
  * The WebSite node, emitted by both home pages (/fr and /en).
- *
- * One `@id` for both. It used to be `/fr#website` and `/en#website`, which
- * declared two separate websites. The site is one website in two languages.
  */
 export const webSiteLd = (description: string): Json => ({
   '@context': 'https://schema.org',
@@ -100,6 +111,14 @@ export const webSiteLd = (description: string): Json => ({
   inLanguage: ['fr', 'en'],
   description,
   publisher: orgRef(),
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${site.url}/fr/services?q={search_term_string}`,
+    },
+    'query-input': 'required name=search_term_string',
+  },
 });
 
 /** One service offering. Provider is a reference to the Organization node. */
@@ -116,10 +135,20 @@ export const serviceLd = (args: {
   serviceType: args.name,
   url: args.url,
   provider: orgRef(),
-  areaServed: {
-    '@type': 'Country',
-    name: site.contact.address.countryName,
-  },
+  areaServed: [
+    {
+      '@type': 'Country',
+      name: site.contact.address.countryName,
+    },
+    {
+      '@type': 'Place',
+      name: 'West Africa',
+    },
+    {
+      '@type': 'Place',
+      name: 'Global',
+    },
+  ],
 });
 
 /** Breadcrumb trail. `items` is ordered from the site root downwards. */
@@ -152,10 +181,7 @@ export const contactPageLd = (args: {
 });
 
 /**
- * FAQPage for the questions shown on the contact page. Built from the same
- * messages the page renders, so the markup can't claim an answer the visitor
- * doesn't see. Google now shows FAQ rich results only for government and
- * health sites, so this is for understanding the page, not for a snippet.
+ * FAQPage for the questions shown on the contact page.
  */
 export const faqPageLd = (
   items: readonly { question: string; answer: string }[],
@@ -188,10 +214,7 @@ export const itemListLd = (args: {
 
 /**
  * Serialise for `dangerouslySetInnerHTML`.
- *
- * `</script>` inside a string value would close the tag early and drop the
- * rest of the document into the page as markup, so the forward slash is
- * escaped — the standard, and the only, safe way to inline JSON in HTML.
+ * Escapes closing script tags to prevent XSS / markup breaking.
  */
 export const ldJson = (node: Json): string =>
   JSON.stringify(node).replace(/</g, '\\u003c');

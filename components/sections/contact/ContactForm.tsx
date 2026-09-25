@@ -4,7 +4,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { AlertCircle, ArrowRight, Mail, Send } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 
@@ -114,13 +114,13 @@ function ContactFormInner() {
   );
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
     reset,
     setValue,
     getValues,
-    watch,
     setFocus,
   } = useForm<LeadInput>({ resolver: zodResolver(schema) });
 
@@ -131,10 +131,6 @@ function ContactFormInner() {
    */
   const successHeadingRef = useRef<HTMLHeadingElement>(null);
   const refocusNameRef = useRef(false);
-  // The submit button stays focusable while sending (aria-disabled, not
-  // disabled, which would drop focus to <body>), so a second Enter has to be
-  // turned away here. A ref, because state lags one render behind.
-  const sendingRef = useRef(false);
 
   useEffect(() => {
     if (state === "sent") {
@@ -151,7 +147,7 @@ function ContactFormInner() {
    * then spread `{ ...data, budget }`, so the state copy silently won. One
    * source now; `reset()` clears the chips along with everything else.
    */
-  const budget = watch("budget") ?? "";
+  const budget = useWatch({ control, name: "budget" }) ?? "";
 
   /**
    * `/contact?product=<solution-slug>` — arriving from a "Demander une démo"
@@ -176,8 +172,7 @@ function ContactFormInner() {
   }, [product, setValue, getValues, t, tsvc, tsol]);
 
   const onSubmit = async (data: LeadInput) => {
-    if (sendingRef.current) return;
-    sendingRef.current = true;
+    if (state === "sending") return;
     setState("sending");
     try {
       const response = await fetch("/api/leads", {
@@ -207,8 +202,6 @@ function ContactFormInner() {
     } catch (error) {
       console.error("Submission failed", error);
       setState("error");
-    } finally {
-      sendingRef.current = false;
     }
   };
 

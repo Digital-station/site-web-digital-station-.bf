@@ -37,6 +37,54 @@
   position: relative;
   flex: none;
   -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.3s ease;
+}
+
+/* Light theme overrides */
+:global([data-theme='light']) .vault {
+  --color-slate-base: #e2e8f0;
+  --color-slate-dark: #cbd5e1;
+  --color-slate-light: #f8fafc;
+  --color-idle: #64748b;
+  --color-live: #1d4ed8;
+}
+
+:global([data-theme='light']) .wrapper {
+  background: var(--color-slate-base);
+  box-shadow:
+    0 0 0 2px #cbd5e1,
+    0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+:global([data-theme='light']) .track {
+  background: #f1f5f9;
+  box-shadow:
+    inset 0 3px 6px rgba(0, 0, 0, 0.1),
+    inset 0 1px 2px rgba(0, 0, 0, 0.06),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.8);
+}
+
+:global([data-theme='light']) .thumb {
+  background: linear-gradient(
+    145deg,
+    #ffffff,
+    #e2e8f0
+  );
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    inset 0 2px 4px rgba(255, 255, 255, 0.9),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.06);
+}
+
+:global([data-theme='light']) .thumbRing {
+  background: linear-gradient(to bottom, #f8fafc, #cbd5e1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+:global([data-theme='light']) .thumbCore {
+  background: #ffffff;
+  border-color: var(--color-idle);
 }
 
 /* The capsule is shorter than the 44px minimum touch target at the default
