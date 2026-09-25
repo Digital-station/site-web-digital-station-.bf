@@ -1,7 +1,21 @@
 {
-  "name": "web",
-  "version": "0.1.0",
+  "name": "digitalstation-web",
+  "version": "1.0.0",
+  "description": "Enterprise web platform and engineering showcase for Digital Station SARL (Ouagadougou, Burkina Faso).",
   "private": true,
+  "author": "Digital Station SARL <infos@digitalstation.bf>",
+  "homepage": "https://digitalstation.bf",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Digital-station/site-web-digital-station-.bf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Digital-station/site-web-digital-station-.bf/issues"
+  },
+  "engines": {
+    "node": ">=20.9.0",
+    "npm": ">=10.0.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,7 +24,13 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
-    "check": "npm run typecheck && npm run lint && npm run test"
+    "test:watch": "vitest",
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "docker:build": "docker compose build --pull web",
+    "docker:up": "docker compose up -d web",
+    "docker:down": "docker compose down",
+    "deploy": "./deploy/deploy.sh docker",
+    "deploy:pm2": "./deploy/deploy.sh pm2"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
