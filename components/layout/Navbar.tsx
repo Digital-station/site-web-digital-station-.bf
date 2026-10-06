@@ -16,6 +16,11 @@ import { cn } from '@/lib/utils';
 
 const MEGA_MENU_ID = 'nav-services-menu';
 
+/** Background made `inert` while the mobile drawer is open. `#cookie-consent`
+ *  is added alongside the layout's own defaults because, like the navbar's
+ *  header row, it is a fixed sibling the drawer does not otherwise reach. */
+const INERT_SELECTORS = ['#main-content', 'footer', '#cookie-consent'] as const;
+
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -69,6 +74,7 @@ export function Navbar() {
     dialogRef: drawerRef,
     initialFocusRef: closeRef,
     returnFocusRef: burgerRef,
+    inertSelectors: INERT_SELECTORS,
     inertRefs,
   });
 

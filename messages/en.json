@@ -38,6 +38,8 @@
     "headquarters": "Headquarters",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
+    "legal": "Legal Notice",
+    "cookies": "Cookies",
     "followUs": "Follow us on {network}"
   },
   "rail": {
@@ -55,6 +57,15 @@
     "aria": "Message us on WhatsApp",
     "whatsappMessage": "Hello Digital Station! I'd like to discuss a project with you.",
     "whatsappMessageFrom": "Hello Digital Station! I'm writing from the \"{page}\" page. I'd like to discuss a project with you."
+  },
+  "cookieConsent": {
+    "aria": "Cookie preferences",
+    "title": "Your privacy",
+    "body": "We use analytics cookies only with your consent, to better understand how this site is used.",
+    "accept": "Accept",
+    "refuse": "Decline",
+    "details": "Learn more",
+    "saved": "Preference saved. Thank you!"
   },
   "home": {
     "meta": {
@@ -1186,7 +1197,7 @@
       },
       "cookies": {
         "title": "Cookies",
-        "body": "This site does not set any cookies. Your theme preference is stored locally in your browser (localStorage) and your language is carried in the page address. You can clear this data at any time from your browser settings."
+        "body": "Your theme preference and your decision about analytics cookies are stored locally in your browser (localStorage), and your language is carried in the page address. With your explicit consent, audience-measurement cookies (Google Analytics 4) may also be set — see our cookie policy for details and to change your choice."
       },
       "security": {
         "title": "Security",
@@ -1226,6 +1237,69 @@
       "law": {
         "title": "Governing law",
         "body": "These terms are governed by the law of Burkina Faso. In the event of a dispute, the parties will seek an amicable resolution before commencing proceedings."
+      }
+    }
+  },
+  "legal": {
+    "metaTitle": "Legal Notice",
+    "metaDescription": "Legal information about Digital Station SARL: publisher, host and intellectual property.",
+    "eyebrow": "Legal Information",
+    "title": "Legal<br></br>Notice.",
+    "lastUpdated": "Last updated: {date}",
+    "contactTitle": "Contact us",
+    "contactBody": "For any question about this legal notice, write to us at",
+    "sections": {
+      "publisher": {
+        "title": "Publisher",
+        "body": "This site is published by {entity}, a private limited company (SARL) with share capital of {capital}, registered with the Trade and Personal Property Credit Register under number {rccm}, Unique Tax Identifier {ifu}, with its registered office at {address}. Phone: {phone}. Email: {email}."
+      },
+      "director": {
+        "title": "Publication director",
+        "body": "Publication director: {director}, {directorRole}."
+      },
+      "host": {
+        "title": "Hosting",
+        "body": "This site is hosted by {host}, {hostAddress}."
+      },
+      "ip": {
+        "title": "Intellectual property",
+        "body": "All content on this site (text, imagery, trademark, logo) is the property of {entity} and is protected by intellectual property law. Any reproduction, representation or distribution, in whole or in part, without prior authorisation is prohibited."
+      },
+      "liability": {
+        "title": "Limitation of liability",
+        "body": "{entity} takes all reasonable steps to ensure the accuracy of the information published on this site, without guaranteeing the absence of errors or omissions. {entity} cannot be held liable for damages resulting from the use of this site or of links to third-party sites."
+      }
+    }
+  },
+  "cookies": {
+    "metaTitle": "Cookie Policy",
+    "metaDescription": "Which cookies this site uses, why, and how to change your choice.",
+    "eyebrow": "Cookies",
+    "title": "Cookie<br></br>Policy.",
+    "lastUpdated": "Last updated: {date}",
+    "contactTitle": "Contact us",
+    "contactBody": "For any question about cookies, write to us at",
+    "manageButton": "Change my choice",
+    "sections": {
+      "what": {
+        "title": "What is a cookie?",
+        "body": "A cookie is a small file a site stores in your browser. It can remember a preference, measure audience, or track a visit. This page explains what this site sets and why."
+      },
+      "necessary": {
+        "title": "What is always on",
+        "body": "Your theme choice (light/dark) and your decision about analytics cookies are stored locally in your browser (localStorage). Your language is carried in the page address. None of this is a tracking cookie, and none of it is sent to a third party."
+      },
+      "analytics": {
+        "title": "Analytics (with your consent)",
+        "body": "With your explicit consent, this site uses Google Analytics 4 to measure traffic (pages viewed, referral source, device type), with IP address anonymisation always on. The associated cookies (_ga, _ga_XXXXXXX) are only set after your consent and can be declined without affecting your browsing."
+      },
+      "duration": {
+        "title": "How long we keep it",
+        "body": "Analytics cookies, when accepted, are kept for 13 months at most, in line with CNIL guidance. Your choice is remembered for 6 months; after that, the consent banner is shown to you again."
+      },
+      "manage": {
+        "title": "Change your choice",
+        "body": "You can change your choice at any time using the button below, or by clearing this site's data from your browser settings."
       }
     }
   },

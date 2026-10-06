@@ -13,8 +13,11 @@ import { site } from '@/config/site.config';
  * pairs with the hreflang tags in each page's <head> and tells Google the two
  * URLs are the same page in different languages rather than duplicates.
  *
- * Privacy and Terms are intentionally excluded: both pages set
- * `robots: { index: false }`, so listing them would contradict the page itself.
+ * Privacy, Terms and Cookies are intentionally excluded: all three pages set
+ * `robots: { index: false }`, so listing them would contradict the page
+ * itself. Legal (mentions légales) is NOT excluded — it is indexed, since its
+ * entity/RCCM/IFU/address content is a genuine trust signal rather than a
+ * policy annex.
  */
 
 /**
@@ -35,6 +38,7 @@ const CONTENT_UPDATED: Record<string, string> = {
   '/solutions': '2026-09-20',
   '/about': '2026-09-20',
   '/contact': '2026-09-20',
+  '/legal': '2026-10-06',
 };
 
 /** Fallback for any route missing from the map above (all service pages). */
@@ -52,6 +56,7 @@ const STATIC_ROUTES: Entry[] = [
   { path: '/solutions', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/about', changeFrequency: 'yearly', priority: 0.7 },
   { path: '/contact', changeFrequency: 'yearly', priority: 0.7 },
+  { path: '/legal', changeFrequency: 'yearly', priority: 0.3 },
 ];
 
 const SERVICE_ROUTES: Entry[] = SERVICES.map((s) => ({

@@ -39,10 +39,10 @@ export function Analytics() {
    * this site's privacy policy ("only the cookies necessary for it to work")
    * truthful.
    *
-   * Nothing in this codebase ever calls `gtag('consent', 'update', …)`, so
-   * consent stays denied. A consent banner is REQUIRED before GA4 collects
-   * anything meaningful, and this site does not have one — building it is a
-   * design decision, not a technical one.
+   * Consent starts denied on every load. `components/ui/CookieConsent.tsx`
+   * calls `updateAnalyticsConsent()` (lib/analytics.ts) once the visitor
+   * accepts, which pushes `consent update` onto the dataLayer this script
+   * sets up — until then, GA4 collects nothing meaningful.
    *
    * Everything is `afterInteractive`. The consent default used to be a separate
    * `beforeInteractive` script, which Next.js places ahead of all of the site's

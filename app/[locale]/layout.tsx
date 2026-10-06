@@ -18,6 +18,7 @@ import { Analytics } from '@/components/providers/Analytics';
 import { RouteAnnouncer } from '@/components/providers/RouteAnnouncer';
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator';
 import { StickyCTA } from '@/components/ui/StickyCTA';
+import { CookieConsent } from '@/components/ui/CookieConsent';
 
 import '../globals.css';
 
@@ -153,6 +154,11 @@ export default async function LocaleLayout({ children, params }: Props) {
             >
               {t('skipToContent')}
             </a>
+
+            {/* Second tab stop, deliberately: it is fixed-positioned so DOM
+                order has no layout effect, but it IS tab order, and a consent
+                prompt should not be buried behind the whole page. */}
+            <CookieConsent />
 
             <SmoothScrollProvider>
               <StickyCTA />

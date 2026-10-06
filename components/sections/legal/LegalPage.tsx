@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { getFormatter, getTranslations } from 'next-intl/server';
 
 import { site, mailHref } from '@/config/site.config';
@@ -10,10 +11,10 @@ import { site, mailHref } from '@/config/site.config';
  * tells visitors when its terms changed; bump this only when they do.
  * Format: YYYY-MM-DD.
  */
-const LEGAL_UPDATED = '2026-09-07';
+const LEGAL_UPDATED = '2026-10-06';
 
 /**
- * Shared shell for the Privacy and Terms pages.
+ * Shared shell for the Privacy, Terms, Legal Notice and Cookies pages.
  *
  * A server component — these pages are static prose with one mailto link, so
  * they ship no JavaScript. The Vite versions wrapped everything in a Motion
@@ -23,9 +24,18 @@ const LEGAL_UPDATED = '2026-09-07';
 export async function LegalPage({
   namespace,
   sectionKeys,
+  values,
+  footerSlot,
 }: {
-  namespace: 'privacy' | 'terms';
+  namespace: 'privacy' | 'terms' | 'legal' | 'cookies';
   sectionKeys: readonly string[];
+  /** Interpolated into every section's title/body — lets legal copy pull
+   *  RCCM/IFU/capital/etc. from config/site.config.ts instead of being
+   *  retyped into the message files. */
+  values?: Record<string, string>;
+  /** Rendered after the contact section — e.g. the "change your choice"
+   *  control on /cookies. */
+  footerSlot?: ReactNode;
 }) {
   const t = await getTranslations(namespace);
   const format = await getFormatter();
@@ -58,9 +68,9 @@ export async function LegalPage({
           {sectionKeys.map((key, i) => (
             <section key={key}>
               <h2 className="text-xl font-bold uppercase tracking-tight mb-4 text-brand-text">
-                {i + 1}. {t(`sections.${key}.title`)}
+                {i + 1}. {t(`sections.${key}.title`, values)}
               </h2>
-              <p>{t(`sections.${key}.body`)}</p>
+              <p>{t(`sections.${key}.body`, values)}</p>
             </section>
           ))}
 
@@ -82,6 +92,7 @@ export async function LegalPage({
               .
             </p>
           </section>
+          {footerSlot}
         </div>
       </div>
     </div>

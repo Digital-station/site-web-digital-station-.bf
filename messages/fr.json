@@ -38,6 +38,8 @@
     "headquarters": "Siège",
     "privacy": "Politique de confidentialité",
     "terms": "Conditions d'utilisation",
+    "legal": "Mentions légales",
+    "cookies": "Cookies",
     "followUs": "Suivez-nous sur {network}"
   },
   "rail": {
@@ -55,6 +57,15 @@
     "aria": "Nous écrire sur WhatsApp",
     "whatsappMessage": "Bonjour Digital Station ! Je souhaite discuter d'un projet avec vous.",
     "whatsappMessageFrom": "Bonjour Digital Station ! Je vous écris depuis la page « {page} ». Je souhaite discuter d'un projet avec vous."
+  },
+  "cookieConsent": {
+    "aria": "Préférences de cookies",
+    "title": "Votre vie privée",
+    "body": "Nous utilisons des cookies analytiques uniquement avec votre accord, pour mieux comprendre comment ce site est utilisé.",
+    "accept": "Accepter",
+    "refuse": "Refuser",
+    "details": "En savoir plus",
+    "saved": "Préférence enregistrée. Merci !"
   },
   "home": {
     "meta": {
@@ -1186,7 +1197,7 @@
       },
       "cookies": {
         "title": "Cookies",
-        "body": "Ce site ne dépose aucun cookie. Votre choix de thème est conservé localement dans votre navigateur (localStorage) et votre langue figure dans l'adresse de la page. Vous pouvez effacer ces données à tout moment depuis les paramètres de votre navigateur."
+        "body": "Votre choix de thème et votre décision concernant les cookies analytiques sont conservés localement dans votre navigateur (localStorage), et votre langue figure dans l'adresse de la page. Avec votre accord explicite, des cookies de mesure d'audience (Google Analytics 4) peuvent également être déposés — voir notre politique de cookies pour le détail et pour modifier votre choix."
       },
       "security": {
         "title": "Sécurité",
@@ -1226,6 +1237,69 @@
       "law": {
         "title": "Droit applicable",
         "body": "Les présentes conditions sont régies par le droit burkinabè. En cas de différend, les parties rechercheront une solution amiable avant toute action contentieuse."
+      }
+    }
+  },
+  "legal": {
+    "metaTitle": "Mentions légales",
+    "metaDescription": "Informations légales relatives à Digital Station SARL : éditeur, hébergeur et propriété intellectuelle.",
+    "eyebrow": "Informations légales",
+    "title": "Mentions<br></br>légales.",
+    "lastUpdated": "Dernière mise à jour : {date}",
+    "contactTitle": "Nous contacter",
+    "contactBody": "Pour toute question relative à ces mentions légales, écrivez-nous à",
+    "sections": {
+      "publisher": {
+        "title": "Éditeur du site",
+        "body": "Le présent site est édité par {entity}, société à responsabilité limitée (SARL) au capital social de {capital}, immatriculée au Registre du Commerce et du Crédit Mobilier sous le numéro {rccm}, Identifiant Fiscal Unique {ifu}, dont le siège social est situé à {address}. Téléphone : {phone}. E-mail : {email}."
+      },
+      "director": {
+        "title": "Directeur de la publication",
+        "body": "Directeur de la publication : {director}, {directorRole}."
+      },
+      "host": {
+        "title": "Hébergement",
+        "body": "Le site est hébergé par {host}, {hostAddress}."
+      },
+      "ip": {
+        "title": "Propriété intellectuelle",
+        "body": "L'ensemble des contenus présents sur ce site (textes, visuels, marque, logo) est la propriété de {entity} et est protégé par le droit de la propriété intellectuelle. Toute reproduction, représentation ou diffusion, totale ou partielle, sans autorisation préalable est interdite."
+      },
+      "liability": {
+        "title": "Limitation de responsabilité",
+        "body": "{entity} met en œuvre tous les moyens raisonnables pour assurer l'exactitude des informations publiées sur ce site, sans garantir l'absence d'erreur ou d'omission. {entity} ne saurait être tenue responsable des dommages résultant de l'utilisation de ce site ou de liens vers des sites tiers."
+      }
+    }
+  },
+  "cookies": {
+    "metaTitle": "Politique de cookies",
+    "metaDescription": "Quels cookies ce site utilise, pourquoi, et comment modifier votre choix.",
+    "eyebrow": "Cookies",
+    "title": "Politique de<br></br>cookies.",
+    "lastUpdated": "Dernière mise à jour : {date}",
+    "contactTitle": "Nous contacter",
+    "contactBody": "Pour toute question relative aux cookies, écrivez-nous à",
+    "manageButton": "Modifier mon choix",
+    "sections": {
+      "what": {
+        "title": "Qu'est-ce qu'un cookie ?",
+        "body": "Un cookie est un petit fichier déposé par un site dans votre navigateur. Il peut servir à retenir une préférence, mesurer une audience ou suivre une navigation. Cette page explique ce que ce site dépose et pourquoi."
+      },
+      "necessary": {
+        "title": "Ce qui est toujours actif",
+        "body": "Votre choix de thème (clair/sombre) et votre décision concernant les cookies analytiques sont enregistrés localement dans votre navigateur (localStorage). Votre langue est portée par l'adresse de la page. Aucune de ces informations n'est un cookie de suivi et aucune n'est transmise à un tiers."
+      },
+      "analytics": {
+        "title": "Mesure d'audience (avec votre accord)",
+        "body": "Avec votre accord explicite, ce site utilise Google Analytics 4 pour mesurer la fréquentation (pages consultées, provenance, type d'appareil), avec anonymisation systématique de l'adresse IP. Les cookies associés (_ga, _ga_XXXXXXX) ne sont déposés qu'après votre consentement et peuvent être refusés sans affecter votre navigation."
+      },
+      "duration": {
+        "title": "Durée de conservation",
+        "body": "Les cookies analytiques, lorsqu'ils sont acceptés, sont conservés 13 mois maximum, conformément aux recommandations de la CNIL. Votre choix est mémorisé pendant 6 mois ; passé ce délai, la bannière de consentement vous sera présentée à nouveau."
+      },
+      "manage": {
+        "title": "Modifier votre choix",
+        "body": "Vous pouvez modifier votre choix à tout moment grâce au bouton ci-dessous, ou en effaçant les données de ce site depuis les paramètres de votre navigateur."
       }
     }
   },

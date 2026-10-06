@@ -245,7 +245,7 @@ export async function Footer() {
               RCCM : {site.contact.legal.rccm} • IFU : {site.contact.legal.ifu} • {t("headquarters")} : Ouagadougou (Burkina Faso)
             </p>
           </div>
-          <div className="flex gap-8">
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
             <Link
               href="/privacy"
               className="inline-block py-2 -my-2 text-[11px] uppercase tracking-widest text-brand-muted hover:text-brand-text transition-colors"
@@ -257,6 +257,18 @@ export async function Footer() {
               className="inline-block py-2 -my-2 text-[11px] uppercase tracking-widest text-brand-muted hover:text-brand-text transition-colors"
             >
               {t("terms")}
+            </Link>
+            <Link
+              href="/legal"
+              className="inline-block py-2 -my-2 text-[11px] uppercase tracking-widest text-brand-muted hover:text-brand-text transition-colors"
+            >
+              {t("legal")}
+            </Link>
+            <Link
+              href="/cookies"
+              className="inline-block py-2 -my-2 text-[11px] uppercase tracking-widest text-brand-muted hover:text-brand-text transition-colors"
+            >
+              {t("cookies")}
             </Link>
           </div>
         </div>
