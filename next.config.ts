@@ -59,13 +59,21 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
 
   /**
-   * Deployment target is the owner's own cPanel Node server, a single process
-   * behind Passenger — not a serverless platform. `standalone` emits
-   * .next/standalone/server.js with only the files that server needs, so the
-   * upload is a fraction of a full node_modules tree.
+   * Deployed on Vercel today; the `deploy/` scripts and this `standalone`
+   * output also support a self-hosted single-process target (cPanel/Docker/
+   * PM2 behind Nginx or Passenger) as a documented fallback — see
+   * DEPLOYMENT.md. `standalone` emits .next/standalone/server.js with only
+   * the files that server needs, so a self-hosted upload is a fraction of a
+   * full node_modules tree; Vercel's own build pipeline uses this output
+   * format internally regardless, so it costs nothing there.
    *
-   * Remember to copy `public/` and `.next/static/` into .next/standalone/
-   * after building; the minimal server does not bundle them.
+   * On the self-hosted path: remember to copy `public/` and `.next/static/`
+   * into .next/standalone/ after building — the minimal server does not
+   * bundle them (scripts/copy-standalone-assets.mjs does this as `postbuild`).
+   *
+   * The rate limiter in app/api/leads/route.ts is the other half of this:
+   * it needs Upstash Redis on Vercel (serverless, multi-instance) but is
+   * correct with no configuration at all on the self-hosted path.
    */
   output: 'standalone',
 

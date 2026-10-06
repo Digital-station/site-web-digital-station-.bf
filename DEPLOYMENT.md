@@ -1,6 +1,46 @@
-# Production VPS Deployment Guide — Digital Station (`digitalstation.bf`)
+# Deployment Guide — Digital Station (`digitalstation.bf`)
 
-This guide provides complete, step-by-step instructions to deploy Digital Station on a Linux VPS (Ubuntu 22.04 / 24.04 LTS or Debian 12).
+The site is deployed on **Vercel today**. Everything below Section 1 is the
+**self-hosted VPS path** — kept as a documented fallback (the `Dockerfile`,
+`docker-compose.yml`, `ecosystem.config.js`, `deploy/` scripts and Nginx
+config all still work), not the current production target. If you only came
+here to deploy or redeploy the live site, you want Section 0.
+
+---
+
+## 0. Vercel (current production target)
+
+1. **Import the repo** at [vercel.com/new](https://vercel.com/new) — Next.js
+   is auto-detected, no build settings to change. `output: 'standalone'` in
+   `next.config.ts` is harmless here: Vercel's own build pipeline produces
+   the same output format internally regardless.
+2. **Set environment variables** in Project Settings → Environment Variables,
+   matching `.env.example`:
+   - `RESEND_API_KEY`, `CONTACT_EMAIL`, `LEADS_FROM` — contact form delivery.
+   - `NEXT_PUBLIC_ANALYTICS_PROVIDER` / `NEXT_PUBLIC_ANALYTICS_SITE_ID` —
+     optional, GA4.
+   - `GOOGLE_SITE_VERIFICATION` — optional, read at build time.
+3. **Add the Upstash integration** (Vercel dashboard → Integrations →
+   Upstash → Redis). This sets `UPSTASH_REDIS_REST_URL` and
+   `UPSTASH_REDIS_REST_TOKEN` automatically. **Do this before going live**:
+   without it, `/api/leads`' rate limiter falls back to an in-memory count
+   that does not work across Vercel's serverless instances — see the comment
+   on `isRateLimited` in `app/api/leads/route.ts`.
+4. **DNS**: point `digitalstation.bf` at Vercel per their dashboard
+   instructions (A/ALIAS + CNAME for `www`), and add the SPF/DKIM records
+   from the [Resend Dashboard](https://resend.com/domains) for lead delivery.
+5. Every push to the production branch redeploys automatically — no script
+   to run.
+
+---
+
+## Self-hosted / VPS path (fallback)
+
+The instructions below deploy the same app on a Linux VPS (Ubuntu 22.04 /
+24.04 LTS or Debian 12) instead of Vercel. Use this if the project ever moves
+off Vercel, or for a local/offline deployment. The rate limiter needs no
+configuration here — the in-memory store is correct on a single long-lived
+process.
 
 ---
 

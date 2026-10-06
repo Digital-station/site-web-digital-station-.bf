@@ -55,37 +55,107 @@ const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
  * far below what makes a spam relay worth building.
  */
 const GLOBAL_RATE_LIMIT_MAX = 30;
+const GLOBAL_RATE_LIMIT_KEY = 'leads:global';
 
 /**
- * Request timestamps per client IP.
+ * Where hit counts live — pluggable, because the right answer depends on
+ * where this is deployed.
  *
- * Deliberately a module-level Map — that is, PER NODE PROCESS. The site is
- * deployed as a single Node process on the owner's cPanel host, so one
- * process sees every request and the count is exact. If this ever moves to a
- * multi-instance or serverless platform, each instance would keep its own
- * count and the effective limit would multiply by the instance count; that is
- * the point at which this needs to become Redis or an upstream WAF rule.
+ * A module-level Map is correct on a single long-lived Node process — the
+ * cPanel/Docker/PM2 target this repo's `deploy/` scripts build for — because
+ * one process sees every request and the count is exact. It is WRONG on
+ * Vercel's serverless functions, where an invocation can run in its own
+ * process: every instance would keep its own count, and the effective limit
+ * would silently multiply by however many instances handled a burst.
  *
- * Memory is bounded by pruning: entries older than the window are dropped on
- * every call, so the map only ever holds IPs seen in the last 10 minutes.
+ * When `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are set —
+ * which Vercel's Upstash marketplace integration does automatically — counts
+ * move to Redis instead, shared across every instance. Without them, the
+ * in-memory store below is used, which is exactly what the VPS path needs.
  */
-const requestLog = new Map<string, number[]>();
+interface RateLimitStore {
+  /** Increments `key`'s count for the current window and reports whether
+   *  that push took it over `max`. */
+  hit(key: string, max: number, windowMs: number): Promise<boolean>;
+}
 
 /**
- * Timestamps of every POST that cleared the rate-limit check, regardless of
- * claimed IP. This counts *attempts admitted for processing* — it is written
- * before the honeypot, the schema and Resend have had their say, so a request
- * counted here may still end as a 400, a 503 or a discarded bot submission. It
- * is a throttle ledger, not a record of delivered leads.
- *
- * Same per-process caveat as `requestLog` above: exact on the
- * single cPanel Node instance, and it would need Redis or an upstream WAF the
- * day this runs on more than one process.
- *
- * Always appended with `Date.now()`, so it stays sorted and pruning is a shift
- * from the front.
+ * Sliding-window-by-timestamp-list store, per process. Memory is bounded by
+ * pruning: entries older than the window are dropped on every call, so the
+ * map only ever holds keys seen within the last window.
  */
-const globalLog: number[] = [];
+class MemoryRateLimitStore implements RateLimitStore {
+  private log = new Map<string, number[]>();
+
+  async hit(key: string, max: number, windowMs: number): Promise<boolean> {
+    const now = Date.now();
+    const cutoff = now - windowMs;
+
+    // Prune every key, not just this one, so the map cannot grow unbounded.
+    for (const [k, times] of this.log) {
+      const recent = times.filter((t) => t > cutoff);
+      if (recent.length === 0) this.log.delete(k);
+      else this.log.set(k, recent);
+    }
+
+    const times = this.log.get(key) ?? [];
+    if (times.length >= max) return true;
+    this.log.set(key, [...times, now]);
+    return false;
+  }
+}
+
+/**
+ * Fixed-window counter via Upstash's Redis REST API — plain `fetch`, no SDK
+ * dependency. Slightly less precise at window boundaries than the
+ * sliding-window memory store above (a burst can straddle two windows),
+ * which is an accepted trade-off for the same reason the global cap already
+ * is one: this bounds a spam relay, it does not need to be exact.
+ *
+ * Fails OPEN on any network or auth error — logged, but a transient Redis
+ * outage should never be able to block a real visitor from reaching the
+ * contact form.
+ */
+class UpstashRateLimitStore implements RateLimitStore {
+  constructor(
+    private url: string,
+    private token: string,
+  ) {}
+
+  async hit(key: string, max: number, windowMs: number): Promise<boolean> {
+    try {
+      const res = await fetch(`${this.url}/pipeline`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify([
+          ['INCR', key],
+          // NX: only arms the expiry on the FIRST hit in a window, so a
+          // steady stream of requests cannot keep pushing it back and
+          // extend the window indefinitely.
+          ['PEXPIRE', key, String(windowMs), 'NX'],
+        ]),
+      });
+      if (!res.ok) throw new Error(`Upstash responded ${res.status}`);
+      const [incr] = (await res.json()) as { result: number }[];
+      return (incr?.result ?? 0) > max;
+    } catch (err) {
+      console.error('[leads] rate limit store unreachable, failing open:', err);
+      return false;
+    }
+  }
+}
+
+function createRateLimitStore(): RateLimitStore {
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (url && token) return new UpstashRateLimitStore(url, token);
+  return new MemoryRateLimitStore();
+}
+
+const rateLimitStore = createRateLimitStore();
 
 /** First entry of x-forwarded-for, else x-real-ip, else 'unknown'. */
 function clientIp(request: Request): string {
@@ -101,30 +171,19 @@ function clientIp(request: Request): string {
  * True when this IP has used its own allowance, OR when the site as a whole
  * has used the global allowance, for the current window.
  *
- * Both buckets are checked before either is written to, so a request refused
- * by the global cap does not also burn the caller's per-IP allowance.
+ * The two `hit()` calls are not atomic with each other — under concurrent
+ * requests, one could in theory burn its per-IP allowance and then
+ * separately be refused by the global cap. That is a deliberate relaxation
+ * of the single-process version's check-both-then-write-either ordering, in
+ * exchange for a store that works on serverless; the global cap still holds
+ * regardless of how the two land relative to each other.
  */
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const cutoff = now - RATE_LIMIT_WINDOW_MS;
-
-  // Prune every IP, not just this one, so the map cannot grow unbounded.
-  for (const [key, times] of requestLog) {
-    const recent = times.filter((t) => t > cutoff);
-    if (recent.length === 0) requestLog.delete(key);
-    else requestLog.set(key, recent);
-  }
-
-  // Same pruning for the global log; it is sorted, so drop from the front.
-  while (globalLog.length > 0 && globalLog[0] <= cutoff) globalLog.shift();
-
-  const times = requestLog.get(ip) ?? [];
-  if (times.length >= RATE_LIMIT_MAX) return true;
-  if (globalLog.length >= GLOBAL_RATE_LIMIT_MAX) return true;
-
-  requestLog.set(ip, [...times, now]);
-  globalLog.push(now);
-  return false;
+async function isRateLimited(ip: string): Promise<boolean> {
+  const [ipLimited, globalLimited] = await Promise.all([
+    rateLimitStore.hit(`leads:ip:${ip}`, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW_MS),
+    rateLimitStore.hit(GLOBAL_RATE_LIMIT_KEY, GLOBAL_RATE_LIMIT_MAX, RATE_LIMIT_WINDOW_MS),
+  ]);
+  return ipLimited || globalLimited;
 }
 
 /* ── 2. Origin check ─────────────────────────────────────────────────────── */
@@ -214,7 +273,7 @@ export async function POST(request: Request) {
 
   // 3. Rate limit.
   const ip = clientIp(request);
-  if (isRateLimited(ip)) {
+  if (await isRateLimited(ip)) {
     return NextResponse.json(
       { success: false, error: 'rate_limited' },
       { status: 429 },
