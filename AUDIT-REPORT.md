@@ -38,7 +38,7 @@ Following a comprehensive audit and optimization pass, the Digital Station platf
 
 ### JavaScript & Bundle Hygiene
 - **Zero Runtime Errors:** Clean build with zero TypeScript errors (`tsc --noEmit`), zero ESLint errors/warnings (`eslint .`), and 19/19 passing unit tests.
-- **Code Splitting:** Heavy decorative chunks (`Wavemesh`, `KnowledgeConvergence`, `ToolsMarquee`, `IndustriesWeServe`, `ArchitectureDiagrams`) dynamically imported with lightweight SSR placeholders.
+- **Code Splitting:** Heavy decorative chunks (`Wavemesh`, `KnowledgeConvergence`, `ToolsMarquee`, `IndustriesWeServe`) dynamically imported with lightweight SSR placeholders.
 
 ### Security
 - **Strict Transport Security (HSTS):** `max-age=63072000; includeSubDomains; preload` (2-year preload eligible).
