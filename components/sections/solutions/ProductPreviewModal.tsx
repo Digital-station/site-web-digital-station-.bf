@@ -1,8 +1,18 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+'use client';
+
+import { useRef, useState } from 'react';
+import { motion } from 'motion/react';
 import { X, CheckCircle2, Sparkles, Layers, ArrowRight, BarChart3 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
+import { useDialog } from '@/lib/use-dialog';
+
+/** Background made `inert` while this dialog is open. `nav` is added because
+ *  the navbar is fixed and sits outside #main-content and <footer>, the same
+ *  gap documented on the mobile nav drawer's own header row. Module-level: a
+ *  fresh array literal every render would defeat useDialog's effect
+ *  dependency comparison. */
+const INERT_SELECTORS = ['#main-content', 'footer', 'nav'] as const;
 
 export type ProductPreviewData = {
   id: string;
@@ -29,27 +39,39 @@ interface ProductPreviewModalProps {
 export function ProductPreviewModal({ product, onClose }: ProductPreviewModalProps) {
   const [activeTab, setActiveTab] = useState<number>(0);
   const ts = useTranslations('solutions');
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  const { onKeyDown } = useDialog({
+    open: product !== null,
+    onClose,
+    dialogRef,
+    initialFocusRef: closeRef,
+    inertSelectors: INERT_SELECTORS,
+  });
 
   if (!product) return null;
 
   return (
-    <AnimatePresence>
-      <div 
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="product-preview-title"
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 overflow-y-auto"
-      >
-        {/* Backdrop */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-          className="fixed inset-0 bg-black/80 backdrop-blur-md"
-        />
+    <div
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="product-preview-title"
+      onKeyDown={onKeyDown}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-8"
+    >
+      {/* Backdrop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        aria-hidden="true"
+        className="fixed inset-0 bg-black/80 backdrop-blur-md"
+      />
 
-        {/* Modal Window */}
+      {/* Modal Window */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -69,6 +91,7 @@ export function ProductPreviewModal({ product, onClose }: ProductPreviewModalPro
               </span>
             </div>
             <button
+              ref={closeRef}
               type="button"
               onClick={onClose}
               aria-label={ts('modal.closeAria')}
@@ -209,8 +232,7 @@ export function ProductPreviewModal({ product, onClose }: ProductPreviewModalPro
               </Link>
             </div>
           </div>
-        </motion.div>
-      </div>
-    </AnimatePresence>
+      </motion.div>
+    </div>
   );
 }

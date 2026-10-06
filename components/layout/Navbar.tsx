@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { FocusEvent, KeyboardEvent } from 'react';
 import { ArrowRight, ChevronDown, Menu, Sparkles, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -11,23 +11,10 @@ import { site } from '@/config/site.config';
 import { BrandMark } from '@/components/ui/BrandMark';
 import { LocaleToggle } from '@/components/ui/LocaleToggle';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { useDialog } from '@/lib/use-dialog';
 import { cn } from '@/lib/utils';
 
 const MEGA_MENU_ID = 'nav-services-menu';
-
-/**
- * Page regions outside the drawer that must be hidden from AT and from Tab
- * while it is open. These are rendered by the layout, so they are matched by
- * selector; the navbar's own header row is added by ref in the effect below.
- */
-const INERT_SELECTORS = ['#main-content', 'footer'];
-
-/**
- * Everything inside the dialog that can take focus. `summary` is listed
- * because the services group is a native <details>.
- */
-const FOCUSABLE =
-  'a[href], button:not([disabled]), summary, input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -40,8 +27,6 @@ export function Navbar() {
   const servicesTriggerRef = useRef<HTMLAnchorElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
-  /** False until the drawer has been opened once, so mount never steals focus. */
-  const drawerWasOpen = useRef(false);
   /**
    * Set for the duration of the Escape-close only. Returning focus to the
    * trigger fires a focus event that bubbles to the mega-menu wrapper, whose
@@ -71,90 +56,21 @@ export function Navbar() {
     setServicesOpen(false);
   }, [pathname]);
 
-  /**
-   * While the drawer is open everything behind it is `inert`: no tab stops, no
-   * screen-reader access, no pointer events.
-   *
-   * That includes the navbar's OWN header row. It is a sibling of the drawer
-   * inside this <nav>, so the burger and the logo stayed focusable behind the
-   * backdrop and Shift+Tab off the close button walked straight out of the
-   * dialog — breaking the aria-modal contract.
-   *
-   * `#main-content` and `<footer>` are rendered by the layout, outside this
-   * component, so they are matched by selector; the header row comes from a
-   * ref. Either way the attribute is set imperatively rather than as a prop.
-   */
-  useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
+  // The navbar's own header row is a sibling of the drawer inside this <nav>,
+  // so without this it would stay focusable behind the backdrop and
+  // Shift+Tab off the close button would walk straight out of the dialog —
+  // breaking the aria-modal contract. Memoized: a fresh array literal every
+  // render would defeat useDialog's effect dependency comparison.
+  const inertRefs = useMemo(() => [headerRef], [headerRef]);
 
-    const targets = [
-      ...INERT_SELECTORS.flatMap((sel) => Array.from(document.querySelectorAll(sel))),
-      headerRef.current,
-    ].filter((el): el is Element => el !== null);
-    targets.forEach((el) => {
-      if (mobileMenuOpen) el.setAttribute('inert', '');
-      else el.removeAttribute('inert');
-    });
-
-    return () => {
-      document.body.style.overflow = '';
-      targets.forEach((el) => el.removeAttribute('inert'));
-    };
-  }, [mobileMenuOpen]);
-
-  // Focus moves into the drawer on open and back to the burger on close.
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      drawerWasOpen.current = true;
-      const id = requestAnimationFrame(() => closeRef.current?.focus());
-      return () => cancelAnimationFrame(id);
-    }
-    if (drawerWasOpen.current) burgerRef.current?.focus();
-  }, [mobileMenuOpen]);
-
-  // Escape closes the drawer.
-  useEffect(() => {
-    if (!mobileMenuOpen) return;
-    const onKeyDown = (e: globalThis.KeyboardEvent) => {
-      if (e.key === 'Escape') setMobileMenuOpen(false);
-    };
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
-  }, [mobileMenuOpen]);
-
-  /**
-   * Tab / Shift+Tab cycle within the dialog.
-   *
-   * `inert` alone is not a complete trap: the skip link and the sticky CTA are
-   * rendered by the layout outside every inert container, so Tab could still
-   * walk out. Cycling here closes that gap and keeps holding regardless of what
-   * the layout grows later.
-   */
-  const handleDrawerKeyDown = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key !== 'Tab') return;
-
-    const root = drawerRef.current;
-    if (!root) return;
-
-    const items = Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
-      // offsetParent is null for anything display:none — notably the ten
-      // service links while the <details> group is collapsed.
-      (el) => el.offsetParent !== null,
-    );
-    if (items.length === 0) return;
-
-    const first = items[0];
-    const last = items[items.length - 1];
-    const active = document.activeElement;
-
-    if (e.shiftKey && active === first) {
-      e.preventDefault();
-      last.focus();
-    } else if (!e.shiftKey && active === last) {
-      e.preventDefault();
-      first.focus();
-    }
-  }, []);
+  const { onKeyDown: handleDrawerKeyDown } = useDialog({
+    open: mobileMenuOpen,
+    onClose: () => setMobileMenuOpen(false),
+    dialogRef: drawerRef,
+    initialFocusRef: closeRef,
+    returnFocusRef: burgerRef,
+    inertRefs,
+  });
 
   /** Mega-menu closes only when focus leaves the wrapper entirely. */
   const handleServicesBlur = useCallback((e: FocusEvent<HTMLDivElement>) => {

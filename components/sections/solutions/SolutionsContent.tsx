@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { motion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { ArrowRight, Eye, Sparkles } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 
@@ -133,11 +133,19 @@ export function SolutionsContent() {
         </div>
       </Container>
 
-      {/* Interactive Modal */}
-      <ProductPreviewModal
-        product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-      />
+      {/* Interactive Modal. Conditionally rendered (rather than always
+          mounted and returning null internally) so AnimatePresence can see
+          it leave the tree and actually play its exit transition — and so
+          its activeTab state resets between products via `key`. */}
+      <AnimatePresence>
+        {selectedProduct && (
+          <ProductPreviewModal
+            key={selectedProduct.id}
+            product={selectedProduct}
+            onClose={() => setSelectedProduct(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
