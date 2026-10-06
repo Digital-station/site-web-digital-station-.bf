@@ -193,15 +193,11 @@
     background-color: var(--ds-accent);
   }
 
-  /* GSAP animation prep (service / about / services pages still reveal
-     through GSAP — KEEP IN SYNC with the class names that code targets).
-     The home page reveals through [data-rv] instead (see below). */
-  .service-card,
-  .trend-card,
-  .benefit-card,
-  .knowledge-item,
-  .portfolio-item,
-  .knowledge-hub-item {
+  /* GSAP animation prep. About/Services/ServiceDetail moved to the
+     [data-rv] reveal pattern below (same as the home page); `.benefit-card`
+     is the one survivor, kept for its hover lift, not a GSAP target
+     anymore. KEEP IN SYNC with the class names that still animate. */
+  .benefit-card {
     will-change: transform, opacity;
   }
 
