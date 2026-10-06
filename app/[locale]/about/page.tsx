@@ -6,6 +6,7 @@ import { join } from 'node:path';
 
 import { routing } from '@/i18n/routing';
 import { MotionProvider } from '@/components/providers/MotionProvider';
+import { RevealRoot } from '@/components/ui/RevealRoot';
 import { AboutContent } from '@/components/sections/about/AboutContent';
 import { site } from '@/config/site.config';
 import { pageMeta } from '@/lib/seo';
@@ -71,7 +72,9 @@ export default async function AboutPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: ldJson(breadcrumb) }}
       />
       <MotionProvider>
-        <AboutContent trustDocSizes={docSizes()} />
+        <RevealRoot>
+          <AboutContent trustDocSizes={docSizes()} />
+        </RevealRoot>
       </MotionProvider>
     </>
   );

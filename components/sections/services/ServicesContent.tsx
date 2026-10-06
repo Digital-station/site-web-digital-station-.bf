@@ -1,7 +1,4 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { motion } from "motion/react";
+import type { CSSProperties } from "react";
 import {
   Activity,
   ArrowUpRight,
@@ -15,15 +12,14 @@ import {
   Zap,
   type LucideIcon,
 } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 import { Link } from "@/i18n/routing";
 import { SERVICES } from "@/content/services";
 import { Container } from "@/components/layout/Container";
+import { PauseOffscreen } from "@/components/ui/PauseOffscreen";
 import { getServiceIcon } from "@/lib/service-icons";
-import { usePauseOffscreen } from "@/lib/use-pause-offscreen";
+import { ServicesParallax } from "./ServicesParallax";
 
 const PHILOSOPHY_KEYS = ["first", "second", "third"] as const;
 const PHILOSOPHY_ICONS: Record<string, LucideIcon> = {
@@ -32,72 +28,20 @@ const PHILOSOPHY_ICONS: Record<string, LucideIcon> = {
   third: Cpu,
 };
 
-export function ServicesContent() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const scaleSectionRef = usePauseOffscreen<HTMLElement>();
-
-  const t = useTranslations("servicesPage");
-  const ts = useTranslations("services.items");
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        // The header's entrances are CSS (`.enter`, see globals.css): this
-        // tween used to re-hide the h1 and intro the server had already
-        // painted, then replay them.
-        gsap.to(".bg-orb", {
-          x: (i: number) => (i === 0 ? 100 : -100),
-          y: (i: number) => (i === 0 ? 50 : -50),
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1.5,
-            invalidateOnRefresh: true,
-          },
-        });
-
-        gsap.fromTo(
-          ".knowledge-item",
-          { y: 30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            stagger: 0.1,
-            clearProps: "all",
-            // See HomeContent for why immediateRender:false + once:true.
-            immediateRender: false,
-            scrollTrigger: {
-              trigger: ".knowledge-grid",
-              start: "top bottom-=40",
-              toggleActions: "play none none none",
-              once: true,
-            },
-          },
-        );
-      });
-
-      return () => mm.revert();
-    }, containerRef);
-
-    const timer = setTimeout(() => ScrollTrigger.refresh(), 500);
-
-    return () => {
-      ctx.revert();
-      clearTimeout(timer);
-    };
-  }, []);
+/**
+ * Server component. The page's only continuous (scroll-scrubbed) animation —
+ * the two `.bg-orb` blobs — lives in `ServicesParallax`, a thin client
+ * wrapper; everything else is static content, with one-time scroll reveals
+ * done through `data-rv` (see RevealRoot) instead of GSAP/Motion. The page
+ * rendering this must wrap it in `<RevealRoot>` for those to arm — see
+ * app/[locale]/services/page.tsx.
+ */
+export async function ServicesContent() {
+  const t = await getTranslations("servicesPage");
+  const ts = await getTranslations("services.items");
 
   return (
-    <div
-      ref={containerRef}
-      className="min-h-screen bg-brand-primary pt-24 md:pt-44 pb-24 lg:pb-32 lg:pl-16 relative overflow-hidden"
-    >
+    <ServicesParallax>
       <div
         aria-hidden="true"
         className="bg-orb absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brand-accent/10 rounded-full blur-[160px] pointer-events-none"
@@ -159,12 +103,10 @@ export function ServicesContent() {
           {PHILOSOPHY_KEYS.map((key, i) => {
             const Icon = PHILOSOPHY_ICONS[key];
             return (
-              <motion.div
+              <div
                 key={key}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
+                data-rv
+                style={{ "--rv-delay": `${i * 0.1}s` } as CSSProperties}
                 className="p-8 md:p-10 bg-brand-surface border border-brand-border rounded-[2rem] md:rounded-[2.5rem] hover:border-brand-accent/40 transition-all flex flex-col justify-center group"
               >
                 <div className="flex items-center gap-4 md:gap-6 mb-4 md:mb-6">
@@ -177,7 +119,7 @@ export function ServicesContent() {
                 <p className="text-brand-muted text-xs md:text-sm leading-relaxed font-light">
                   {t(`philosophy.${key}.desc`)}
                 </p>
-              </motion.div>
+              </div>
             );
           })}
         </section>
@@ -216,14 +158,16 @@ export function ServicesContent() {
           </header>
 
           <ul className="knowledge-grid grid sm:grid-cols-2 lg:grid-cols-3 gap-y-16 md:gap-y-20 gap-x-8 md:gap-x-12">
-            {SERVICES.map((s) => {
+            {SERVICES.map((s, i) => {
               const Icon = getServiceIcon(s.slug);
               const benefits = ts.raw(`${s.slug}.benefits`) as string[];
               const title = ts(`${s.slug}.title`);
               return (
                 <li
                   key={s.slug}
-                  className="knowledge-item border-l border-brand-border pl-6 md:pl-8 group"
+                  data-rv
+                  style={{ "--rv-delay": `${i * 0.1}s` } as CSSProperties}
+                  className="border-l border-brand-border pl-6 md:pl-8 group"
                 >
                   <div className="flex items-center gap-4 mb-6">
                     <Icon className="w-5 h-5 text-brand-accent shrink-0" />
@@ -270,10 +214,7 @@ export function ServicesContent() {
         </section>
 
         {/* Global scale */}
-        <section
-          ref={scaleSectionRef}
-          className="mt-24 lg:mt-32 bg-brand-surface border border-brand-border rounded-[2.5rem] md:rounded-[4rem] p-8 md:p-16 lg:p-24 relative overflow-hidden group"
-        >
+        <PauseOffscreen className="mt-24 lg:mt-32 bg-brand-surface border border-brand-border rounded-[2.5rem] md:rounded-[4rem] p-8 md:p-16 lg:p-24 relative overflow-hidden group">
           <div className="relative z-10 grid lg:grid-cols-2 gap-16 md:gap-24 items-center">
             <div>
               <div className="flex items-center gap-3 text-brand-accent mb-8 md:mb-10">
@@ -321,7 +262,8 @@ export function ServicesContent() {
             <div className="relative flex justify-center">
               <div className="aspect-square w-full max-w-sm md:max-w-lg bg-brand-surface-2 shadow-card rounded-full border border-brand-border relative flex items-center justify-center overflow-hidden">
                 {/* CSS loops (globals.css), paused by `usePauseOffscreen`
-                    while this block is off screen. */}
+                    (via the PauseOffscreen wrapper above) while this block
+                    is off screen. */}
                 <div className="w-[80%] h-[80%] border-2 border-dashed border-brand-accent/30 rounded-full motion-safe:animate-[turn_90s_linear_infinite_reverse,swell_5s_ease-in-out_infinite]" />
                 <div className="absolute w-[95%] h-[95%] border border-brand-border rounded-full motion-safe:animate-[turn_40s_linear_infinite]" />
                 <div className="absolute flex flex-col items-center text-center px-6">
@@ -339,7 +281,7 @@ export function ServicesContent() {
               </div>
             </div>
           </div>
-        </section>
+        </PauseOffscreen>
 
         {/* CTA */}
         <section className="mt-24 lg:mt-32 text-center">
@@ -367,6 +309,6 @@ export function ServicesContent() {
           </div>
         </section>
       </Container>
-    </div>
+    </ServicesParallax>
   );
 }

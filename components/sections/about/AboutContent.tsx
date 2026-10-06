@@ -1,25 +1,16 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { motion, useInView } from "motion/react";
+import type { CSSProperties } from "react";
 import {
   Brain,
   Calendar,
-  CheckCircle2,
   Cpu,
   Globe,
   MapPin,
-  Rocket,
   ShieldCheck,
   Target,
-  TrendingUp,
   Users2,
-  Zap,
   type LucideIcon,
 } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 import { Link } from "@/i18n/routing";
 import { site, waHref } from "@/config/site.config";
@@ -28,6 +19,8 @@ import { Container } from "@/components/layout/Container";
 import { WhatsAppIcon } from "@/components/ui/icons/WhatsApp";
 import { DirectorWord } from "./DirectorWord";
 import { Process } from "./Process";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Timeline } from "./Timeline";
 import { TrustDocSizes } from "./TrustDocuments";
 // {import { TrustDocuments, type TrustDocSizes } from "./TrustDocuments" };
 
@@ -40,23 +33,6 @@ const VALUE_KEYS = [
   "local",
 ] as const;
 const VALUE_ICONS: LucideIcon[] = [ShieldCheck, Brain, Users2, Globe];
-
-const MILESTONE_KEYS = [
-  "2018",
-  "2019",
-  "2021",
-  "2023",
-  "2024",
-  "2025",
-] as const;
-const MILESTONE_ICONS: LucideIcon[] = [
-  Rocket,
-  CheckCircle2,
-  TrendingUp,
-  ShieldCheck,
-  Brain,
-  Zap,
-];
 
 /**
  * The four disciplines that make up the team.
@@ -93,7 +69,17 @@ function yearsInBusiness(): number {
   return new Date().getFullYear() - Number(site.foundingDate);
 }
 
-export function AboutContent({
+/**
+ * Server component — every section below resolves its own translations with
+ * `getTranslations` (next-intl/server) rather than the client `useTranslations`
+ * hook, and the scroll reveals that used to run through GSAP/Motion now use
+ * the `data-rv` + RevealRoot pattern the home page already ships (a ~500-byte
+ * IntersectionObserver vs. pulling GSAP + ScrollTrigger into this page's
+ * client bundle for what is entirely static text). The page that renders this
+ * must wrap it in `<RevealRoot>` for the reveals to arm — see
+ * app/[locale]/about/page.tsx.
+ */
+export async function AboutContent({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   trustDocSizes,
 }: {
@@ -118,8 +104,8 @@ export function AboutContent({
 
 /* ─────────────────────────────── HERO ─────────────────────────────── */
 
-function Hero() {
-  const t = useTranslations("about.hero");
+async function Hero() {
+  const t = await getTranslations("about.hero");
 
   const quickStats = [
     { icon: Calendar, value: `${yearsInBusiness()}+`, label: t("statYears") },
@@ -209,53 +195,28 @@ function Hero() {
 
 /* ───────────────────────────── MISSION ───────────────────────────── */
 
-function Mission() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const t = useTranslations("about.mission");
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.fromTo(
-          ".mission-text",
-          { y: 30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            stagger: 0.12,
-            clearProps: "all",
-            // See HomeContent for why immediateRender:false + once:true.
-            immediateRender: false,
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: "top bottom-=40",
-              toggleActions: "play none none none",
-              once: true,
-            },
-          },
-        );
-      });
-      return () => mm.revert();
-    }, containerRef);
-    return () => ctx.revert();
-  }, []);
-
+async function Mission() {
+  const t = await getTranslations("about.mission");
   const expertises = EXPERTISE_KEYS.map((k) => t(`expertises.${k}`));
 
   return (
-    <section
-      ref={containerRef}
-      className="lg:pl-16 border-t border-brand-border"
-    >
+    <section className="lg:pl-16 border-t border-brand-border">
       <Container className="grid grid-cols-1 lg:grid-cols-2 px-0 lg:px-0">
         <div className="p-8 md:p-12 lg:p-20 lg:border-r border-brand-border flex flex-col justify-center">
-          <p className="mission-text text-brand-accent text-[11px] md:text-xs uppercase tracking-wide mb-6 md:mb-8 font-mono font-bold">
+          {/* Scroll reveals are `data-rv` (see RevealRoot): the old GSAP
+              ScrollTrigger stagger (0.12s per element) cost a ~110 KB
+              dependency for a fade-up, same reasoning as the home page. */}
+          <p
+            data-rv
+            className="text-brand-accent text-[11px] md:text-xs uppercase tracking-wide mb-6 md:mb-8 font-mono font-bold"
+          >
             {t("eyebrow")}
           </p>
-          <h2 className="mission-text text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-normal leading-tight mb-6 md:mb-10 text-balance break-words">
+          <h2
+            data-rv
+            style={{ "--rv-delay": "0.12s" } as CSSProperties}
+            className="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-normal leading-tight mb-6 md:mb-10 text-balance break-words"
+          >
             {t.rich("title", {
               accent: (chunks) => (
                 <span className="text-brand-accent italic font-serif font-light lowercase">
@@ -264,14 +225,26 @@ function Mission() {
               ),
             })}
           </h2>
-          <p className="mission-text text-brand-muted text-sm md:text-base leading-relaxed max-w-lg font-light">
+          <p
+            data-rv
+            style={{ "--rv-delay": "0.24s" } as CSSProperties}
+            className="text-brand-muted text-sm md:text-base leading-relaxed max-w-lg font-light"
+          >
             {t("body1")}
           </p>
-          <p className="mission-text text-brand-muted text-sm md:text-base leading-relaxed max-w-lg font-light mt-4">
+          <p
+            data-rv
+            style={{ "--rv-delay": "0.36s" } as CSSProperties}
+            className="text-brand-muted text-sm md:text-base leading-relaxed max-w-lg font-light mt-4"
+          >
             {t("body2")}
           </p>
 
-          <div className="mission-text mt-8 flex flex-wrap gap-2">
+          <div
+            data-rv
+            style={{ "--rv-delay": "0.48s" } as CSSProperties}
+            className="mt-8 flex flex-wrap gap-2"
+          >
             {expertises.slice(0, 5).map((exp) => (
               <span
                 key={exp}
@@ -307,8 +280,8 @@ function Mission() {
 
 /* ───────────────────────────── VALUES ───────────────────────────── */
 
-function Values() {
-  const t = useTranslations("about.values");
+async function Values() {
+  const t = await getTranslations("about.values");
 
   return (
     <section className="lg:pl-16 border-t border-brand-border py-24 lg:py-32">
@@ -332,13 +305,11 @@ function Values() {
           {VALUE_KEYS.map((key, i) => {
             const Icon = VALUE_ICONS[i];
             return (
-              <motion.div
+              <div
                 key={key}
+                data-rv
+                style={{ "--rv-delay": `${i * 0.08}s` } as CSSProperties}
                 className="value-card group bg-brand-primary p-8 md:p-14 hover:bg-brand-accent-soft transition-colors duration-500 relative overflow-hidden grid grid-cols-1 md:grid-cols-[auto_1fr] gap-4 md:gap-6"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
               >
                 <Icon className="w-8 h-8 md:w-10 md:h-10 text-brand-accent group-hover:scale-110 transition-transform duration-500" />
                 <h3 className="text-xl md:text-3xl font-black uppercase tracking-normal mb-4 leading-tight text-balance break-words">
@@ -347,7 +318,7 @@ function Values() {
                 <p className="text-brand-muted text-sm md:text-base leading-relaxed font-light max-w-md md:col-span-2">
                   {t(`items.${key}.desc`)}
                 </p>
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -356,97 +327,24 @@ function Values() {
   );
 }
 
-/* ──────────────────────────── TIMELINE ──────────────────────────── */
-
-// Preserved component ready for activation
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function Timeline() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-  const t = useTranslations("about.timeline");
-
-  return (
-    <section
-      ref={ref}
-      className="lg:pl-16 border-t border-brand-border py-24 lg:py-32 overflow-hidden"
-    >
-      <Container>
-        <div className="mb-14 md:mb-20">
-          <p className="text-brand-accent text-[11px] md:text-xs uppercase tracking-wide mb-6 font-mono font-bold flex items-center gap-2">
-            {t("eyebrow")}
-          </p>
-          <h2 className="text-3xl md:text-5xl lg:text-7xl font-black uppercase tracking-tighter leading-[1.15] text-balance break-words">
-            {t.rich("title", {
-              accent: (chunks) => (
-                <span className="text-brand-accent italic font-serif font-light lowercase">
-                  {chunks}
-                </span>
-              ),
-            })}
-          </h2>
-        </div>
-
-        <div className="relative">
-          <div
-            aria-hidden="true"
-            className="absolute left-0 right-0 top-6 h-px bg-brand-border hidden md:block"
-          />
-          <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-10">
-            {MILESTONE_KEYS.map((year, i) => {
-              const Icon = MILESTONE_ICONS[i];
-              return (
-                <motion.li
-                  key={year}
-                  className="relative"
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={inView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: i * 0.1, duration: 0.6 }}
-                >
-                  <div className="w-12 h-12 rounded-full border border-brand-border bg-brand-primary flex items-center justify-center mb-5 relative z-10">
-                    <Icon className="w-5 h-5 text-brand-accent" />
-                  </div>
-                  <h3 className="text-2xl font-black tracking-tighter mb-2">
-                    {year}
-                  </h3>
-                  <p className="text-brand-muted text-xs md:text-sm leading-relaxed font-light">
-                    {t(`items.${year}`)}
-                  </p>
-                </motion.li>
-              );
-            })}
-          </ol>
-        </div>
-      </Container>
-    </section>
-  );
-}
-
 /* ─────────────────────────── TEAM PREVIEW ─────────────────────────── */
 
-function TeamPreview() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-  const t = useTranslations("about.team");
+async function TeamPreview() {
+  const t = await getTranslations("about.team");
 
   return (
     /*
       The two columns used to animate in from `x: ±50`, which parked the left
       column's text at 62px on a 1440px viewport — under the 64px LeftRail —
       until the section scrolled into view, and pushed the right column 50px
-      past the page edge in the meantime. They now rise on `y` instead, so the
-      resting and starting horizontal positions are the same one.
+      past the page edge in the meantime. They now rise on `y` instead (the
+      RevealRoot default), so the resting and starting horizontal positions
+      are the same one.
     */
-    <section
-      ref={ref}
-      className="lg:pl-16 border-t border-brand-border py-24 lg:py-32 overflow-hidden"
-    >
+    <section className="lg:pl-16 border-t border-brand-border py-24 lg:py-32 overflow-hidden">
       <Container>
         <div className="grid lg:grid-cols-2 gap-12 md:gap-20 items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-          >
+          <div data-rv>
             <p className="text-brand-accent text-[11px] md:text-xs uppercase tracking-wide mb-6 font-mono font-bold flex items-center gap-2">
               {t("eyebrow")}
             </p>
@@ -462,7 +360,7 @@ function TeamPreview() {
             <p className="text-brand-muted text-base md:text-lg leading-relaxed">
               {t("body")}
             </p>
-          </motion.div>
+          </div>
 
           {/*
             Disciplines, not head-counts. The four "25+ / 15+ / 8+ / 10+"
@@ -470,10 +368,9 @@ function TeamPreview() {
             "Innovation" floating badges are gone — none of them could be
             sourced, and "Certifié" implied a vendor accreditation.
           */}
-          <motion.ul
-            initial={{ opacity: 0, y: 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
+          <ul
+            data-rv
+            style={{ "--rv-delay": "0.2s" } as CSSProperties}
             className="grid grid-cols-2 gap-4"
           >
             {TEAM_DISCIPLINE_KEYS.map((key, i) => {
@@ -490,7 +387,7 @@ function TeamPreview() {
                 </li>
               );
             })}
-          </motion.ul>
+          </ul>
         </div>
       </Container>
     </section>
@@ -499,9 +396,9 @@ function TeamPreview() {
 
 /* ─────────────────────────────── CTA ─────────────────────────────── */
 
-function AboutCta() {
-  const t = useTranslations("about.cta");
-  const tc = useTranslations("common");
+async function AboutCta() {
+  const t = await getTranslations("about.cta");
+  const tc = await getTranslations("common");
 
   return (
     <section className="relative overflow-hidden lg:pl-16">
@@ -516,20 +413,16 @@ function AboutCta() {
         />
 
         <Container className="relative z-10 max-w-5xl">
-          <motion.p
+          <p
+            data-rv
             className="text-[11px] md:text-xs uppercase tracking-wide mb-6 font-black opacity-90"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
           >
             {t("eyebrow")}
-          </motion.p>
-          <motion.h2
+          </p>
+          <h2
+            data-rv
+            style={{ "--rv-delay": "0.1s" } as CSSProperties}
             className="text-4xl md:text-6xl lg:text-[7vw] font-black uppercase leading-[1.15] tracking-tighter mb-8 md:mb-12 text-balance break-words"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
           >
             {t.rich("title", {
               br: () => <br className="hidden md:block" />,
@@ -539,21 +432,17 @@ function AboutCta() {
                 </span>
               ),
             })}
-          </motion.h2>
-          <motion.p
+          </h2>
+          <p
+            data-rv
+            style={{ "--rv-delay": "0.2s" } as CSSProperties}
             className="text-base md:text-lg font-light max-w-xl mx-auto mb-10 md:mb-14 opacity-90"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
           >
             {t("body")}
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
+          </p>
+          <div
+            data-rv
+            style={{ "--rv-delay": "0.3s" } as CSSProperties}
             className="flex flex-wrap gap-4 justify-center"
           >
             <Link
@@ -577,7 +466,7 @@ function AboutCta() {
             >
               {t("ctaSecondary")}
             </Link>
-          </motion.div>
+          </div>
 
           {/* Full opacity: this sits on the saturated accent panel, where a
               90% white already costs contrast the palette had budgeted. */}

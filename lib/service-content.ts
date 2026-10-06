@@ -1,7 +1,4 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { getTranslations } from 'next-intl/server';
 
 /**
  * A scope card. `description` is optional on purpose: only the services that
@@ -69,62 +66,65 @@ export type ServiceContent = {
  * unsourced figures ("+40 % de conversions" and the like) that the service
  * page no longer displays. The keys still exist in the message files; nothing
  * reads them.
+ *
+ * Async, using `getTranslations` (next-intl/server) rather than the client
+ * `useTranslations` hook: this lets the single consumer, ServiceDetail,
+ * render as a Server Component instead of shipping its own translation
+ * resolution to the client.
  */
-export function useServiceContent(slug: string): ServiceContent {
-  const t = useTranslations(`services.items.${slug}`);
-  const d = useTranslations('servicePage.defaults');
+export async function getServiceContent(slug: string): Promise<ServiceContent> {
+  const t = await getTranslations(`services.items.${slug}`);
+  const d = await getTranslations('servicePage.defaults');
 
-  return useMemo(() => {
-    const has = (key: string) => t.has(key);
-    const str = (key: string, fallback: string) => (has(key) ? t(key) : fallback);
-    const arr = <T,>(key: string, fallback: T[]): T[] =>
-      has(key) ? (t.raw(key) as T[]) : fallback;
+  const has = (key: string) => t.has(key);
+  const str = (key: string, fallback: string) => (has(key) ? t(key) : fallback);
+  const arr = <T,>(key: string, fallback: T[]): T[] =>
+    has(key) ? (t.raw(key) as T[]) : fallback;
 
-    const title = t('title');
-    const benefits = t.raw('benefits') as string[];
-    const process = t.raw('process') as string[];
-    const longDesc = t('longDesc');
+  const title = t('title');
+  const benefits = t.raw('benefits') as string[];
+  const process = t.raw('process') as string[];
+  const longDesc = t('longDesc');
 
-    return {
-      title,
-      desc: t('desc'),
-      longDesc,
-      benefits,
-      process,
-      featureTitle: t('featureTitle'),
-      featureDesc: t('featureDesc'),
+  return {
+    title,
+    desc: t('desc'),
+    longDesc,
+    benefits,
+    process,
+    featureTitle: t('featureTitle'),
+    featureDesc: t('featureDesc'),
 
-      scopeTitle: str('scopeTitle', d('scopeTitle')),
-      scopeIntro: str('scopeIntro', d('scopeIntro')),
-      // Fallback: turn each process step into a scope card, TITLE ONLY.
-      //
-      // These used to carry a generic caption ("Une exécution rigoureuse à
-      // chaque étape…"), which meant nine of the ten service pages printed the
-      // same sentence four times in a row under four different headings. A
-      // step name on its own says more than a sentence that says nothing.
-      scopeItems: arr<ScopeItem>(
-        'scopeItems',
-        process.map((step) => ({ title: step })),
-      ),
+    scopeTitle: str('scopeTitle', d('scopeTitle')),
+    scopeIntro: str('scopeIntro', d('scopeIntro')),
+    // Fallback: turn each process step into a scope card, TITLE ONLY.
+    //
+    // These used to carry a generic caption ("Une exécution rigoureuse à
+    // chaque étape…"), which meant nine of the ten service pages printed the
+    // same sentence four times in a row under four different headings. A
+    // step name on its own says more than a sentence that says nothing.
+    scopeItems: arr<ScopeItem>(
+      'scopeItems',
+      process.map((step) => ({ title: step })),
+    ),
 
-      heroBadgeLabel: str('heroBadgeLabel', d('heroBadgeLabel')),
-      heroSubtitle: str('heroSubtitle', d('heroSubtitle')),
-      heroDescription: str('heroDescription', longDesc),
-      heroCtaLabel: str('heroCtaLabel', d('heroCtaLabel')),
+    heroBadgeLabel: str('heroBadgeLabel', d('heroBadgeLabel')),
+    heroSubtitle: str('heroSubtitle', d('heroSubtitle')),
+    heroDescription: str('heroDescription', longDesc),
+    heroCtaLabel: str('heroCtaLabel', d('heroCtaLabel')),
 
-      whyUsTitle: str('whyUsTitle', d('whyUsTitle')),
-      whyUsIntro: str('whyUsIntro', d('whyUsIntro')),
-      whyUsItems: arr<string>('whyUsItems', benefits),
+    whyUsTitle: str('whyUsTitle', d('whyUsTitle')),
+    whyUsIntro: str('whyUsIntro', d('whyUsIntro')),
+    whyUsItems: arr<string>('whyUsItems', benefits),
 
-      featureCtaLabel: str('featureCtaLabel', d('featureCtaLabel')),
-      ctaTitle: str('ctaTitle', d('ctaTitle')),
-      ctaSubtitle: str('ctaSubtitle', d('ctaSubtitle')),
-      ctaButtonLabel: str('ctaButtonLabel', d('ctaButtonLabel')),
+    featureCtaLabel: str('featureCtaLabel', d('featureCtaLabel')),
+    ctaTitle: str('ctaTitle', d('ctaTitle')),
+    ctaSubtitle: str('ctaSubtitle', d('ctaSubtitle')),
+    ctaButtonLabel: str('ctaButtonLabel', d('ctaButtonLabel')),
 
-      platforms: has('platforms') ? (t.raw('platforms') as Platform[]) : undefined,
+    platforms: has('platforms') ? (t.raw('platforms') as Platform[]) : undefined,
 
-      hasOwnScopeItems: has('scopeItems'),
-      hasOwnWhyUsItems: has('whyUsItems'),
-    };
-  }, [t, d]);
+    hasOwnScopeItems: has('scopeItems'),
+    hasOwnWhyUsItems: has('whyUsItems'),
+  };
 }
