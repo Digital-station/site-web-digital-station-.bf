@@ -111,14 +111,6 @@ export const webSiteLd = (description: string): Json => ({
   inLanguage: ['fr', 'en'],
   description,
   publisher: orgRef(),
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: `${site.url}/fr/services?q={search_term_string}`,
-    },
-    'query-input': 'required name=search_term_string',
-  },
 });
 
 /** One service offering. Provider is a reference to the Organization node. */

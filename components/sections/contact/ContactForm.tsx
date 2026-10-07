@@ -199,8 +199,7 @@ function ContactFormInner() {
         service: data.objective || "unspecified",
         budget: data.budget || "unspecified",
       });
-    } catch (error) {
-      console.error("Submission failed", error);
+    } catch {
       setState("error");
     }
   };

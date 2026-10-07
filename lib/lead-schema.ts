@@ -44,7 +44,7 @@ export function buildLeadSchema(m: LeadMessages) {
         .string()
         .trim()
         .max(LEAD_LIMITS.email, m.tooLong)
-        .refine((v) => v === '' || z.string().email().safeParse(v).success, m.email)
+        .refine((v) => v === '' || z.email().safeParse(v).success, m.email)
         .optional()
         .or(z.literal('')),
       phone: z

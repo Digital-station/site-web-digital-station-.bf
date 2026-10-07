@@ -50,3 +50,9 @@ next-env.d.ts
 # Local tooling receipts
 receipts/
 review-receipts/
+
+# Local agent tooling
+.kilo/
+.agents/
+agent/
+skills-lock.json

@@ -12,3 +12,7 @@ coverage
 .env*.local
 .env
 deploy
+.kilo
+.agents
+agent
+skills-lock.json

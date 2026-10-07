@@ -20,7 +20,7 @@ type Props = { params: Promise<{ locale: string; slug: string }> };
 export const dynamicParams = false;
 
 /**
- * Pre-render all 20 pages at build time (10 services × 2 locales).
+ * Pre-render every service page at build time (one per service × 2 locales).
  * Slugs are identical in both locales, so /fr/services/<slug> and
  * /en/services/<slug> resolve to the same service in different languages.
  */

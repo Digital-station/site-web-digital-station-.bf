@@ -24,7 +24,7 @@ import { site } from '@/config/site.config';
  * When each route's CONTENT last changed — not when the site was last built.
  *
  * This used to be `new Date()`, which stamped every URL with the build time.
- * A sitemap that claims all 25 pages changed the moment you deployed is a
+ * A sitemap that claims every page changed the moment you deployed is a
  * sitemap crawlers learn to ignore, and it destroys the one signal
  * `lastModified` exists to carry.
  *
