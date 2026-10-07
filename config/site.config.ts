@@ -44,7 +44,7 @@ export const site = {
     whatsapp: '+226 66 16 97 62',
 
     address: {
-      street: '',
+      street: 'Rue 28 269',
       locality: 'Ouagadougou',
       region: 'Kadiogo / Centre',
       /** ISO 3166-1 alpha-2 country code. BF = Burkina Faso. */
@@ -118,9 +118,9 @@ export const site = {
    * Fill these in as the accounts go live.
    */
   socials: {
-    linkedin: 'https://www.linkedin.com/company/digitalstation',
+    linkedin: 'https://www.linkedin.com/',
     twitter: 'https://twitter.com/digitalstation',
-    facebook: '',
+    facebook: 'https://www.facebook.com/profile.php?id=61579090841259',
     instagram: '',
     youtube: '',
     tiktok: '',
