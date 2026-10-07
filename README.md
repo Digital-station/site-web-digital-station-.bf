@@ -54,7 +54,8 @@ Enterprise web platform and engineering portfolio for **Digital Station SARL** �
 ├── content/
 │   ├── services.ts             # Service catalogue metadata
 │   ├── solutions.ts            # Solution catalogue metadata
-│   └── solutions-data.ts       # Interactive walkthrough details for in-house products
+│   ├── solutions-data.ts       # Interactive walkthrough details for in-house products
+│   └── references.ts           # Client references — PLACEHOLDER data, section disabled (see below)
 ├── deploy/                     # Production VPS deployment assets
 │   ├── deploy.sh               # Automated one-command zero-downtime deployment script
 │   ├── nginx/                  # Production Nginx reverse proxy configuration with TLS & rate limiting
@@ -71,6 +72,34 @@ Enterprise web platform and engineering portfolio for **Digital Station SARL** �
 ├── DEPLOYMENT.md               # Detailed VPS production deployment manual
 └── AUDIT-REPORT.md             # Enterprise credibility and quality audit report
 ```
+
+---
+
+## 🤝 Client references (section disabled)
+
+The home page has a ready-made **"Ils nous font confiance" / "They trust us"** section
+(`components/sections/home/ClientReferences.tsx`): a logo wall plus three testimonial
+cards. It is **not rendered**: Digital Station is a young company and has no customers
+it can name yet, and publishing invented references would undermine the credibility the
+section is meant to build.
+
+To let the layout be designed and reviewed, `content/references.ts` and the
+`home.references` block in `messages/fr.json` / `messages/en.json` contain
+**fictional Burkinabè sample organisations and quotes** (a clinic in Ouagadougou, a
+wholesaler in Bobo-Dioulasso, a school in Koudougou, …). None of them are real clients.
+
+### Enabling it once real clients sign
+
+1. Replace every entry in `content/references.ts` with a real organisation that has
+   agreed **in writing** to be named. Drop the optional `logo` under `public/references/`
+   (SVG, or PNG ≥ 400 px wide); without one the card shows a monogram.
+2. For each testimonial, replace `home.references.items.<id>` (`quote`, `author`, `role`)
+   in **both** message files, and set `hasTestimonial: true` on that entry. Remove the
+   sample ids that no longer exist. `npm test` enforces fr/en key parity.
+3. In `app/[locale]/page.tsx`, uncomment the `ClientReferences` import and the
+   `<ClientReferences />` line between `<ToolsWeMaster />` and `<CTASection />`.
+4. Delete the "PLACEHOLDER DATA" box at the top of `content/references.ts` and this
+   paragraph's warning, then run `npm run check`.
 
 ---
 

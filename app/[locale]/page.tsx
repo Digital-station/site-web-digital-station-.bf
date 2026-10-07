@@ -6,6 +6,9 @@ import { Hero } from "@/components/sections/home/Hero";
 import { HomeServices } from "@/components/sections/home/HomeServices";
 import { AudienceSegmentation } from "@/components/sections/home/AudienceSegmentation";
 import { CTASection } from "@/components/sections/home/CTASection";
+// DISABLED until there are real clients to name — see README › Client
+// references. The section and its placeholder data already exist:
+// import { ClientReferences } from "@/components/sections/home/ClientReferences";
 import { RevealRoot } from "@/components/ui/RevealRoot";
 import { pageMeta } from "@/lib/seo";
 import { webSiteLd, ldJson } from "@/lib/schema";
@@ -94,6 +97,10 @@ export default async function HomePage({ params }: Props) {
         <AudienceSegmentation />
         <IndustriesWeServe />
         <ToolsWeMaster />
+        {/* Client logos + testimonials. Enable once content/references.ts
+            lists real, consenting clients (README › Client references):
+        <ClientReferences />
+        */}
         <CTASection />
       </RevealRoot>
     </>

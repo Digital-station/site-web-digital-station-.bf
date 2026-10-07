@@ -155,6 +155,37 @@
       "pause": "Mettre le défilement en pause",
       "play": "Reprendre le défilement"
     },
+    "references": {
+      "eyebrow": "Ils nous font confiance",
+      "title": "Des organisations <accent>burkinabè</accent> qui avancent avec nous",
+      "body": "De la clinique de quartier au grossiste régional, nous accompagnons des structures de toutes tailles à Ouagadougou, Bobo-Dioulasso et dans les régions.",
+      "testimonialsTitle": "Ce qu'ils en disent",
+      "sectors": {
+        "healthcare": "Santé",
+        "retail": "Négoce & distribution",
+        "education": "Éducation",
+        "realestate": "Immobilier",
+        "transport": "Transport",
+        "hospitality": "Hôtellerie"
+      },
+      "items": {
+        "clinique-wendpanga": {
+          "quote": "Le dossier patient numérique a remplacé nos registres papier en six semaines. L'équipe a formé le personnel sur place et reste joignable sur WhatsApp.",
+          "author": "Dr Aminata Sawadogo",
+          "role": "Directrice médicale"
+        },
+        "faso-agro-distribution": {
+          "quote": "Nous suivons enfin nos stocks sur trois dépôts en temps réel, même quand la connexion tombe à Bobo. Les inventaires de fin de mois prennent une journée au lieu d'une semaine.",
+          "author": "Issouf Ouédraogo",
+          "role": "Gérant"
+        },
+        "complexe-scolaire-nakanbe": {
+          "quote": "Les parents reçoivent les notes et les absences par SMS, et la comptabilité des frais de scolarité est enfin fiable. Un vrai changement pour l'administration.",
+          "author": "Mariam Kaboré",
+          "role": "Fondatrice et directrice"
+        }
+      }
+    },
     "cta": {
       "title": "Travaillons<br></br><accent>ensemble</accent>.",
       "subtitle": "Prêt à démarrer votre projet ?",

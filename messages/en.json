@@ -155,6 +155,37 @@
       "pause": "Pause scrolling",
       "play": "Resume scrolling"
     },
+    "references": {
+      "eyebrow": "They trust us",
+      "title": "<accent>Burkinabè</accent> organisations moving forward with us",
+      "body": "From the neighbourhood clinic to the regional wholesaler, we support organisations of every size in Ouagadougou, Bobo-Dioulasso and across the regions.",
+      "testimonialsTitle": "What they say",
+      "sectors": {
+        "healthcare": "Healthcare",
+        "retail": "Trade & distribution",
+        "education": "Education",
+        "realestate": "Real estate",
+        "transport": "Transport",
+        "hospitality": "Hospitality"
+      },
+      "items": {
+        "clinique-wendpanga": {
+          "quote": "The digital patient record replaced our paper registers in six weeks. The team trained our staff on site and is still one WhatsApp message away.",
+          "author": "Dr Aminata Sawadogo",
+          "role": "Medical Director"
+        },
+        "faso-agro-distribution": {
+          "quote": "We finally track stock across three warehouses in real time, even when the connection drops in Bobo. Month-end inventory takes a day instead of a week.",
+          "author": "Issouf Ouédraogo",
+          "role": "Managing Director"
+        },
+        "complexe-scolaire-nakanbe": {
+          "quote": "Parents receive grades and absences by SMS, and tuition accounting is finally reliable. A real change for the administration.",
+          "author": "Mariam Kaboré",
+          "role": "Founder and Principal"
+        }
+      }
+    },
     "cta": {
       "title": "Let's<br></br><accent>work</accent> together.",
       "subtitle": "Ready to start your project?",
