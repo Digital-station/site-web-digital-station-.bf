@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/routing";
 import { site, waHref } from "@/config/site.config";
+import { SERVICES } from "@/content/services";
 import { Container } from "@/components/layout/Container";
 import { WhatsAppIcon } from "@/components/ui/icons/WhatsApp";
 
@@ -175,7 +176,7 @@ export function Hero() {
             className="border-r border-white/15 p-8 md:p-12 flex flex-col justify-center"
           >
             <span className="text-4xl md:text-5xl font-black mb-1">
-              {t("statValue")}
+              {SERVICES.length}
             </span>
             <span className="text-[11px] md:text-xs uppercase tracking-wide font-black opacity-80">
               {t("statLabel")}

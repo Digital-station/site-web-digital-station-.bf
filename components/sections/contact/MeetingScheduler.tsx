@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ArrowRight,
   CheckCircle2,
@@ -30,16 +30,35 @@ import { site, waHref } from '@/config/site.config';
 type TopicId = 'architecture' | 'productDemo' | 'nearshore' | 'erpCloud';
 const TOPIC_IDS: TopicId[] = ['architecture', 'productDemo', 'nearshore', 'erpCloud'];
 
-/** Indicative slots: next two office mornings/afternoons, Ouagadougou time. */
+/**
+ * Indicative slots on the next two OPEN days (Mon–Fri), Ouagadougou time.
+ * `day` indexes into the two dates computed after mount by `nextOpenDays`.
+ */
 const SLOTS = [
-  { dayOffset: 1, time: '10:00 GMT' },
-  { dayOffset: 1, time: '14:30 GMT' },
-  { dayOffset: 2, time: '11:00 GMT' },
-  { dayOffset: 2, time: '16:00 GMT' },
+  { day: 0, time: '10:00 GMT' },
+  { day: 0, time: '14:30 GMT' },
+  { day: 1, time: '11:00 GMT' },
+  { day: 1, time: '16:00 GMT' },
 ] as const;
 
-function slotLabel(locale: string, dayOffset: number): string {
-  const date = new Date(Date.now() + dayOffset * 24 * 3600 * 1000);
+/**
+ * Ouagadougou is UTC+0 year-round, so UTC weekdays are local weekdays.
+ * Computed in an effect, never during render: this page is prerendered, and a
+ * render-time `Date.now()` would bake the BUILD date into the HTML and then
+ * disagree with the browser's date on hydration.
+ */
+function nextOpenDays(now: number): Date[] {
+  const days: Date[] = [];
+  for (let offset = 1; days.length < 2; offset++) {
+    const date = new Date(now + offset * 24 * 3600 * 1000);
+    const weekday = date.getUTCDay();
+    if (weekday !== 0 && weekday !== 6) days.push(date);
+  }
+  return days;
+}
+
+function slotLabel(locale: string, date: Date | undefined): string {
+  if (!date) return ' ';
   return new Intl.DateTimeFormat(locale === 'fr' ? 'fr-FR' : 'en-GB', {
     weekday: 'short',
     day: 'numeric',
@@ -54,6 +73,12 @@ export function MeetingScheduler() {
   const locale = useLocale();
   const t = useTranslations('contact.scheduler');
 
+  const [openDays, setOpenDays] = useState<Date[]>([]);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- needs the browser clock; see nextOpenDays
+    setOpenDays(nextOpenDays(Date.now()));
+  }, []);
+
   const [selectedSlot, setSelectedSlot] = useState(0);
   const [status, setStatus] = useState<Status>('idle');
   const [fullName, setFullName] = useState('');
@@ -61,7 +86,7 @@ export function MeetingScheduler() {
   const [topic, setTopic] = useState<TopicId>('architecture');
 
   const slot = SLOTS[selectedSlot];
-  const slotText = `${slotLabel(locale, slot.dayOffset)} · ${slot.time}`;
+  const slotText = `${slotLabel(locale, openDays[slot.day])} · ${slot.time}`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -185,7 +210,7 @@ export function MeetingScheduler() {
               <div className="grid grid-cols-2 gap-3">
                 {SLOTS.map((s, i) => (
                   <button
-                    key={`${s.dayOffset}-${s.time}`}
+                    key={`${s.day}-${s.time}`}
                     type="button"
                     aria-pressed={selectedSlot === i}
                     onClick={() => setSelectedSlot(i)}
@@ -196,7 +221,7 @@ export function MeetingScheduler() {
                     }`}
                   >
                     <span className="text-[11px] uppercase tracking-wide opacity-80 block">
-                      {slotLabel(locale, s.dayOffset)}
+                      {slotLabel(locale, openDays[s.day])}
                     </span>
                     <span className="text-sm font-bold font-mono mt-1 text-brand-text block">
                       {s.time}

@@ -109,7 +109,7 @@ export const site = {
       role: 'Gérant / Managing Director',
       linkedin: 'https://www.linkedin.com/in/landry-kabore',
       email: 'landry.kabore@digitalstation.bf',
-      bio: 'Ingénieur logiciel & Architecte Solutions IT. 7+ ans d\'expérience dans le déploiement de systèmes d\'information critiques en Afrique de l\'Ouest.',
+      bio: 'Ingénieur logiciel & Architecte Solutions IT. Spécialiste du déploiement de systèmes d\'information critiques en Afrique de l\'Ouest.',
     },
   },
 

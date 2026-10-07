@@ -82,7 +82,6 @@
       "ctaAria": "Nous contacter pour démarrer votre projet",
       "partnersTitle": "Technologies que nous déployons",
       "statement": "Nous conseillons, concevons et développons des solutions technologiques pour répondre avec précision aux enjeux de votre entreprise.",
-      "statValue": "+ 10",
       "statLabel": "Pôles d'expertise",
       "workWithUs": "Travailler<br></br>avec nous"
     },
@@ -721,7 +720,7 @@
         "title": "Négoce & équipement IT",
         "desc": "Acquisition et vente de matériel informatique : ordinateurs, tablettes, imprimantes et périphériques associés.",
         "audience": "Entreprises et institutions qui ont besoin d'équiper leurs équipes en matériel fiable, garanti et livré rapidement.",
-        "longDesc": "Nous facilitons l'acquisition et le renouvellement de votre parc informatique. Avec nos partenaires revendeur agréé, nous vous proposons une sélection de matériels professionnels (ordinateurs portables et fixes, tablettes, imprimantes, accessoires et périphériques) adaptés à vos usages, avec garantie constructeur, configuration à la livraison et support de proximité.",
+        "longDesc": "Nous facilitons l'acquisition et le renouvellement de votre parc informatique. Avec nos partenaires revendeurs agréés, nous vous proposons une sélection de matériels professionnels (ordinateurs portables et fixes, tablettes, imprimantes, accessoires et périphériques) adaptés à vos usages, avec garantie constructeur, configuration à la livraison et support de proximité.",
         "benefits": [
           "Matériel professionnel sélectionné et testé",
           "Garantie constructeur & extension possible",
@@ -742,7 +741,7 @@
   },
   "contact": {
     "meta": {
-      "title": "Contact",
+      "title": "Contactez notre agence IT à Ouagadougou",
       "description": "Discutons de votre projet numérique. Développement web, applications mobiles, transformation digitale à Ouagadougou. Réponse sous 24 h."
     },
     "info": {
@@ -859,15 +858,14 @@
   },
   "servicesPage": {
     "meta": {
-      "title": "Nos services",
-      "description": "Développement logiciel, intégration, cloud, cybersécurité, IA et transformation digitale. Découvrez les 10 pôles d'expertise de Digital Station."
+      "title": "Services IT & digital à Ouagadougou",
+      "description": "Développement logiciel, intégration, cloud, cybersécurité, IA et transformation digitale. Découvrez les 11 pôles d'expertise de Digital Station."
     },
     "eyebrow": "Nos métiers",
     "titleLine1": "Concevoir",
     "titleLine2": "des systèmes",
     "titleLine3": "qui durent.",
     "intro": "Nous concevons des CRM sur mesure, des plateformes ERP, des sites d'entreprise et des solutions e-commerce pour aider les organisations à croître et à opérer efficacement.",
-    "stat2Value": "+10",
     "stat2Label": "Pôles d'expertise",
     "philosophy": {
       "first": {
@@ -890,13 +888,11 @@
     "scaleEyebrow": "Performance",
     "scaleTitleLead": "Conçu pour",
     "scaleTitleAccent": "durer.",
-    "scaleBody": "Que vous opériez au Burkina Faso , en Afrique ou sur plusieurs marchés a l'international, nos systèmes sont conçus pour s'adapter et tenir dans la durée.",
+    "scaleBody": "Que vous opériez au Burkina Faso, en Afrique ou sur plusieurs marchés à l'international, nos systèmes sont conçus pour s'adapter et tenir dans la durée.",
     "scalePoint1Title": "Sécurité intégrée",
     "scalePoint1Desc": "La protection des données pensée dès la conception, pas ajoutée après coup.",
     "scalePoint2Title": "Disponibilité",
     "scalePoint2Desc": "Supervision continue et interventions rapides pour limiter les interruptions.",
-    "vizLabel": "Diagnostic système",
-    "vizValue": "Optimisé.",
     "ctaTitleLead": "Travaillons",
     "ctaTitleAccent": "ensemble.",
     "ctaPrimary": "Démarrer un projet",
@@ -925,7 +921,7 @@
   },
   "about": {
     "meta": {
-      "title": "À propos",
+      "title": "À propos de Digital Station, société IT",
       "description": "Digital Station : société de services et d'ingénierie informatique fondée en 2018 à Ouagadougou. Notre mission, nos valeurs et notre équipe."
     },
     "hero": {
@@ -936,15 +932,15 @@
       "intro": "Digital Station est née d'une conviction simple : les entreprises africaines méritent des partenaires technologiques qui comprennent leurs enjeux humains autant que leurs défis techniques.",
       "ctaServices": "Nos services",
       "ctaContact": "Nous contacter",
-      "statYears": "Années d'expérience",
+      "statDomains": "Domaines d'expertise",
       "statLocal": "Basé au Burkina Faso"
     },
     "mission": {
       "eyebrow": "Notre mission",
       "title": "Nous sommes le <accent>partenaire</accent> technologique que vous attendiez.",
-      "body1": "Digital Station accompagne les entreprises et institutions à travers le Burkina Faso , l'afrique et le monde dans leur transformation numérique. De l'ingénierie logicielle sur mesure à l'infogérance continue, en passant par le conseil stratégique et la cybersécurité, nous offrons un écosystème complet de services piloté par une équipe d'experts passionnés.",
+      "body1": "Digital Station accompagne les entreprises et institutions à travers le Burkina Faso, l'Afrique et le monde dans leur transformation numérique. De l'ingénierie logicielle sur mesure à l'infogérance continue, en passant par le conseil stratégique et la cybersécurité, nous offrons un écosystème complet de services piloté par une équipe d'experts passionnés.",
       "body2": "Notre approche repose sur trois piliers : l'excellence technique, la confiance mutuelle et une obsession pour les résultats concrets.",
-      "moreExpertises": "+ 10 autres",
+      "moreExpertises": "+ {count} autres",
       "statServices": "Domaines d'expertise",
       "expertises": {
         "webMobile": "Développement web & mobile",
@@ -1097,7 +1093,7 @@
   },
   "solutions": {
     "meta": {
-      "title": "Nos solutions",
+      "title": "Logiciels métiers made in Burkina Faso",
       "description": "Découvrez les logiciels développés par Digital Station : gestion de commerce, billetterie, immobilier et gestion scolaire."
     },
     "eyebrow": "Nos produits",
@@ -1168,7 +1164,7 @@
   },
   "privacy": {
     "metaTitle": "Politique de confidentialité",
-    "metaDescription": "Comment Digital Station collecte, utilise et protège vos données personnelles.",
+    "metaDescription": "Comment Digital Station collecte, utilise et protège vos données personnelles : finalités, durée de conservation et vos droits (CIL, RGPD).",
     "eyebrow": "Transparence",
     "title": "Politique de confidentialité.",
     "lastUpdated": "Dernière mise à jour : {date}",
@@ -1242,7 +1238,7 @@
   },
   "legal": {
     "metaTitle": "Mentions légales",
-    "metaDescription": "Informations légales relatives à Digital Station SARL : éditeur, hébergeur et propriété intellectuelle.",
+    "metaDescription": "Mentions légales de Digital Station SARL, société de services informatiques à Ouagadougou : éditeur, RCCM, IFU, hébergeur et propriété intellectuelle.",
     "eyebrow": "Informations légales",
     "title": "Mentions<br></br>légales.",
     "lastUpdated": "Dernière mise à jour : {date}",

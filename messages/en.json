@@ -82,7 +82,6 @@
       "ctaAria": "Contact us to start your project",
       "partnersTitle": "Technologies we deploy",
       "statement": "We consult, engineer, and design technology solutions to address business challenges with precision.",
-      "statValue": "10",
       "statLabel": "Areas of expertise",
       "workWithUs": "Work<br></br>With Us"
     },
@@ -742,7 +741,7 @@
   },
   "contact": {
     "meta": {
-      "title": "Contact",
+      "title": "Contact our IT agency in Ouagadougou",
       "description": "Let's talk about your digital project. Web development, mobile apps and digital transformation in Ouagadougou. We reply within 24 hours."
     },
     "info": {
@@ -859,15 +858,14 @@
   },
   "servicesPage": {
     "meta": {
-      "title": "Our services",
-      "description": "Software development, integration, cloud, cybersecurity, AI and digital transformation. Explore Digital Station's ten areas of expertise."
+      "title": "IT & digital services in Ouagadougou",
+      "description": "Software development, integration, cloud, cybersecurity, AI and digital transformation. Explore Digital Station's eleven areas of expertise."
     },
     "eyebrow": "What we do",
     "titleLine1": "Building",
     "titleLine2": "systems",
     "titleLine3": "that last.",
     "intro": "We build custom CRM systems, ERP platforms, business websites and e-commerce solutions to help companies grow and operate efficiently.",
-    "stat2Value": "10",
     "stat2Label": "Areas of expertise",
     "philosophy": {
       "first": {
@@ -895,8 +893,6 @@
     "scalePoint1Desc": "Data protection designed in from the start, not bolted on afterwards.",
     "scalePoint2Title": "Availability",
     "scalePoint2Desc": "Continuous monitoring and fast intervention to keep interruptions short.",
-    "vizLabel": "System diagnostic",
-    "vizValue": "Optimised.",
     "ctaTitleLead": "Let's work",
     "ctaTitleAccent": "together.",
     "ctaPrimary": "Start a project",
@@ -925,7 +921,7 @@
   },
   "about": {
     "meta": {
-      "title": "About us",
+      "title": "About Digital Station, IT services firm",
       "description": "Digital Station: an IT services, consulting and engineering company founded in 2018 in Ouagadougou. Our mission, our values and our team."
     },
     "hero": {
@@ -936,7 +932,7 @@
       "intro": "Digital Station was born from a simple conviction: African businesses deserve technology partners who understand their human stakes as well as their technical challenges.",
       "ctaServices": "Our services",
       "ctaContact": "Contact us",
-      "statYears": "Years of experience",
+      "statDomains": "Areas of expertise",
       "statLocal": "Based in Burkina Faso"
     },
     "mission": {
@@ -944,7 +940,7 @@
       "title": "We are the technology <accent>partner</accent> you have been waiting for.",
       "body1": "Digital Station supports businesses and institutions across West Africa through their digital transformation. From custom software engineering to continuous managed services, strategic consulting and cybersecurity, we offer a complete ecosystem of services led by a team of committed experts.",
       "body2": "Our approach rests on three pillars: technical excellence, mutual trust, and an obsession with concrete results.",
-      "moreExpertises": "+ 10 more",
+      "moreExpertises": "+ {count} more",
       "statServices": "Expert services",
       "expertises": {
         "webMobile": "Web & Mobile Development",
@@ -1097,7 +1093,7 @@
   },
   "solutions": {
     "meta": {
-      "title": "Our solutions",
+      "title": "Business software made in Burkina Faso",
       "description": "Discover the software built by Digital Station: retail management, ticketing, real estate and school administration."
     },
     "eyebrow": "Our products",
@@ -1168,7 +1164,7 @@
   },
   "privacy": {
     "metaTitle": "Privacy Policy",
-    "metaDescription": "How Digital Station collects, uses and protects your personal data.",
+    "metaDescription": "How Digital Station collects, uses and protects your personal data: purposes, retention and your rights (CIL, GDPR).",
     "eyebrow": "Transparency",
     "title": "Privacy Policy.",
     "lastUpdated": "Last updated: {date}",
@@ -1242,7 +1238,7 @@
   },
   "legal": {
     "metaTitle": "Legal Notice",
-    "metaDescription": "Legal information about Digital Station SARL: publisher, host and intellectual property.",
+    "metaDescription": "Legal notice for Digital Station SARL, an IT services company in Ouagadougou: publisher, RCCM, IFU, host and intellectual property.",
     "eyebrow": "Legal Information",
     "title": "Legal<br></br>Notice.",
     "lastUpdated": "Last updated: {date}",

@@ -89,7 +89,7 @@ export async function ServicesContent() {
             */}
             <div className="enter [--enter-y:40px] [--enter-delay:0.4s]">
               <div className="text-3xl md:text-4xl font-black">
-                {t("stat2Value")}
+                {SERVICES.length}
               </div>
               <div className="text-[11px] md:text-xs uppercase font-black text-brand-muted tracking-wide mt-1">
                 {t("stat2Label")}
@@ -266,18 +266,10 @@ export async function ServicesContent() {
                     is off screen. */}
                 <div className="w-[80%] h-[80%] border-2 border-dashed border-brand-accent/30 rounded-full motion-safe:animate-[turn_90s_linear_infinite_reverse,swell_5s_ease-in-out_infinite]" />
                 <div className="absolute w-[95%] h-[95%] border border-brand-border rounded-full motion-safe:animate-[turn_40s_linear_infinite]" />
-                <div className="absolute flex flex-col items-center text-center px-6">
-                  <div
-                    aria-hidden="true"
-                    className="w-16 h-16 md:w-20 md:h-20 bg-brand-accent/20 rounded-full blur-2xl absolute"
-                  />
-                  <span className="text-[11px] md:text-xs font-black uppercase text-brand-accent tracking-wide mb-4 relative z-10">
-                    {t("vizLabel")}
-                  </span>
-                  <span className="text-3xl md:text-4xl lg:text-5xl font-black italic relative z-10">
-                    {t("vizValue")}
-                  </span>
-                </div>
+                <div
+                  aria-hidden="true"
+                  className="absolute w-24 h-24 md:w-32 md:h-32 bg-brand-accent/20 rounded-full blur-2xl"
+                />
               </div>
             </div>
           </div>

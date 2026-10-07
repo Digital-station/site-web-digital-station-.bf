@@ -1,7 +1,6 @@
 import type { CSSProperties } from "react";
 import {
   Brain,
-  Calendar,
   Cpu,
   Globe,
   MapPin,
@@ -13,7 +12,7 @@ import {
 import { getTranslations } from "next-intl/server";
 
 import { Link } from "@/i18n/routing";
-import { site, waHref } from "@/config/site.config";
+import { waHref } from "@/config/site.config";
 import { SERVICES } from "@/content/services";
 import { Container } from "@/components/layout/Container";
 import { WhatsAppIcon } from "@/components/ui/icons/WhatsApp";
@@ -61,15 +60,6 @@ const EXPERTISE_KEYS = [
 ] as const;
 
 /**
- * Years in business, computed from the founding year in site.config.
- * The Vite page hardcoded "7+", which was written in 2025 and silently
- * became wrong in 2026.
- */
-function yearsInBusiness(): number {
-  return new Date().getFullYear() - Number(site.foundingDate);
-}
-
-/**
  * Server component — every section below resolves its own translations with
  * `getTranslations` (next-intl/server) rather than the client `useTranslations`
  * hook, and the scroll reveals that used to run through GSAP/Motion now use
@@ -108,7 +98,7 @@ async function Hero() {
   const t = await getTranslations("about.hero");
 
   const quickStats = [
-    { icon: Calendar, value: `${yearsInBusiness()}+`, label: t("statYears") },
+    { icon: Cpu, value: `${SERVICES.length}`, label: t("statDomains") },
     { icon: MapPin, value: null, label: t("statLocal") },
   ];
 
