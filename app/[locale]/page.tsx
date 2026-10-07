@@ -57,14 +57,6 @@ const ToolsWeMaster = dynamic(
   { loading: () => <SectionPlaceholder /> },
 );
 
-const ArchitectureDiagrams = dynamic(
-  () =>
-    import("@/components/sections/home/ArchitectureDiagrams").then(
-      (m) => m.ArchitectureDiagrams,
-    ),
-  { loading: () => <SectionPlaceholder /> },
-);
-
 function SectionPlaceholder() {
   return (
     <div
@@ -97,9 +89,9 @@ export default async function HomePage({ params }: Props) {
           RevealRoot owns the page-level scroll reveals for [data-rv]. */}
       <RevealRoot>
         <Hero />
-        <AudienceSegmentation />
+
         <HomeServices />
-        <ArchitectureDiagrams />
+        <AudienceSegmentation />
         <IndustriesWeServe />
         <ToolsWeMaster />
         <CTASection />
