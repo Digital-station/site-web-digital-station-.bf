@@ -1,0 +1,31 @@
+// Cloudflare Workers config for the OpenNext build (`npx opennextjs-cloudflare build`).
+// Self-hosting (Docker / PM2 / systemd) does not use this file — see deploy/.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  // Must match the Worker name in the Cloudflare dashboard. The migrate step
+  // that Wrangler runs on an unconfigured repo takes the package.json name
+  // ("digitalstation-web") instead, and the self-reference binding below then
+  // points at a Worker that does not exist (API error 10143).
+  "name": "site-web-digital-station--bf",
+  "compatibility_date": "2026-10-06",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      // Self-reference service binding; the service name must equal "name".
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "site-web-digital-station--bf"
+    }
+  ],
+  "images": {
+    // next/image optimisation through Cloudflare Images.
+    "binding": "IMAGES"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
