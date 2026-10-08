@@ -120,7 +120,7 @@ export const Wavemesh = ({ className = "" }: { className?: string }) => {
       ps: null,
       gs: null,
       fc: 0,
-      rot: (-38 * Math.PI) / 180,
+      rot: (-38 * Math.PI) / 180, // replaced by fitRotation() on first resize
       mr: [],
     };
 
@@ -149,6 +149,7 @@ export const Wavemesh = ({ className = "" }: { className?: string }) => {
       c.style.width = "100%";
       c.style.height = "100%";
       ctx.setTransform(1, 0, 0, 1, 0, 0);
+      S.rot = fitRotation();
 
       const n = Math.floor((dims.w * dims.h) / 36000);
       S.stars = [];
@@ -247,35 +248,82 @@ export const Wavemesh = ({ className = "" }: { className?: string }) => {
       ctx.fill();
     }
 
-    function bm() {
-      const t = S.t;
-      const bs = Math.max(S.w * 0.72, S.h * 0.9);
-      const cr = Math.cos(S.rot);
-      const sr = Math.sin(S.rot);
-      let mnX = 1e9;
-      let mxX = -1e9;
-      let mnY = 1e9;
-      let mxY = -1e9;
-      S.mr = [];
+    /**
+     * Unrotated, unit-scale mesh for time `t`. x spans roughly −1…1 along the
+     * band, y is the wave height (negative = up, canvas convention).
+     */
+    function localPoints(t: number) {
+      const pts: { x: number; y: number; d: number }[][] = [];
       for (let j = 0; j < S.rows; j++) {
         const d = j / (S.rows - 1);
-        const row: MeshPoint[] = [];
+        const row = [];
         for (let i = 0; i < S.cols; i++) {
-          const u = i / (S.cols - 1);
-          const p = mp(u, d, t);
-          const lx = p.x * bs;
-          const ly = p.y * bs;
-          const rx = lx * cr - ly * sr;
-          const ry = lx * sr + ly * cr;
-          mnX = Math.min(mnX, rx);
-          mxX = Math.max(mxX, rx);
-          mnY = Math.min(mnY, ry);
-          mxY = Math.max(mxY, ry);
-          row.push({ rx, ry, d });
+          const p = mp(i / (S.cols - 1), d, t);
+          row.push({ x: p.x, y: p.y, d });
         }
-        S.mr.push(row);
+        pts.push(row);
       }
-      return { tx: -mnX + (S.w - (mxX - mnX)) * 0.35, ty: S.h - mxY };
+      return pts;
+    }
+
+    /** Bounding box of the band once rotated by `rot` (unit scale). */
+    function rotatedBox(pts: { x: number; y: number }[][], rot: number) {
+      const cr = Math.cos(rot);
+      const sr = Math.sin(rot);
+      let mnX = 1e9, mxX = -1e9, mnY = 1e9, mxY = -1e9;
+      for (const row of pts) {
+        for (const p of row) {
+          const rx = p.x * cr - p.y * sr;
+          const ry = p.x * sr + p.y * cr;
+          if (rx < mnX) mnX = rx;
+          if (rx > mxX) mxX = rx;
+          if (ry < mnY) mnY = ry;
+          if (ry > mxY) mxY = ry;
+        }
+      }
+      return { mnX, mxX, mnY, mxY, w: mxX - mnX, h: mxY - mnY };
+    }
+
+    /**
+     * The band runs from the bottom-left corner of the host to its top-right
+     * corner. That only works if the tilt matches the host's aspect ratio, so
+     * the angle is solved (bisection on the rotated bounding box's aspect,
+     * which decreases monotonically with the tilt) rather than hard-coded.
+     * Called on resize; the wave motion only nudges the box afterwards.
+     */
+    function fitRotation() {
+      const target = S.w / S.h;
+      const pts = localPoints(0);
+      let lo = (3 * Math.PI) / 180;
+      let hi = (85 * Math.PI) / 180;
+      for (let k = 0; k < 24; k++) {
+        const mid = (lo + hi) / 2;
+        const b = rotatedBox(pts, -mid);
+        if (b.w / b.h > target) lo = mid;
+        else hi = mid;
+      }
+      return -(lo + hi) / 2;
+    }
+
+    function bm() {
+      const pts = localPoints(S.t);
+      const b = rotatedBox(pts, S.rot);
+      // Fit the band inside the host: the tilt already matches the aspect,
+      // so one scale factor touches both the bottom-left and top-right.
+      const sc = Math.min(S.w / b.w, S.h / b.h);
+      const cr = Math.cos(S.rot);
+      const sr = Math.sin(S.rot);
+      S.mr = [];
+      for (const row of pts) {
+        const out: MeshPoint[] = [];
+        for (const p of row) {
+          const lx = p.x * sc;
+          const ly = p.y * sc;
+          out.push({ rx: lx * cr - ly * sr, ry: lx * sr + ly * cr, d: p.d });
+        }
+        S.mr.push(out);
+      }
+      return { tx: -b.mnX * sc, ty: S.h - b.mxY * sc };
     }
 
     let rafId: number | null = null;
