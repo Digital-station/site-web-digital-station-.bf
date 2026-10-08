@@ -39,10 +39,12 @@ export function Hero() {
       id="hero"
       className="relative pt-24 md:pt-40 lg:pt-48 pb-0 overflow-hidden lg:pl-16 min-h-[90vh] flex flex-col"
     >
-      {/* Woven-wave canvas backdrop covering the entire hero section */}
-      <Wavemesh className="absolute inset-0 w-full h-full pointer-events-none z-0" />
-
       <Container className="flex-1 flex flex-col justify-center relative z-10">
+        {/* Woven-wave canvas backdrop. Inside the Container on purpose: it
+            sizes itself from its parent, so it covers the 1400px content
+            column only, not the full-bleed section. */}
+        <Wavemesh className="absolute inset-0 w-full h-full pointer-events-none z-0" />
+
         <div
           aria-hidden="true"
           className="absolute -top-12 md:-top-20 left-4 text-[15vw] md:text-[240px] font-black opacity-[0.03] leading-none select-none tracking-tighter pointer-events-none uppercase"
