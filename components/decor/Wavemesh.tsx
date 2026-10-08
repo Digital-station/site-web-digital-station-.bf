@@ -367,15 +367,11 @@ export const Wavemesh = ({ className = "" }: { className?: string }) => {
       S.lt = ts;
       S.t += dt;
       ctx.clearRect(0, 0, S.w, S.h);
-      if (window.innerWidth <= 768) {
-        ctx.save();
-        ctx.scale(-1, 1);
-        ctx.translate(-S.w, 0);
-      }
+      // No horizontal mirror on phones any more: the band runs bottom-left
+      // to top-right at every width, the same as on desktop.
       ds();
       dg();
       paint(bm());
-      if (window.innerWidth <= 768) ctx.restore();
       rafId = requestAnimationFrame(rn);
     }
 
