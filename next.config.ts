@@ -64,8 +64,12 @@ const nextConfig: NextConfig = {
    * PM2 behind Nginx or Passenger) as a documented fallback — see
    * DEPLOYMENT.md. `standalone` emits .next/standalone/server.js with only
    * the files that server needs, so a self-hosted upload is a fraction of a
-   * full node_modules tree; Vercel's own build pipeline uses this output
-   * format internally regardless, so it costs nothing there.
+   * full node_modules tree.
+   *
+   * NOT on Vercel: its build hook runs its own file tracing and fails with
+   * "ENOENT .next/next-server.js.nft.json" when standalone output is on, so
+   * the setting is skipped there. Vercel sets VERCEL=1 for every build;
+   * scripts/copy-standalone-assets.mjs checks the same variable.
    *
    * On the self-hosted path: remember to copy `public/` and `.next/static/`
    * into .next/standalone/ after building — the minimal server does not
@@ -75,7 +79,7 @@ const nextConfig: NextConfig = {
    * it needs Upstash Redis on Vercel (serverless, multi-instance) but is
    * correct with no configuration at all on the self-hosted path.
    */
-  output: 'standalone',
+  output: process.env.VERCEL ? undefined : 'standalone',
 
   images: {
     /**

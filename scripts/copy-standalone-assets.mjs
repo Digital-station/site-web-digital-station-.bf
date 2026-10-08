@@ -24,6 +24,13 @@ const root = dirname(dirname(fileURLToPath(import.meta.url)));
 
 const standalone = join(root, '.next', 'standalone');
 
+// Vercel builds without standalone output (see next.config.ts), so there is
+// nothing to assemble there.
+if (process.env.VERCEL) {
+  console.log('[postbuild] Vercel build: standalone output disabled, nothing to copy.');
+  process.exit(0);
+}
+
 if (!existsSync(standalone)) {
   console.error(
     '[postbuild] .next/standalone is missing. Did `next build` run, and is ' +
