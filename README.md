@@ -156,6 +156,25 @@ This command executes `next build` and runs the post-build sync script (`scripts
 
 ---
 
+## ☁️ Cloudflare Workers Deployment
+
+The site also deploys to **Cloudflare Workers** through the OpenNext adapter.
+`wrangler.jsonc` (Worker name `site-web-digital-station--bf`) and `open-next.config.ts`
+are committed; `public/_headers` adds immutable caching for `/_next/static`.
+
+- **Workers Builds (Git integration):** build command `npm run build`, deploy command
+  `npx wrangler deploy`. On Cloudflare (`WORKERS_CI=1`) `scripts/build.mjs` switches
+  `npm run build` to `opennextjs-cloudflare build`, which produces the Worker bundle in
+  `.open-next/` that the deploy step needs.
+- **From a machine:** `npm run cf:preview` to run the Worker locally, `npm run cf:deploy`
+  to build and deploy with your own Wrangler login.
+- **Variables and secrets** are not read from `.env` on Cloudflare: set them on the Worker
+  (Settings › Variables and Secrets). The contact form needs `RESEND_API_KEY`,
+  `CONTACT_EMAIL` and `LEADS_FROM`; add `UPSTASH_REDIS_REST_URL` / `_TOKEN` for durable
+  rate limiting, and the `NEXT_PUBLIC_*` values as build variables as well.
+
+---
+
 ## 🌐 VPS Production Deployment Options
 
 For complete step-by-step instructions, see **[`DEPLOYMENT.md`](DEPLOYMENT.md)**.

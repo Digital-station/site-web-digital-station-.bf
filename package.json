@@ -18,7 +18,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/build.mjs",
     "postbuild": "node scripts/copy-standalone-assets.mjs",
     "start": "node .next/standalone/server.js",
     "typecheck": "tsc --noEmit",
