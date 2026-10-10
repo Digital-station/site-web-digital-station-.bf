@@ -1,46 +1,13 @@
 # Deployment Guide — Digital Station (`digitalstation.bf`)
 
-The site is deployed on **Vercel today**. Everything below Section 1 is the
-**self-hosted VPS path** — kept as a documented fallback (the `Dockerfile`,
-`docker-compose.yml`, `ecosystem.config.js`, `deploy/` scripts and Nginx
-config all still work), not the current production target. If you only came
-here to deploy or redeploy the live site, you want Section 0.
+The site is self-hosted on a Linux VPS (Ubuntu 22.04 / 24.04 LTS or
+Debian 12) behind Nginx, run with Docker, PM2 or systemd. Vercel and
+Cloudflare are no longer used.
 
----
-
-## 0. Vercel (current production target)
-
-1. **Import the repo** at [vercel.com/new](https://vercel.com/new) — Next.js
-   is auto-detected, no build settings to change. `output: 'standalone'` in
-   `next.config.ts` is harmless here: Vercel's own build pipeline produces
-   the same output format internally regardless.
-2. **Set environment variables** in Project Settings → Environment Variables,
-   matching `.env.example`:
-   - `RESEND_API_KEY`, `CONTACT_EMAIL`, `LEADS_FROM` — contact form delivery.
-   - `NEXT_PUBLIC_ANALYTICS_PROVIDER` / `NEXT_PUBLIC_ANALYTICS_SITE_ID` —
-     optional, GA4.
-   - `GOOGLE_SITE_VERIFICATION` — optional, read at build time.
-3. **Add the Upstash integration** (Vercel dashboard → Integrations →
-   Upstash → Redis). This sets `UPSTASH_REDIS_REST_URL` and
-   `UPSTASH_REDIS_REST_TOKEN` automatically. **Do this before going live**:
-   without it, `/api/leads`' rate limiter falls back to an in-memory count
-   that does not work across Vercel's serverless instances — see the comment
-   on `isRateLimited` in `app/api/leads/route.ts`.
-4. **DNS**: point `digitalstation.bf` at Vercel per their dashboard
-   instructions (A/ALIAS + CNAME for `www`), and add the SPF/DKIM records
-   from the [Resend Dashboard](https://resend.com/domains) for lead delivery.
-5. Every push to the production branch redeploys automatically — no script
-   to run.
-
----
-
-## Self-hosted / VPS path (fallback)
-
-The instructions below deploy the same app on a Linux VPS (Ubuntu 22.04 /
-24.04 LTS or Debian 12) instead of Vercel. Use this if the project ever moves
-off Vercel, or for a local/offline deployment. The rate limiter needs no
-configuration here — the in-memory store is correct on a single long-lived
-process.
+The canonical address is `https://digitalstation.bf` (no `www`); the Nginx
+config redirects `www` to it. Keep it that way: canonical tags, hreflang and
+the sitemap all name the bare domain, and serving the site on `www` instead
+stops Google from indexing it (see "Google indexing" in README.md).
 
 ---
 
@@ -89,8 +56,8 @@ Configure the following DNS records at your domain registrar (for `digitalstatio
 | **A** | `@` | `YOUR_VPS_IP` | 3600 |
 | **CNAME** | `www` | `digitalstation.bf.` | 3600 |
 
-### Email DNS Records (for Resend lead intake delivery)
-Add the SPF and DKIM TXT records provided in your [Resend Dashboard](https://resend.com/domains) for `digitalstation.bf`.
+### Email DNS Records (for lead delivery over SMTP)
+The contact form sends through the SMTP server set in `.env`. Publish the SPF (and DKIM, if your mail provider offers it) records your provider gives you for the sending domain, or leads may land in spam.
 
 ---
 
@@ -111,8 +78,11 @@ nano .env
 
 Ensure the following variables are set:
 ```env
-# Required for contact form & booking lead delivery
-RESEND_API_KEY=re_your_live_api_key_here
+# Required for contact form & booking lead delivery (SMTP)
+SMTP_HOST=mail.example.com
+SMTP_PORT=587
+SMTP_USER=contact@digitalstation.bf
+SMTP_PASS=your_smtp_password
 CONTACT_EMAIL=infos@digitalstation.bf
 LEADS_FROM="Digital Station <contact@digitalstation.bf>"
 

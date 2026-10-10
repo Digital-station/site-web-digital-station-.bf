@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import nodemailer, { type Transporter } from 'nodemailer';
 
 import { site } from '@/config/site.config';
 import { serverLeadSchema } from '@/lib/lead-schema';
@@ -24,7 +24,7 @@ import { serverLeadSchema } from '@/lib/lead-schema';
  *     the two can no longer disagree about what a valid lead is.
  *  6. HTML ESCAPING — user input used to be interpolated raw into the email.
  *  7. HONEST STATUS CODES — a 201 means an email was accepted for delivery.
- *     It used to be returned even when RESEND_API_KEY was missing.
+ *     It used to be returned even when no mail transport was configured.
  */
 
 /* ── 1. Size cap ─────────────────────────────────────────────────────────── */
@@ -61,17 +61,14 @@ const GLOBAL_RATE_LIMIT_KEY = 'leads:global';
  * Where hit counts live — pluggable, because the right answer depends on
  * where this is deployed.
  *
- * A module-level Map is correct on a single long-lived Node process — the
- * cPanel/Docker/PM2 target this repo's `deploy/` scripts build for — because
- * one process sees every request and the count is exact. It is WRONG on
- * Vercel's serverless functions, where an invocation can run in its own
- * process: every instance would keep its own count, and the effective limit
- * would silently multiply by however many instances handled a burst.
+ * A module-level Map is correct on a single long-lived Node process (Docker
+ * or systemd on the VPS) because one process sees every request and the
+ * count is exact. Under PM2 cluster mode every worker keeps its own count, so
+ * the effective limit multiplies by the number of workers.
  *
- * When `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are set —
- * which Vercel's Upstash marketplace integration does automatically — counts
- * move to Redis instead, shared across every instance. Without them, the
- * in-memory store below is used, which is exactly what the VPS path needs.
+ * When `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are set,
+ * counts move to Redis instead, shared across every process. Without them,
+ * the in-memory store below is used.
  */
 interface RateLimitStore {
   /** Increments `key`'s count for the current window and reports whether
@@ -242,13 +239,35 @@ function escapeHtml(value: string): string {
     .replace(/'/g, '&#39;');
 }
 
-let resendClient: Resend | null = null;
+/* ── SMTP transport ──────────────────────────────────────────────────────── */
 
-function getResend(): Resend | null {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) return null;
-  if (!resendClient) resendClient = new Resend(apiKey);
-  return resendClient;
+let smtpTransport: Transporter | null = null;
+
+/**
+ * SMTP transport built from SMTP_* in .env, or null when SMTP_HOST is unset.
+ *
+ * SMTP_SECURE defaults to true on port 465 (implicit TLS) and false
+ * elsewhere, where nodemailer upgrades the connection with STARTTLS when the
+ * server offers it. SMTP_USER/SMTP_PASS are optional for relays that
+ * authenticate by IP.
+ */
+function getTransport(): Transporter | null {
+  const host = process.env.SMTP_HOST;
+  if (!host) return null;
+  if (!smtpTransport) {
+    const port = Number(process.env.SMTP_PORT) || 587;
+    const secure = process.env.SMTP_SECURE
+      ? process.env.SMTP_SECURE === 'true'
+      : port === 465;
+    const user = process.env.SMTP_USER;
+    smtpTransport = nodemailer.createTransport({
+      host,
+      port,
+      secure,
+      ...(user ? { auth: { user, pass: process.env.SMTP_PASS ?? '' } } : {}),
+    });
+  }
+  return smtpTransport;
 }
 
 /* ── Handler ─────────────────────────────────────────────────────────────── */
@@ -315,10 +334,10 @@ export async function POST(request: Request) {
 
   const { name, email, phone, objective, budget, brief } = parsed.data;
 
-  const resend = getResend();
-  if (!resend) {
+  const transport = getTransport();
+  if (!transport) {
     console.error(
-      '[leads] RESEND_API_KEY is not set — the message was NOT delivered.',
+      '[leads] SMTP_HOST is not set — the message was NOT delivered.',
       { receivedAt: new Date().toISOString() },
     );
     return NextResponse.json(
@@ -328,7 +347,11 @@ export async function POST(request: Request) {
   }
 
   const destination = process.env.CONTACT_EMAIL || site.leadInbox;
-  const from = process.env.LEADS_FROM || `${site.name} <onboarding@resend.dev>`;
+  // Most SMTP servers refuse a From that is not the authenticated mailbox,
+  // so that mailbox is the fallback when LEADS_FROM is unset.
+  const from =
+    process.env.LEADS_FROM ||
+    `${site.name} <${process.env.SMTP_USER || site.leadInbox}>`;
 
   const row = (label: string, value: string) =>
     `<p style="margin:0 0 12px;font-size:15px;"><strong style="color:#144F97;">${escapeHtml(label)}:</strong> ${escapeHtml(value)}</p>`;
@@ -360,24 +383,17 @@ export async function POST(request: Request) {
     .slice(0, 150);
 
   try {
-    const { error } = await resend.emails.send({
+    await transport.sendMail({
       from,
-      to: [destination],
+      to: destination,
       // Only set when there is an address to reply to; phone-only leads have none.
       ...(email ? { replyTo: email } : {}),
       subject,
       html,
     });
-
-    if (error) {
-      console.error('[leads] Resend rejected the message:', error);
-      return NextResponse.json(
-        { success: false, error: 'delivery_failed' },
-        { status: 502 },
-      );
-    }
   } catch (err) {
-    console.error('[leads] Resend threw:', err);
+    // Connection, auth and recipient rejections all surface as a throw.
+    console.error('[leads] SMTP delivery failed:', err);
     return NextResponse.json(
       { success: false, error: 'delivery_failed' },
       { status: 502 },

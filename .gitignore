@@ -57,8 +57,3 @@ review-receipts/
 agent/
 skills-lock.json
 
-# Cloudflare / OpenNext build output and local secrets
-.open-next/
-.wrangler/
-.dev.vars*
-!.dev.vars.example

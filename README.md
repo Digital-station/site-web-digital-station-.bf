@@ -22,9 +22,32 @@ Enterprise web platform and engineering portfolio for **Digital Station SARL** �
   - **Knowledge Convergence:** Flow diagram with dynamic bounding-box coordinate tracking for bezier stream convergence into the central hub node.
   - **Industries Auto-Scroll:** Immediate rotation on viewport entrance via optimized `IntersectionObserver`.
 - **Search Engine Authority & Structured Data:**
-  - Complete Schema.org JSON-LD graph: `Organization` & `ProfessionalService` (with Ouagadougou coordinates, IFU/RCCM legal identifiers, and opening hours), `WebSite` with SearchAction, `Service` (11 service offerings), `ItemList` / `CreativeWork` (for in-house products **Ticketia**, **Alimgesto**, **ImmoPilot**, **EduManager**), `BreadcrumbList`, `ContactPage`, and `FAQPage`.
+  - Complete Schema.org JSON-LD graph: `Organization` & `ProfessionalService` (with Ouagadougou coordinates, IFU/RCCM legal identifiers, and opening hours), `WebSite` with SearchAction, `Service` (11 service offerings), `ItemList` / `CreativeWork` (for the 8 solutions listed below), `BreadcrumbList`, `ContactPage`, and `FAQPage`.
   - Multilingual `hreflang` tags (`fr`, `en`, `x-default`) and automated XML sitemap generation.
-- **Hardened Lead Intake (`/api/leads`):** Resend integration with request size cap (16 KB), origin verification, IP-based & global rate limiting, honeypot anti-spam, and Zod input sanitization.
+- **Hardened Lead Intake (`/api/leads`):** SMTP delivery (nodemailer, configured in `.env`) with request size cap (16 KB), origin verification, IP-based & global rate limiting, honeypot anti-spam, and Zod input sanitization.
+
+---
+
+## 🧩 Solutions catalogue (`/solutions`)
+
+Eight products, shown three per page with a page selector at the bottom right.
+No prices and no visuals: each card's **Demander une démo** button opens
+`/contact?product=<id>`, which pre-fills the contact form.
+
+| Solution | Scope |
+| :--- | :--- |
+| **DigiERP** | Full ERP: accounting, purchasing, sales, inventory, HR & payroll, projects |
+| **DigiResto** | Restaurant point of sale: tables, kitchen orders, split bills |
+| **DigiStore** | Retail point of sale: barcode checkout, stock, loyalty |
+| **DigiCourrier** | Electronic mail management: registration, routing, approvals, archiving |
+| **DigiSchool** | School management: enrolment, attendance, grades, fees, parents |
+| **DigiChat** | Secure business email for teams |
+| **DigiTicket** | Online event ticketing and check-in |
+| **DigiPost** | Social media scheduling and publishing |
+
+To add or edit one: the id and tag/feature counts live in `content/solutions.ts`; the
+copy lives in `solutions.items.<id>` in **both** `messages/fr.json` and
+`messages/en.json`. `npm test` checks that the two match.
 
 ---
 
@@ -53,8 +76,7 @@ Enterprise web platform and engineering portfolio for **Digital Station SARL** �
 │   └── site.config.ts          # Central source of truth (contact, legal RCCM/IFU, hours, socials, brand)
 ├── content/
 │   ├── services.ts             # Service catalogue metadata
-│   ├── solutions.ts            # Solution catalogue metadata
-│   ├── solutions-data.ts       # Interactive walkthrough details for in-house products
+│   ├── solutions.ts            # Solution catalogue (ids, tag/feature counts, page size)
 │   └── references.ts           # Client references — PLACEHOLDER data, section disabled (see below)
 ├── deploy/                     # Production VPS deployment assets
 │   ├── deploy.sh               # Automated one-command zero-downtime deployment script
@@ -156,26 +178,9 @@ This command executes `next build` and runs the post-build sync script (`scripts
 
 ---
 
-## ☁️ Cloudflare Workers Deployment
-
-The site also deploys to **Cloudflare Workers** through the OpenNext adapter.
-`wrangler.jsonc` (Worker name `site-web-digital-station--bf`) and `open-next.config.ts`
-are committed; `public/_headers` adds immutable caching for `/_next/static`.
-
-- **Workers Builds (Git integration):** build command `npm run build`, deploy command
-  `npx wrangler deploy`. On Cloudflare (`WORKERS_CI=1`) `scripts/build.mjs` switches
-  `npm run build` to `opennextjs-cloudflare build`, which produces the Worker bundle in
-  `.open-next/` that the deploy step needs.
-- **From a machine:** `npm run cf:preview` to run the Worker locally, `npm run cf:deploy`
-  to build and deploy with your own Wrangler login.
-- **Variables and secrets** are not read from `.env` on Cloudflare: set them on the Worker
-  (Settings › Variables and Secrets). The contact form needs `RESEND_API_KEY`,
-  `CONTACT_EMAIL` and `LEADS_FROM`; add `UPSTASH_REDIS_REST_URL` / `_TOKEN` for durable
-  rate limiting, and the `NEXT_PUBLIC_*` values as build variables as well.
-
----
-
 ## 🌐 VPS Production Deployment Options
+
+The site is self-hosted on a VPS. Vercel and Cloudflare are no longer used.
 
 For complete step-by-step instructions, see **[`DEPLOYMENT.md`](DEPLOYMENT.md)**.
 
@@ -236,14 +241,52 @@ sudo nginx -t && sudo systemctl reload nginx
 
 | Variable | Required | Default | Description |
 | :--- | :---: | :--- | :--- |
-| `RESEND_API_KEY` | **Yes** | — | Resend API key for sending contact & booking lead emails. |
+| `SMTP_HOST` | **Yes** | — | SMTP server for contact & booking lead emails. Unset → `/api/leads` returns 503. |
+| `SMTP_PORT` | No | `587` | `465` for implicit TLS, `587` for STARTTLS. |
+| `SMTP_SECURE` | No | `true` on port 465, else `false` | Force implicit TLS on or off. |
+| `SMTP_USER` | Usually | — | SMTP login (usually the sending mailbox). |
+| `SMTP_PASS` | Usually | — | SMTP password. |
 | `CONTACT_EMAIL` | No | `infos@digitalstation.bf` | Inbox where prospective client inquiries are delivered. |
-| `LEADS_FROM` | **Yes** | `"Digital Station <contact@digitalstation.bf>"` | Verified sender domain in Resend. |
+| `LEADS_FROM` | No | `SMTP_USER` | Sender, e.g. `"Digital Station <contact@digitalstation.bf>"`. Must be a mailbox the SMTP server lets you send as. |
+| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | No | — | Shared rate-limit store (only useful with several processes, e.g. PM2 cluster). |
 | `NEXT_PUBLIC_ANALYTICS_PROVIDER` | No | — | Optional analytics provider (`ga4`). |
 | `NEXT_PUBLIC_ANALYTICS_SITE_ID` | No | — | Google Analytics measurement ID (`G-XXXXXXXXXX`). |
 | `GOOGLE_SITE_VERIFICATION` | No | — | Search Console HTML verification token. |
 | `PORT` | No | `3000` | Port for the standalone Node server to listen on. |
 | `HOSTNAME` | No | `0.0.0.0` | Network binding interface. |
+
+`next build` copies `.env` into `.next/standalone/`, so **rebuild after editing `.env`**
+(`./deploy/deploy.sh` does). Docker (`env_file`) and systemd (`EnvironmentFile`) also
+read `.env` at start-up, so a restart is enough there.
+
+---
+
+## 🔎 Google indexing (why "digitalstation" finds nothing)
+
+The whole site declares **`https://digitalstation.bf`** (no `www`) as its address:
+canonical tags, hreflang, `sitemap.xml`, `robots.txt` and JSON-LD all come from
+`site.url` in `config/site.config.ts`. The host must serve that exact address and
+redirect `www` to it, never the other way round.
+
+The previous Vercel deployment did the opposite: `digitalstation.bf` → 308 →
+`www.digitalstation.bf`, whose pages then named `digitalstation.bf` as canonical. Every
+URL in the sitemap redirected, and every page it landed on pointed back to the
+redirect, so Google had no indexable URL. The Nginx config in `deploy/nginx/` gets it
+right (`www` → bare domain, 301).
+
+After the VPS is live:
+
+1. **DNS:** `A @ → VPS IP` and `CNAME www → digitalstation.bf.` (remove any Vercel records).
+2. **Check:** `curl -I https://digitalstation.bf/fr` returns `200`, and
+   `curl -I https://www.digitalstation.bf/fr` returns `301` to `https://digitalstation.bf/fr`.
+3. **Search Console:** add a *Domain* property for `digitalstation.bf` (DNS TXT
+   verification), submit `https://digitalstation.bf/sitemap.xml`, and use *URL
+   inspection → Request indexing* on `/fr` and `/en`.
+4. Give it a few days to a few weeks. A new domain shows up for its exact name
+   ("Digital Station", "digitalstation.bf") first; ranking for the generic one-word
+   query "digitalstation" against older sites with the same name takes longer and
+   benefits from links back to the site (Google Business Profile, LinkedIn, Facebook,
+   directories).
 
 ---
 

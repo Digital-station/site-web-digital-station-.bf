@@ -1124,66 +1124,150 @@
   },
   "solutions": {
     "meta": {
-      "title": "Logiciels métiers made in Burkina Faso",
-      "description": "Découvrez les logiciels développés par Digital Station : gestion de commerce, billetterie, immobilier et gestion scolaire."
+      "title": "Logiciels métiers pour entreprises et institutions",
+      "description": "Découvrez les solutions Digital Station : ERP, caisse restaurant et boutique, gestion du courrier, gestion scolaire, messagerie, billetterie et réseaux sociaux."
     },
     "eyebrow": "Nos produits",
     "title": "Nos <accent>solutions.</accent>",
-    "intro": "Des logiciels métiers conçus et développés au Burkina Faso, pensés pour les réalités des entreprises et institutions d'Afrique de l'Ouest.",
+    "intro": "Des logiciels métiers éprouvés, déployés et accompagnés par nos équipes au Burkina Faso. Pour en savoir plus sur une solution, demandez une démo : nous vous recontactons.",
     "cta": "Demander une démo",
     "ctaAria": "Demander une démonstration de {name}",
+    "pagination": {
+      "label": "Pages des solutions",
+      "previous": "Page précédente",
+      "next": "Page suivante",
+      "page": "Page {page}",
+      "status": "Page {page} sur {total}"
+    },
     "items": {
-      "alimgesto": {
-        "name": "AlimGesto",
-        "tagline": "Conçue pour les alimentations et supérettes",
-        "desc": "Logiciel de gestion conçu pour les alimentations, supérettes et commerces de proximité. Gérez vos ventes, stocks, clients et fournisseurs en toute simplicité.",
+      "digierp": {
+        "name": "DigiERP",
+        "tagline": "L'ERP complet pour piloter toute votre entreprise",
+        "desc": "Comptabilité, achats, ventes, stocks, ressources humaines et projets réunis dans un seul logiciel. Chaque service travaille sur les mêmes données, en temps réel.",
         "tags": [
-          "Point de Vente",
-          "Stock",
-          "Commerce"
+          "ERP",
+          "Comptabilité",
+          "RH & Paie"
+        ],
+        "features": [
+          "Comptabilité, facturation et trésorerie",
+          "Achats, ventes et stocks multi-entrepôts",
+          "Ressources humaines, congés et paie",
+          "Projets, production et tableaux de bord"
         ]
       },
-      "ticketia": {
-        "name": "Ticketia",
-        "tagline": "Billetterie intelligente pour tous vos événements",
-        "desc": "Plateforme de vente et de gestion de billets pour concerts, festivals, discothèques, conférences et événements culturels.",
+      "digiresto": {
+        "name": "DigiResto",
+        "tagline": "La caisse pensée pour les restaurants, bars et maquis",
+        "desc": "Prise de commande à table, envoi direct en cuisine et encaissement rapide. Gérez votre salle, vos additions et votre service sans papier.",
+        "tags": [
+          "Restauration",
+          "Point de vente",
+          "Cuisine"
+        ],
+        "features": [
+          "Plan de salle et gestion des tables",
+          "Commandes transmises directement en cuisine",
+          "Division d'addition, pourboires et paiements multiples",
+          "Fonctionnement hors ligne et ventes suivies en temps réel"
+        ]
+      },
+      "digistore": {
+        "name": "DigiStore",
+        "tagline": "La caisse rapide pour boutiques et commerces de détail",
+        "desc": "Encaissez en quelques secondes, suivez votre stock en temps réel et fidélisez vos clients, sur ordinateur, tablette ou caisse tactile.",
+        "tags": [
+          "Commerce",
+          "Point de vente",
+          "Stock"
+        ],
+        "features": [
+          "Encaissement rapide avec lecteur de codes-barres",
+          "Stock mis à jour à chaque vente",
+          "Fidélité, remises et cartes cadeaux",
+          "Mode hors ligne et rapports de ventes par caisse"
+        ]
+      },
+      "digicourrier": {
+        "name": "DigiCourrier",
+        "tagline": "La gestion électronique du courrier pour administrations et entreprises",
+        "desc": "Enregistrez, numérisez, distribuez et suivez chaque courrier entrant et sortant. Circuits de visa, délais de traitement et archivage au même endroit.",
+        "tags": [
+          "Courrier",
+          "Dématérialisation",
+          "Archivage"
+        ],
+        "features": [
+          "Enregistrement et numérisation du courrier entrant et sortant",
+          "Distribution aux services et suivi des délais de réponse",
+          "Circuits de visa et signature électronique",
+          "Recherche rapide et archivage sécurisé"
+        ]
+      },
+      "digischool": {
+        "name": "DigiSchool",
+        "tagline": "La gestion scolaire, de l'inscription au bulletin",
+        "desc": "Inscriptions, emplois du temps, présences, notes, frais de scolarité et communication avec les parents réunis dans une seule plateforme.",
+        "tags": [
+          "Éducation",
+          "Gestion scolaire",
+          "Parents"
+        ],
+        "features": [
+          "Inscriptions et dossiers des élèves",
+          "Emplois du temps, présences et devoirs",
+          "Examens, notes et bulletins",
+          "Frais de scolarité et communication avec les parents"
+        ]
+      },
+      "digichat": {
+        "name": "DigiChat",
+        "tagline": "La messagerie professionnelle sécurisée de vos équipes",
+        "desc": "Une messagerie e-mail moderne pour vos équipes, accessible sur le web et sur mobile, avec des données qui restent sous votre contrôle.",
+        "tags": [
+          "Messagerie",
+          "Collaboration",
+          "Sécurité"
+        ],
+        "features": [
+          "Messagerie e-mail sur web, Android et iOS",
+          "Boîtes partagées et carnet d'adresses d'équipe",
+          "Protection et confidentialité des échanges",
+          "Hébergement maîtrisé, sans publicité"
+        ]
+      },
+      "digiticket": {
+        "name": "DigiTicket",
+        "tagline": "La billetterie en ligne pour tous vos événements",
+        "desc": "Vendez vos billets en ligne, gérez vos catégories de places et contrôlez les entrées le jour J : concerts, conférences, festivals ou salons.",
         "tags": [
           "Billetterie",
           "Événements",
-          "Paiement"
+          "Contrôle d'accès"
+        ],
+        "features": [
+          "Boutique de billets à vos couleurs",
+          "Catégories de billets, plans de salle et codes promo",
+          "Application de scan des billets à l'entrée",
+          "Statistiques de ventes et listes de participants"
         ]
       },
-      "immopilot": {
-        "name": "ImmoPilot",
-        "tagline": "Pilotez votre activité immobilière efficacement",
-        "desc": "Solution complète de gestion immobilière pour agences, promoteurs et gestionnaires de biens.",
+      "digipost": {
+        "name": "DigiPost",
+        "tagline": "Planifiez et publiez sur tous vos réseaux sociaux",
+        "desc": "Préparez vos publications, programmez-les sur tous vos réseaux depuis un seul calendrier et mesurez leurs performances.",
         "tags": [
-          "Immobilier",
-          "Gestion",
-          "Location"
-        ]
-      },
-      "edumanager": {
-        "name": "EduManager",
-        "tagline": "La gestion scolaire simplifiée",
-        "desc": "Plateforme numérique permettant la gestion des élèves, enseignants, notes, présences et paiements scolaires.",
-        "tags": [
-          "Éducation",
-          "Administration",
-          "École"
+          "Réseaux sociaux",
+          "Planification",
+          "Marketing"
+        ],
+        "features": [
+          "Calendrier de publication multi-réseaux",
+          "Programmation automatique des publications",
+          "Travail en équipe et validation avant publication",
+          "Statistiques de performance des publications"
         ]
       }
-    },
-    "previewOverlay": "Aperçu interactif",
-    "previewScreens": "Aperçu des écrans",
-    "demoAccess": "Demander l'accès démo",
-    "modal": {
-      "previewLabel": "Aperçu interactif",
-      "productionReady": "Prêt pour la production",
-      "closeAria": "Fermer l'aperçu",
-      "modulesTitle": "Exploration des modules & écrans clés",
-      "footerNote": "Besoin d'un déploiement sur mesure ou d'une démo complète avec vos équipes ?",
-      "close": "Fermer"
     }
   },
   "notFound": {

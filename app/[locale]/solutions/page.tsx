@@ -36,7 +36,7 @@ export default async function SolutionsPage({ params }: Props) {
   const tn = await getTranslations('nav');
 
   /**
-   * The four in-house products, as CreativeWork items.
+   * The solutions, as CreativeWork items.
    *
    * Not SoftwareApplication: Google only accepts that type with a price and a
    * rating or review count, and there is neither to publish, so every item was

@@ -1124,66 +1124,150 @@
   },
   "solutions": {
     "meta": {
-      "title": "Business software made in Burkina Faso",
-      "description": "Discover the software built by Digital Station: retail management, ticketing, real estate and school administration."
+      "title": "Business software for companies and institutions",
+      "description": "Discover the Digital Station solutions: ERP, restaurant and retail point of sale, mail management, school management, email, ticketing and social media."
     },
     "eyebrow": "Our products",
     "title": "Our <accent>solutions.</accent>",
-    "intro": "Business software designed and built in Burkina Faso, shaped around the realities of West African companies and institutions.",
+    "intro": "Proven business software, deployed and supported by our teams in Burkina Faso. To learn more about a solution, request a demo and we will get back to you.",
     "cta": "Request a demo",
     "ctaAria": "Request a demo of {name}",
+    "pagination": {
+      "label": "Solutions pages",
+      "previous": "Previous page",
+      "next": "Next page",
+      "page": "Page {page}",
+      "status": "Page {page} of {total}"
+    },
     "items": {
-      "alimgesto": {
-        "name": "AlimGesto",
-        "tagline": "Built for grocery stores and minimarkets",
-        "desc": "Management software built for grocery stores, minimarkets and neighbourhood retail. Handle your sales, stock, customers and suppliers with ease.",
+      "digierp": {
+        "name": "DigiERP",
+        "tagline": "The complete ERP to run your whole business",
+        "desc": "Accounting, purchasing, sales, inventory, HR and projects in a single system. Every department works from the same data, in real time.",
         "tags": [
-          "Point of Sale",
-          "Stock",
-          "Retail"
+          "ERP",
+          "Accounting",
+          "HR & Payroll"
+        ],
+        "features": [
+          "Accounting, invoicing and cash management",
+          "Purchasing, sales and multi-warehouse inventory",
+          "Human resources, leave and payroll",
+          "Projects, manufacturing and dashboards"
         ]
       },
-      "ticketia": {
-        "name": "Ticketia",
-        "tagline": "Smart ticketing for every event you run",
-        "desc": "A platform for selling and managing tickets for concerts, festivals, nightclubs, conferences and cultural events.",
+      "digiresto": {
+        "name": "DigiResto",
+        "tagline": "The point of sale built for restaurants and bars",
+        "desc": "Take orders at the table, send them straight to the kitchen and check out fast. Run your floor, bills and service without paper.",
+        "tags": [
+          "Restaurants",
+          "Point of sale",
+          "Kitchen"
+        ],
+        "features": [
+          "Floor plan and table management",
+          "Orders sent straight to the kitchen",
+          "Split bills, tips and multiple payment methods",
+          "Works offline, with sales tracked in real time"
+        ]
+      },
+      "digistore": {
+        "name": "DigiStore",
+        "tagline": "The fast point of sale for shops and retail",
+        "desc": "Check out in seconds, track your stock in real time and keep customers coming back, on a computer, tablet or touch register.",
+        "tags": [
+          "Retail",
+          "Point of sale",
+          "Inventory"
+        ],
+        "features": [
+          "Fast checkout with barcode scanning",
+          "Stock updated with every sale",
+          "Loyalty, discounts and gift cards",
+          "Offline mode and per-register sales reports"
+        ]
+      },
+      "digicourrier": {
+        "name": "DigiCourrier",
+        "tagline": "Electronic mail management for public bodies and companies",
+        "desc": "Register, scan, route and track every incoming and outgoing letter. Approval workflows, response deadlines and archiving in one place.",
+        "tags": [
+          "Mail",
+          "Paperless",
+          "Archiving"
+        ],
+        "features": [
+          "Registration and scanning of incoming and outgoing mail",
+          "Routing to departments and response deadline tracking",
+          "Approval workflows and electronic signature",
+          "Fast search and secure archiving"
+        ]
+      },
+      "digischool": {
+        "name": "DigiSchool",
+        "tagline": "School management, from enrolment to report card",
+        "desc": "Enrolment, timetables, attendance, grades, tuition fees and parent communication in a single platform.",
+        "tags": [
+          "Education",
+          "School management",
+          "Parents"
+        ],
+        "features": [
+          "Enrolment and student records",
+          "Timetables, attendance and homework",
+          "Exams, grades and report cards",
+          "Tuition fees and parent communication"
+        ]
+      },
+      "digichat": {
+        "name": "DigiChat",
+        "tagline": "Secure business email for your teams",
+        "desc": "Modern email for your teams, on the web and on mobile, with data that stays under your control.",
+        "tags": [
+          "Email",
+          "Collaboration",
+          "Security"
+        ],
+        "features": [
+          "Email on web, Android and iOS",
+          "Shared mailboxes and team address book",
+          "Privacy and protection of your communications",
+          "Controlled hosting, with no ads"
+        ]
+      },
+      "digiticket": {
+        "name": "DigiTicket",
+        "tagline": "Online ticketing for all your events",
+        "desc": "Sell tickets online, manage seat categories and check attendees in on the day: concerts, conferences, festivals or trade fairs.",
         "tags": [
           "Ticketing",
           "Events",
-          "Payments"
+          "Access control"
+        ],
+        "features": [
+          "A ticket shop in your own colours",
+          "Ticket categories, seating plans and promo codes",
+          "Ticket scanning app at the door",
+          "Sales statistics and attendee lists"
         ]
       },
-      "immopilot": {
-        "name": "ImmoPilot",
-        "tagline": "Run your property business efficiently",
-        "desc": "A complete property management solution for agencies, developers and property managers.",
+      "digipost": {
+        "name": "DigiPost",
+        "tagline": "Plan and publish across all your social networks",
+        "desc": "Prepare your posts, schedule them across every network from a single calendar and measure how they perform.",
         "tags": [
-          "Real Estate",
-          "Management",
-          "Rentals"
-        ]
-      },
-      "edumanager": {
-        "name": "EduManager",
-        "tagline": "School administration, simplified",
-        "desc": "A digital platform for managing students, teachers, grades, attendance and school payments.",
-        "tags": [
-          "Education",
-          "Administration",
-          "Schools"
+          "Social media",
+          "Scheduling",
+          "Marketing"
+        ],
+        "features": [
+          "Multi-network publishing calendar",
+          "Automatic post scheduling",
+          "Team collaboration and approval before publishing",
+          "Post performance analytics"
         ]
       }
-    },
-    "previewOverlay": "Interactive preview",
-    "previewScreens": "Preview the screens",
-    "demoAccess": "Request demo access",
-    "modal": {
-      "previewLabel": "Interactive preview",
-      "productionReady": "Production ready",
-      "closeAria": "Close preview",
-      "modulesTitle": "Explore the key modules & screens",
-      "footerNote": "Need a custom deployment or a full demo with your teams?",
-      "close": "Close"
     }
   },
   "notFound": {

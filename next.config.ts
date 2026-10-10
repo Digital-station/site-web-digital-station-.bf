@@ -59,27 +59,15 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
 
   /**
-   * Deployed on Vercel today; the `deploy/` scripts and this `standalone`
-   * output also support a self-hosted single-process target (cPanel/Docker/
-   * PM2 behind Nginx or Passenger) as a documented fallback — see
-   * DEPLOYMENT.md. `standalone` emits .next/standalone/server.js with only
-   * the files that server needs, so a self-hosted upload is a fraction of a
-   * full node_modules tree.
+   * Self-hosted on a VPS (Docker, PM2 or systemd behind Nginx) — see
+   * DEPLOYMENT.md and `deploy/`. `standalone` emits
+   * .next/standalone/server.js with only the files that server needs, so a
+   * deployment is a fraction of a full node_modules tree.
    *
-   * NOT on Vercel: its build hook runs its own file tracing and fails with
-   * "ENOENT .next/next-server.js.nft.json" when standalone output is on, so
-   * the setting is skipped there. Vercel sets VERCEL=1 for every build;
-   * scripts/copy-standalone-assets.mjs checks the same variable.
-   *
-   * On the self-hosted path: remember to copy `public/` and `.next/static/`
-   * into .next/standalone/ after building — the minimal server does not
-   * bundle them (scripts/copy-standalone-assets.mjs does this as `postbuild`).
-   *
-   * The rate limiter in app/api/leads/route.ts is the other half of this:
-   * it needs Upstash Redis on Vercel (serverless, multi-instance) but is
-   * correct with no configuration at all on the self-hosted path.
+   * The minimal server does not bundle `public/` and `.next/static/`;
+   * scripts/copy-standalone-assets.mjs copies them in as `postbuild`.
    */
-  output: process.env.VERCEL ? undefined : 'standalone',
+  output: 'standalone',
 
   images: {
     /**

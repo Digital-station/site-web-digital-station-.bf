@@ -22,11 +22,16 @@ describe('Frontend & SEO Checklist Standards', () => {
     }
   });
 
-  it('all in-house solutions exist and have valid message keys', () => {
-    expect(SOLUTIONS.length).toBe(4);
+  it('all solutions exist and have valid message keys', () => {
+    expect(SOLUTIONS.length).toBe(8);
     for (const solution of SOLUTIONS) {
       expect(fr.solutions.items).toHaveProperty(solution.id);
       expect(en.solutions.items).toHaveProperty(solution.id);
+      for (const items of [fr.solutions.items, en.solutions.items]) {
+        const msgs = items[solution.id as keyof typeof items];
+        expect(msgs.tags).toHaveLength(solution.tagCount);
+        expect(msgs.features).toHaveLength(solution.featureCount);
+      }
     }
   });
 
