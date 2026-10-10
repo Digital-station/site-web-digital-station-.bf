@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { FocusEvent, KeyboardEvent } from 'react';
+import type { FocusEvent, KeyboardEvent, ReactNode } from 'react';
 import { ArrowRight, ChevronDown, Menu, Sparkles, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -20,6 +20,46 @@ const MEGA_MENU_ID = 'nav-services-menu';
  *  is added alongside the layout's own defaults because, like the navbar's
  *  header row, it is a fixed sibling the drawer does not otherwise reach. */
 const INERT_SELECTORS = ['#main-content', 'footer', '#cookie-consent'] as const;
+
+/** The drawer only exists below this; the same breakpoint as `md:hidden`. */
+const DESKTOP_QUERY = '(min-width: 768px)';
+
+/**
+ * "Is this link the current page?" — the one rule the navbar, the drawer and
+ * the footer all share. Home is an exact match; everything else matches its
+ * whole section, so /services/cloud still highlights "Services".
+ */
+export function isActivePath(pathname: string, href: string): boolean {
+  return href === '/' ? pathname === '/' : pathname.startsWith(href);
+}
+
+/**
+ * A nav link that knows whether it is the current page. Lives here rather
+ * than in its own file so the footer — a server component that cannot read
+ * the client pathname itself — can mark its links `aria-current` without a
+ * second copy of the rule above. Only this component crosses into the
+ * client; the footer stays a server component.
+ */
+export function NavLink({
+  href,
+  className,
+  children,
+}: {
+  href: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  const pathname = usePathname();
+  return (
+    <Link
+      href={href}
+      aria-current={isActivePath(pathname, href) ? 'page' : undefined}
+      className={className}
+    >
+      {children}
+    </Link>
+  );
+}
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -60,6 +100,19 @@ export function Navbar() {
     setMobileMenuOpen(false);
     setServicesOpen(false);
   }, [pathname]);
+
+  // Close the drawer when the viewport grows past `md`. The drawer is
+  // `md:hidden`, so a drawer left open across a resize (or a phone rotated
+  // to landscape) vanished while the page stayed `inert` and scroll-locked —
+  // nothing on the desktop layout could be clicked until a reload.
+  useEffect(() => {
+    const mq = window.matchMedia(DESKTOP_QUERY);
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setMobileMenuOpen(false);
+    };
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
 
   // The navbar's own header row is a sibling of the drawer inside this <nav>,
   // so without this it would stay focusable behind the backdrop and
@@ -107,8 +160,7 @@ export function Navbar() {
     suppressServicesFocusOpen.current = false;
   }, []);
 
-  const isActive = (href: string) =>
-    href === '/' ? pathname === '/' : pathname.startsWith(href);
+  const isActive = (href: string) => isActivePath(pathname, href);
 
   /** Desktop text links. Contact is carried by the CTA button instead. */
   const secondaryLinks = [
@@ -138,7 +190,12 @@ export function Navbar() {
         ref={headerRef}
         className="max-w-7xl mx-auto h-full px-8 flex items-center justify-between"
       >
-        <Link href="/" className="flex items-center gap-3">
+        {/* aria-label names the link once. Without it the logo's alt and the
+            visible wordmark both counted, and the link read "Digital Station
+            Digital Station" wherever the span is shown (sm and up). Below sm
+            the span is display:none and the alt alone would have done — the
+            label simply covers both. */}
+        <Link href="/" aria-label={site.name} className="flex items-center gap-3">
           <BrandMark variant="icon" height={isScrolled ? 32 : 44} />
           <span className="font-display text-lg font-bold tracking-tighter uppercase hidden sm:inline">
             {site.name}
@@ -148,6 +205,7 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-8 lg:gap-10">
           <Link
             href="/"
+            aria-current={isActive('/') ? 'page' : undefined}
             className={cn('nav-link', isActive('/') && 'text-brand-text')}
           >
             {t('home')}
@@ -168,6 +226,7 @@ export function Navbar() {
             <Link
               ref={servicesTriggerRef}
               href="/services"
+              aria-current={isActive('/services') ? 'page' : undefined}
               aria-expanded={servicesOpen}
               aria-controls={MEGA_MENU_ID}
               className={cn(
@@ -210,6 +269,7 @@ export function Navbar() {
                     <Link
                       href={`/services/${s.slug}`}
                       prefetch={servicesOpen}
+                      aria-current={pathname === `/services/${s.slug}` ? 'page' : undefined}
                       className="group/item rounded-md"
                     >
                       <div className="text-[11px] font-mono text-brand-accent mb-1 flex items-center gap-2">
@@ -233,6 +293,7 @@ export function Navbar() {
             <Link
               key={l.href}
               href={l.href}
+              aria-current={isActive(l.href) ? 'page' : undefined}
               className={cn('nav-link', isActive(l.href) && 'text-brand-text')}
             >
               {l.label}
@@ -305,6 +366,7 @@ export function Navbar() {
           <Link
             href="/"
             prefetch={mobileMenuOpen}
+            aria-label={site.name}
             className="flex items-center gap-3"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -331,6 +393,7 @@ export function Navbar() {
                 <Link
                   href={l.href}
                   prefetch={mobileMenuOpen}
+                  aria-current={isActive(l.href) ? 'page' : undefined}
                   className="py-2 text-3xl font-black uppercase tracking-tighter hover:text-brand-accent transition-colors block"
                 >
                   {l.label}
@@ -356,6 +419,7 @@ export function Navbar() {
                 <Link
                   href="/services"
                   prefetch={mobileMenuOpen}
+                  aria-current={pathname === '/services' ? 'page' : undefined}
                   className="group/all flex items-center justify-between py-2 text-sm font-bold uppercase tracking-tighter text-brand-accent transition-colors"
                 >
                   {t('servicesEyebrow')}
@@ -370,6 +434,7 @@ export function Navbar() {
                   <Link
                     href={`/services/${s.slug}`}
                     prefetch={mobileMenuOpen}
+                    aria-current={pathname === `/services/${s.slug}` ? 'page' : undefined}
                     className="group/item flex items-center justify-between py-2 text-sm font-bold uppercase tracking-tighter text-brand-muted transition-all hover:text-brand-accent"
                   >
                     {ts(`${s.slug}.title`)}

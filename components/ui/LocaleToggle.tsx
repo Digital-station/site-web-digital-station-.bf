@@ -1,6 +1,7 @@
 'use client';
 
-import { useId, type CSSProperties } from 'react';
+import { Suspense, useEffect, useId, useState, type CSSProperties } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { Link, usePathname, type AppLocale } from '@/i18n/routing';
@@ -15,15 +16,60 @@ import styles from './LocaleToggle.module.css';
  * the original was a bare `<input type="checkbox">` that toggled nothing, this
  * is a real link to the other locale. A language is a URL — it has to be
  * openable in a new tab, bookmarkable and crawlable — and next-intl's
- * `<Link locale>` keeps the current pathname across the switch.
+ * `<Link locale>` keeps the current pathname across the switch. The query
+ * string and hash are carried over too (a `?service=` prefill on /contact, a
+ * `#section` anchor), which the bare pathname used to drop.
  *
  * The whole machine is `aria-hidden`: the FR/EN glyphs are decoration for the
- * eye, and screen readers get the link's own label ("switch to English"),
- * which says what pressing it does rather than describing metal.
+ * eye, and screen readers get the link's own label, which starts with the
+ * visible glyph of the current language ("FR – Passer en anglais") so the
+ * accessible name contains the text a sighted user would read out loud
+ * (WCAG 2.5.3), then says what pressing it does.
+ *
+ * `useSearchParams()` opts its subtree into client rendering, so Next requires
+ * a Suspense boundary around it on a statically rendered route — and this
+ * sits in the layout, on every static page. The boundary is here rather than
+ * in the navbar so the two call sites (header and drawer) both get it. The
+ * fallback is the same toggle without the query string: identical pixels, so
+ * nothing flashes.
  */
 export function LocaleToggle({ className }: { className?: string }) {
+  return (
+    <Suspense fallback={<LocaleToggleLink className={className} search="" />}>
+      <LocaleToggleWithSearch className={className} />
+    </Suspense>
+  );
+}
+
+function LocaleToggleWithSearch({ className }: { className?: string }) {
+  const searchParams = useSearchParams();
+  const qs = searchParams.toString();
+  return <LocaleToggleLink className={className} search={qs ? `?${qs}` : ''} />;
+}
+
+/** Reads the URL hash — which the router does not expose — after mount. */
+function useHash(): string {
+  const [hash, setHash] = useState('');
+  useEffect(() => {
+    const sync = () => setHash(window.location.hash);
+    sync();
+    window.addEventListener('hashchange', sync);
+    return () => window.removeEventListener('hashchange', sync);
+  }, []);
+  return hash;
+}
+
+function LocaleToggleLink({
+  className,
+  search,
+}: {
+  className?: string;
+  /** `?a=b` or empty. */
+  search: string;
+}) {
   const locale = useLocale() as AppLocale;
   const pathname = usePathname();
+  const hash = useHash();
   const t = useTranslations('common');
 
   /** Per-instance so the navbar and the mobile menu don't share an SVG id. */
@@ -31,16 +77,19 @@ export function LocaleToggle({ className }: { className?: string }) {
 
   const isEnglish = locale === 'en';
   const other: AppLocale = isEnglish ? 'fr' : 'en';
+  const label = `${locale.toUpperCase()} – ${
+    other === 'fr' ? t('switchToFrench') : t('switchToEnglish')
+  }`;
 
   return (
     <Link
-      href={pathname}
+      href={`${pathname}${search}${hash}`}
       locale={other}
       scroll={false}
       hrefLang={other}
       data-on={isEnglish ? 'true' : 'false'}
-      aria-label={other === 'fr' ? t('switchToFrench') : t('switchToEnglish')}
-      title={other === 'fr' ? t('switchToFrench') : t('switchToEnglish')}
+      aria-label={label}
+      title={label}
       className={cn(styles.vault, className)}
     >
       <span className={styles.wrapper} aria-hidden="true">

@@ -23,6 +23,35 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: ['/api/'],
       },
+      // AI search and assistant crawlers, named explicitly so the site is
+      // eligible to be cited when someone asks ChatGPT, Claude, Gemini or
+      // Perplexity for an IT agency in Burkina Faso. `*` already allows
+      // them; listing them documents the choice and survives a future
+      // tightening of the wildcard rule. See also public/llms.txt.
+      {
+        userAgent: [
+          'GPTBot',
+          'OAI-SearchBot',
+          'ChatGPT-User',
+          'ClaudeBot',
+          'Claude-SearchBot',
+          'Claude-User',
+          'anthropic-ai',
+          'Google-Extended',
+          'PerplexityBot',
+          'Perplexity-User',
+          'Bingbot',
+          'Applebot',
+          'Applebot-Extended',
+          'Amazonbot',
+          'Meta-ExternalAgent',
+          'CCBot',
+          'DuckAssistBot',
+          'YouBot',
+        ],
+        allow: '/',
+        disallow: ['/api/'],
+      },
     ],
     // No `host:` line. It was a Yandex-only directive that Google ignores,
     // and Yandex itself dropped it in favour of redirects.

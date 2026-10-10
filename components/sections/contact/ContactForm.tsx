@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { AlertCircle, ArrowRight, Mail, Send } from "lucide-react";
+import { AlertCircle, ArrowRight, Mail, Phone, Send } from "lucide-react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
@@ -18,7 +18,7 @@ import {
   LEAD_LIMITS,
   type LeadInput,
 } from "@/lib/lead-schema";
-import { mailHref, waHref } from "@/config/site.config";
+import { mailHref, telHref, waHref } from "@/config/site.config";
 import { trackEvent } from "@/lib/analytics";
 import { WhatsAppIcon } from "@/components/ui/icons/WhatsApp";
 
@@ -34,6 +34,34 @@ const describedBy = (...ids: (string | false | undefined)[]) =>
   ids.filter(Boolean).join(" ") || undefined;
 
 type SubmitState = "idle" | "sending" | "sent" | "error";
+
+/**
+ * Which copy the failure panel shows. Maps from the response status: the
+ * visitor cannot do anything about a 503 except pick another channel, but
+ * a 429 only asks them to wait, and a 400 points at a field.
+ */
+type ErrorKind = "rateLimited" | "unavailable" | "validation" | "generic";
+
+/**
+ * How much of the brief the WhatsApp / mailto retry links carry. The brief
+ * may be 5 000 characters; URLs that long get truncated by the OS or the
+ * app anyway, and a cut-off link is worse than a shortened message.
+ */
+const RETRY_BRIEF_MAX = 1500;
+
+/** Server field names that match an input on this form, in DOM order. */
+const FOCUSABLE_FIELDS = [
+  "name",
+  "email",
+  "phone",
+  "objective",
+  "brief",
+] as const satisfies readonly (keyof LeadInput)[];
+
+const isFocusableField = (
+  field: string,
+): field is (typeof FOCUSABLE_FIELDS)[number] =>
+  (FOCUSABLE_FIELDS as readonly string[]).includes(field);
 
 /**
  * `useSearchParams()` opts the whole subtree into client-side rendering, so
@@ -93,7 +121,15 @@ function ContactFormInner() {
   );
 
   const [state, setState] = useState<SubmitState>("idle");
+  const [errorKind, setErrorKind] = useState<ErrorKind>("generic");
   const [showFAQ, setShowFAQ] = useState(false);
+
+  /**
+   * Synchronous re-entry guard. `state` is React state, so two Enter presses
+   * in the same tick both read "idle" and both send; a ref flips before the
+   * first `await` and is read by the second press.
+   */
+  const inFlight = useRef(false);
 
   /**
    * One schema, shared with `/api/leads` — the Vite build kept two that
@@ -123,6 +159,18 @@ function ContactFormInner() {
     getValues,
     setFocus,
   } = useForm<LeadInput>({ resolver: zodResolver(schema) });
+
+  /**
+   * Mount time for the server's too-fast-to-be-human check. Set in an effect,
+   * not as a default value: this component is prerendered, and a render-time
+   * `Date.now()` would be the BUILD time, which the server would then read
+   * as a visitor who took weeks to fill in the form. Re-armed every time the
+   * form comes back to "idle": `reset()` after a send clears it, and "send
+   * another" is a fresh form as far as the server is concerned.
+   */
+  useEffect(() => {
+    if (state === "idle") setValue("ts", Date.now());
+  }, [state, setValue]);
 
   /**
    * Focus follows the form's state, so a keyboard or screen-reader user is
@@ -172,7 +220,8 @@ function ContactFormInner() {
   }, [product, setValue, getValues, t, tsvc, tsol]);
 
   const onSubmit = async (data: LeadInput) => {
-    if (state === "sending") return;
+    if (inFlight.current) return;
+    inFlight.current = true;
     setState("sending");
     try {
       const response = await fetch("/api/leads", {
@@ -183,6 +232,7 @@ function ContactFormInner() {
 
       if (!response.ok) {
         // The old build showed the success screen regardless of the response.
+        setErrorKind(await classifyFailure(response));
         setState("error");
         return;
       }
@@ -200,8 +250,38 @@ function ContactFormInner() {
         budget: data.budget || "unspecified",
       });
     } catch {
+      setErrorKind("generic");
       setState("error");
+    } finally {
+      inFlight.current = false;
     }
+  };
+
+  /**
+   * Turns a failed response into the copy the visitor should see. A 400 with
+   * `fields` means the server's copy of the schema disagreed with ours (or
+   * the page is stale); the first named field gets focus so the visitor is
+   * looking at the problem, not at a banner three fields below it.
+   */
+  const classifyFailure = async (response: Response): Promise<ErrorKind> => {
+    if (response.status === 429) return "rateLimited";
+    if (response.status === 502 || response.status === 503) return "unavailable";
+    if (response.status === 400) {
+      const body = (await response.json().catch(() => null)) as {
+        fields?: unknown;
+      } | null;
+      const first = Array.isArray(body?.fields)
+        ? body.fields.find(
+            (f): f is (typeof FOCUSABLE_FIELDS)[number] =>
+              typeof f === "string" && isFocusableField(f),
+          )
+        : undefined;
+      if (first) {
+        setFocus(first);
+        return "validation";
+      }
+    }
+    return "generic";
   };
 
   /* No `outline-none`: the global :focus-visible ring is the focus indicator.
@@ -219,19 +299,25 @@ function ContactFormInner() {
    * Fallbacks for the "the send failed, here are two other ways" panel.
    * Built from whatever the visitor already typed, so nothing is retyped.
    */
+  const retryBrief = () => (getValues("brief") ?? "").slice(0, RETRY_BRIEF_MAX);
+
   const retryText = () => {
     const v = getValues();
-    return [v.name, v.brief].filter(Boolean).join(" — ");
+    return [v.name, retryBrief()].filter(Boolean).join(" — ");
   };
 
   const retryMailHref = () => {
     const v = getValues();
     const subject = `${tm("title")}${v.name ? ` — ${v.name}` : ""}`;
-    const body = [v.name, v.email, v.phone, v.objective, v.budget, v.brief]
+    const body = [v.name, v.email, v.phone, v.objective, v.budget, retryBrief()]
       .filter(Boolean)
       .join("\n");
     return `${mailHref(subject)}&body=${encodeURIComponent(body)}`;
   };
+
+  /** 429 and 400 are fixable in place; the other two need another channel. */
+  const showFallbackChannels =
+    errorKind === "unavailable" || errorKind === "generic";
 
   return (
     <FormShell>
@@ -320,20 +406,39 @@ function ContactFormInner() {
             </AnimatePresence>
           </div>
 
+          {/* `noValidate`: zod owns validation, with localized messages. The
+              browser's own bubbles ("Please fill in this field") are in the
+              browser's language, not the page's, and would race ours. */}
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            // Wrapped rather than `handleSubmit(onSubmit)` inline: `onSubmit`
+            // reads the `inFlight` ref, and the compiler lint rightly refuses
+            // to let a ref-reading function be passed around during render.
+            onSubmit={(event) => handleSubmit(onSubmit)(event)}
+            noValidate
             className="space-y-6 md:space-y-8"
           >
-            {/* Honeypot — hidden from people, irresistible to bots. */}
+            {/* Honeypot — hidden from people, irresistible to bots. Named
+                like a real field so a bot fills it; the data-* attributes
+                stop password managers doing the same for a real visitor. */}
             <div className="absolute -left-[9999px]" aria-hidden="true">
-              <label htmlFor="company">Company</label>
+              <label htmlFor="hp_website">Website</label>
               <input
-                id="company"
+                id="hp_website"
+                type="text"
                 tabIndex={-1}
                 autoComplete="off"
-                {...register("company")}
+                data-lpignore="true"
+                data-1p-ignore
+                {...register("hp_website")}
               />
             </div>
+            {/* Mount time — see the effect that sets it. `valueAsNumber`
+                because the DOM hands back a string and the schema wants a
+                number. */}
+            <input
+              type="hidden"
+              {...register("ts", { valueAsNumber: true })}
+            />
 
             {/*
               ONE name field, not first + last. Splitting a name into two
@@ -523,26 +628,41 @@ function ContactFormInner() {
                     aria-hidden="true"
                     className="w-4 h-4 shrink-0 mt-px"
                   />
-                  {t("errors.submit")}
+                  {errorKind === "rateLimited"
+                    ? t("errors.rateLimited")
+                    : errorKind === "unavailable"
+                      ? t("errors.unavailable")
+                      : errorKind === "validation"
+                        ? t("errors.validation")
+                        : t("errors.submit")}
                 </p>
-                <div className="flex flex-wrap gap-3">
-                  <a
-                    href={waHref(retryText())}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-outline inline-flex items-center gap-2 px-5 py-3 text-xs"
-                  >
-                    <WhatsAppIcon size={18} className="text-green-500" />
-                    {t("retryWhatsapp")}
-                  </a>
-                  <a
-                    href={retryMailHref()}
-                    className="btn-outline inline-flex items-center gap-2 px-5 py-3 text-xs"
-                  >
-                    <Mail className="w-4 h-4" />
-                    {t("retryEmail")}
-                  </a>
-                </div>
+                {showFallbackChannels && (
+                  <div className="flex flex-wrap gap-3">
+                    <a
+                      href={waHref(retryText())}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-outline inline-flex items-center gap-2 px-5 py-3 text-xs"
+                    >
+                      <WhatsAppIcon size={18} className="text-green-500" />
+                      {t("retryWhatsapp")}
+                    </a>
+                    <a
+                      href={retryMailHref()}
+                      className="btn-outline inline-flex items-center gap-2 px-5 py-3 text-xs"
+                    >
+                      <Mail className="w-4 h-4" />
+                      {t("retryEmail")}
+                    </a>
+                    <a
+                      href={telHref()}
+                      className="btn-outline inline-flex items-center gap-2 px-5 py-3 text-xs"
+                    >
+                      <Phone className="w-4 h-4" />
+                      {t("retryPhone")}
+                    </a>
+                  </div>
+                )}
               </div>
             )}
 
@@ -552,8 +672,11 @@ function ContactFormInner() {
               {state === "sending" ? t("sending") : ""}
             </p>
 
+            {/* Really `disabled` while sending, not just styled as such: a
+                second Enter press must not reach the handler at all. */}
             <motion.button
               type="submit"
+              disabled={state === "sending"}
               aria-disabled={state === "sending"}
               whileHover={{ scale: state === "sending" ? 1 : 1.02 }}
               whileTap={{ scale: state === "sending" ? 1 : 0.98 }}

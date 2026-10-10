@@ -5,7 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { ContactInfo } from '@/components/sections/contact/ContactInfo';
 import { MeetingScheduler } from '@/components/sections/contact/MeetingScheduler';
-import { site } from '@/config/site.config';
+import { site, telHref, mailHref, waHref } from '@/config/site.config';
 import { pageMeta } from '@/lib/seo';
 import { FAQ_KEYS } from '@/content/faq';
 import { contactPageLd, breadcrumbLd, faqPageLd, ldJson } from '@/lib/schema';
@@ -98,7 +98,39 @@ export default async function ContactPage({ params }: Props) {
         {/* Top: Standard Contact Channels & Lead Submission */}
         <div className="grid lg:grid-cols-2 gap-12 md:gap-24">
           <ContactInfo locale={locale} />
-          <ContactForm />
+          <div>
+            {/* Both forms are client-only (react-hook-form, fetch). Without
+                JS the column would be an empty box; this is the same three
+                channels the forms fall back to, as plain links. */}
+            <noscript>
+              <div className="mb-8 rounded-2xl border border-brand-border bg-brand-primary/30 p-6 space-y-4">
+                <p className="text-sm text-brand-muted">{t('noscript')}</p>
+                <ul className="flex flex-wrap gap-3">
+                  <li>
+                    <a href={telHref()} className="btn-outline inline-flex px-5 py-3 text-xs">
+                      {site.contact.phone}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href={waHref()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-outline inline-flex px-5 py-3 text-xs"
+                    >
+                      WhatsApp {site.contact.whatsapp}
+                    </a>
+                  </li>
+                  <li>
+                    <a href={mailHref()} className="btn-outline inline-flex px-5 py-3 text-xs">
+                      {site.contact.email}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </noscript>
+            <ContactForm />
+          </div>
         </div>
 
         {/* Feature Enhancement: Direct Meeting Scheduler with Leadership */}

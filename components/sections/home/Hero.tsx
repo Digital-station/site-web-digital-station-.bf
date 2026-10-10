@@ -45,12 +45,23 @@ export function Hero() {
             column only, not the full-bleed section. */}
         <Wavemesh className="absolute inset-0 w-full h-full pointer-events-none z-0" />
 
-        <div
+        {/* Watermark as SVG text rather than a DOM text node: a text block
+            this large was being reported as the page's LCP element (3.3 s
+            on phones), ahead of the headline. SVG <text> is not an LCP
+            candidate, so the h1 is measured instead. */}
+        <svg
           aria-hidden="true"
-          className="absolute -top-12 md:-top-20 left-4 text-[15vw] md:text-[240px] font-black opacity-[0.03] leading-none select-none tracking-tighter pointer-events-none uppercase"
+          className="absolute -top-12 md:-top-20 left-4 w-[90%] h-[2.2em] text-[15vw] md:text-[240px] font-black opacity-[0.03] select-none tracking-tighter pointer-events-none uppercase overflow-visible"
+          fill="currentColor"
         >
-          {site.name}
-        </div>
+          <text x="0" y="1em">
+            {site.name.split(' ').map((word, i) => (
+              <tspan key={word} x="0" dy={i === 0 ? 0 : '1em'}>
+                {word}
+              </tspan>
+            ))}
+          </text>
+        </svg>
 
         <div className="relative z-10">
           <p className="enter [--enter-x:-50px] [--enter-delay:0.3s] text-brand-accent text-[11px] md:text-xs uppercase tracking-[0.3em] mb-6 md:mb-8 font-mono font-bold">
@@ -64,14 +75,17 @@ export function Hero() {
             the display words mid-syllable. `text-balance` keeps the lines
             even instead.
           */}
-          <h1 className="text-5xl sm:text-6xl md:text-[104px] lg:text-[132px] font-black leading-[1.15] tracking-tighter uppercase mb-10 md:mb-12 text-balance break-words">
+          {/* 2.75rem below `sm`, not text-5xl (3rem): at 3rem "les" and
+              "FRONTIÈRES" no longer fit on one 390px line together and the
+              connector was pushed onto its own line. */}
+          <h1 className="text-[2.75rem] sm:text-6xl md:text-[104px] lg:text-[132px] font-black leading-[1.15] tracking-tighter uppercase mb-10 md:mb-12 text-balance break-words">
             <span className="block">
               <span className="enter [--enter-y:100px] block">
                 {t("titleLine1")}
               </span>
             </span>
             <span className="block">
-              <span className="enter [--enter-y:100px] [--enter-delay:0.1s] italic font-serif font-light lowercase pr-2 md:pr-4 opacity-80 inline">
+              <span className="enter [--enter-y:100px] [--enter-delay:0.1s] italic font-serif font-light lowercase pr-2 md:pr-4 opacity-80 inline-block">
                 {t("titleConnector")}
               </span>
               <span className="enter [--enter-y:100px] [--enter-delay:0.2s] inline-block">

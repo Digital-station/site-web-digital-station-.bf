@@ -165,7 +165,14 @@ export default async function LocaleLayout({ children, params }: Props) {
 
               <div className="min-h-screen relative bg-brand-primary">
                 <LeftRail />
-                <Navbar />
+                {/* The one <header> landmark. Navbar renders a <nav> (a
+                    sub-landmark), not the banner itself; a bare wrapper is
+                    enough since the navbar is position: fixed and the
+                    header has no box of its own. The skip link above stays
+                    outside it on purpose — it must be the first tab stop. */}
+                <header>
+                  <Navbar />
+                </header>
                 <ScrollIndicator />
                 {/* tabIndex={-1} makes the skip link's focus land reliably:
                     without it some browsers move the scroll position but

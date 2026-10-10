@@ -33,16 +33,16 @@ import { site } from '@/config/site.config';
  * and never for all of them at once. Format: YYYY-MM-DD.
  */
 const CONTENT_UPDATED: Record<string, string> = {
-  '': '2026-09-20',
-  '/services': '2026-08-29',
-  '/solutions': '2026-09-20',
-  '/about': '2026-09-20',
-  '/contact': '2026-09-20',
-  '/legal': '2026-10-06',
+  '': '2026-10-10',
+  '/services': '2026-10-10',
+  '/solutions': '2026-10-10',
+  '/about': '2026-10-10',
+  '/contact': '2026-10-10',
+  '/legal': '2026-10-10',
 };
 
 /** Fallback for any route missing from the map above (all service pages). */
-const DEFAULT_UPDATED = '2026-08-29';
+const DEFAULT_UPDATED = '2026-10-10';
 
 type Entry = {
   path: string;

@@ -172,7 +172,9 @@ export function HeroSection({
               {content.heroSubtitle}
             </p>
 
-            <p className="enter [--enter-y:10px] [--enter-delay:0.7s] [--enter-duration:0.6s] text-lg md:text-xl text-brand-muted leading-relaxed font-light max-w-2xl">
+            {/* No long entrance delay: this paragraph is the page's LCP element
+                on phones, and the 0.7s delay was reported as 0.7s of extra LCP. */}
+            <p className="enter [--enter-y:10px] [--enter-delay:0.15s] [--enter-duration:0.5s] text-lg md:text-xl text-brand-muted leading-relaxed font-light max-w-2xl">
               {content.heroDescription}
             </p>
 

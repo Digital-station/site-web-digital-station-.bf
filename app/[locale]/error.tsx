@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { RefreshCw } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -28,21 +28,32 @@ export default function LocaleError({
 }) {
   const t = useTranslations('errorPage');
   const tc = useTranslations('common');
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     // Surfaced in the server logs (and in any error reporter added later).
     // `digest` is the only identifier shared with the visitor, so it is the
     // one thing that lets a support request be matched to a real stack trace.
     console.error('[error boundary]', error.digest ?? '(no digest)', error);
+    // The boundary swaps the page out from under whatever had focus, so
+    // without this a keyboard or screen-reader user is left on a node that
+    // no longer exists. The heading (tabIndex -1) is the natural landing.
+    headingRef.current?.focus();
   }, [error]);
 
   return (
-    <div className="min-h-svh flex items-center justify-center p-6 lg:pl-16">
+    // role="alert": the boundary replaces the page after the fact, so the
+    // message has to announce itself rather than wait to be found.
+    <div role="alert" className="min-h-svh flex items-center justify-center p-6 lg:pl-16">
       <div className="max-w-xl text-center">
         <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.5em] block mb-6">
           {t('eyebrow')}
         </span>
-        <h1 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter mb-8">
+        <h1
+          ref={headingRef}
+          tabIndex={-1}
+          className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter mb-8 outline-none"
+        >
           {t('title')}
         </h1>
         <p className="text-brand-muted text-lg mb-4 font-light">{t('body')}</p>

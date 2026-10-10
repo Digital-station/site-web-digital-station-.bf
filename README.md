@@ -306,6 +306,7 @@ Audited against [FrontendChecklist.io](https://frontendchecklist.io/) and Google
 ## 📄 Documentation
 
 - **[`DEPLOYMENT.md`](DEPLOYMENT.md)** — Production VPS deployment guide (Ubuntu/Debian, Nginx, Docker, PM2, SSL).
+- **[`docs/REFERENCEMENT-IA.md`](docs/REFERENCEMENT-IA.md)** — How the site is made findable by Google and AI assistants (ChatGPT, Gemini, Claude, Perplexity), and the off-site checklist (Google Business Profile, directories, Odoo partner listing).
 - **[`AUDIT-REPORT.md`](AUDIT-REPORT.md)** — Comprehensive quality, credibility, and security audit report.
 - **[`AUDIT-STRATEGY.md`](AUDIT-STRATEGY.md)** — Strategic marketing, positioning, and architectural roadmap.
 - **[`FRONTEND-CHECKLIST.md`](FRONTEND-CHECKLIST.md)** — 385-point frontend checklist rule compliance status.

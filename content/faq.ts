@@ -7,3 +7,16 @@
  * imported from a 'use client' module is not usable on the server.
  */
 export const FAQ_KEYS = ['response', 'quote', 'remote', 'payment'] as const;
+
+/**
+ * The home-page FAQ (`home.faq.items.<key>`), shared by HomeFaq and the
+ * FAQPage JSON-LD on app/[locale]/page.tsx for the same reason.
+ */
+export const HOME_FAQ_KEYS = [
+  'website',
+  'odoo',
+  'design',
+  'services',
+  'area',
+  'pricing',
+] as const;

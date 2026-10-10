@@ -23,7 +23,9 @@ function MarquePauseButton() {
     <button
       type="button"
       onClick={controls.toggle}
-      aria-pressed={controls.paused}
+      // No aria-pressed: the label already swaps between "pause" and "play",
+      // and a toggle state on top of a swapping label reads as a double
+      // negative ("Resume, pressed").
       aria-label={controls.paused ? t('play') : t('pause')}
       title={controls.paused ? t('play') : t('pause')}
       className="absolute right-0 top-1/2 z-10 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-brand-surface ring-1 ring-brand-border text-brand-text transition-colors hover:bg-brand-border/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"

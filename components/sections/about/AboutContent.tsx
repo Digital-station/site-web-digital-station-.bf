@@ -205,7 +205,9 @@ async function Mission() {
           <h2
             data-rv
             style={{ "--rv-delay": "0.12s" } as CSSProperties}
-            className="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-normal leading-tight mb-6 md:mb-10 text-balance break-words"
+            // lg:text-5xl, not 6xl: "TECHNOLOGIQUE" did not fit the half-width
+            // column at 1440px and `break-words` split it mid-word.
+            className="text-3xl md:text-5xl lg:text-5xl xl:text-6xl font-black uppercase tracking-tight leading-tight mb-6 md:mb-10 text-balance break-words"
           >
             {t.rich("title", {
               accent: (chunks) => (

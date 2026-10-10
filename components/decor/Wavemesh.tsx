@@ -33,18 +33,20 @@ const DARK: Palette = {
   ],
 };
 
+// Stronger than a mirror of DARK on purpose: on the cream background the
+// first light palette read as an almost empty hero.
 const LIGHT: Palette = {
-  point: "rgba(20, 79, 151, 0.95)",
+  point: "rgba(20, 79, 151, 1)",
   glow: [
-    "rgba(37, 99, 235, 0.45)",
-    "rgba(20, 79, 151, 0.20)",
+    "rgba(37, 99, 235, 0.7)",
+    "rgba(20, 79, 151, 0.32)",
     "rgba(20, 79, 151, 0)",
   ],
-  star: (a) => `rgba(20, 79, 151, ${Math.min(0.6, a * 4)})`,
+  star: (a) => `rgba(20, 79, 151, ${Math.min(0.75, a * 5)})`,
   wash: [
-    "rgba(37, 99, 235, 0.12)",
-    "rgba(20, 79, 151, 0.06)",
-    "rgba(20, 79, 151, 0.015)",
+    "rgba(37, 99, 235, 0.18)",
+    "rgba(20, 79, 151, 0.1)",
+    "rgba(20, 79, 151, 0.03)",
     "rgba(20, 79, 151, 0)",
   ],
 };
@@ -427,7 +429,9 @@ export const Wavemesh = ({ className = "" }: { className?: string }) => {
       if (next === palette) return;
       palette = next;
       rz();
-      if (reducedMotion) drawOnce();
+      // Always repaint: rz() resets the canvas, and when the loop is parked
+      // (hero scrolled out of view) nothing else would draw the new palette.
+      drawOnce();
     });
     themeObserver.observe(document.documentElement, {
       attributes: true,

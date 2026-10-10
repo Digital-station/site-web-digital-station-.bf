@@ -15,7 +15,7 @@ import { useTranslations } from 'next-intl';
 
 import { Container } from '@/components/layout/Container';
 
-const MILESTONE_KEYS = ['2018', '2019', '2021', '2023', '2024', '2025'] as const;
+const MILESTONE_KEYS = ['2018', '2019', '2021', '2023', '2024', '2025', '2026'] as const;
 const MILESTONE_ICONS: LucideIcon[] = [
   Rocket,
   CheckCircle2,

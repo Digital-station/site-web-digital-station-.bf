@@ -1,0 +1,35 @@
+# Digital Station
+
+> Digital Station SARL est une société de services, d'expertise et d'ingénierie informatique basée à Ouagadougou (Burkina Faso). Création de sites web et d'applications, implémentation Odoo et intégration ERP/CRM, logiciels métiers (caisse, gestion scolaire, billetterie, courrier), réseaux sociaux et affiches publicitaires, cybersécurité, cloud, IA, formation, support et matériel informatique. Clients au Burkina Faso, en Afrique de l'Ouest et à l'international (diaspora, partenaires nearshore).
+
+Digital Station SARL is an IT services and software engineering company in Ouagadougou, Burkina Faso: web and mobile development, Odoo ERP implementation and ERP/CRM integration, business software (point of sale, school management, ticketing, mail management), social media and advertising visuals, cybersecurity, cloud, AI, training, managed services and IT hardware. Clients in Burkina Faso, West Africa and abroad.
+
+- Site : https://digitalstation.bf (français : /fr, English : /en)
+- Contact : infos@digitalstation.bf · +226 50 22 28 94 · WhatsApp +226 66 16 97 62
+- Adresse : Rue 28 269, Ouagadougou, Burkina Faso
+- Horaires : lundi–vendredi 8h–18h, samedi 9h–13h (GMT)
+- Entité : DIGITAL STATION SARL · RCCM BF-OUA-01-2018-B12-08492 · IFU 00108492X · fondée en 2018
+- Devis gratuit, réponse sous 24 h ouvrées. Paiement par virement, Mobile Money (Orange, Moov, Wave).
+
+## Services (11 pôles)
+
+- [Développement logiciel & ingénierie](https://digitalstation.bf/fr/services/software-development) : sites vitrines, e-commerce, applications web et mobiles sur mesure
+- [Gestion des réseaux sociaux](https://digitalstation.bf/fr/services/social-media-management) : stratégie, animation, visuels, affiches publicitaires
+- [Intégration de solutions](https://digitalstation.bf/fr/services/integration-solutions) : implémentation Odoo, intégration ERP / CRM / outils tiers
+- [Licences logicielles](https://digitalstation.bf/fr/services/licences-editeurs) : conseil, approvisionnement et gestion de licences
+- [Support & infogérance](https://digitalstation.bf/fr/services/support-infogerance) : supervision, assistance utilisateurs, maintenance
+- [Formation & accompagnement](https://digitalstation.bf/fr/services/formation-accompagnement) : montée en compétences et conduite du changement
+- [Conseil en transformation digitale](https://digitalstation.bf/fr/services/transformation-digitale) : feuille de route numérique, gouvernance IT
+- [Cybersécurité & conformité](https://digitalstation.bf/fr/services/cybersecurite-conformite) : audits, conformité CIL (Burkina Faso) et RGPD
+- [Cloud & hébergement](https://digitalstation.bf/fr/services/cloud-hebergement) : cloud hybride, hébergement local à Ouagadougou
+- [Intelligence artificielle appliquée](https://digitalstation.bf/fr/services/intelligence-artificielle) : chatbots, automatisation, traitement de documents
+- [Négoce & équipement IT](https://digitalstation.bf/fr/services/negoce) : ordinateurs, tablettes, imprimantes, périphériques
+
+## Solutions logicielles (démo sur demande)
+
+- [Nos solutions](https://digitalstation.bf/fr/solutions) : DigiERP (ERP complet), DigiResto (caisse restaurant), DigiStore (caisse boutique), DigiCourrier (gestion du courrier), DigiSchool (gestion scolaire), DigiChat (messagerie professionnelle), DigiTicket (billetterie en ligne), DigiPost (publication sur les réseaux sociaux)
+
+## Pages
+
+- [Accueil](https://digitalstation.bf/fr) · [Services](https://digitalstation.bf/fr/services) · [À propos](https://digitalstation.bf/fr/about) · [Contact](https://digitalstation.bf/fr/contact) · [Mentions légales](https://digitalstation.bf/fr/legal)
+- [English home](https://digitalstation.bf/en) · [Services](https://digitalstation.bf/en/services) · [Solutions](https://digitalstation.bf/en/solutions) · [Contact](https://digitalstation.bf/en/contact)

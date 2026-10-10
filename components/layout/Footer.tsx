@@ -16,6 +16,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { SERVICES } from "@/content/services";
 import { BrandMark } from "@/components/ui/BrandMark";
+import { NavLink } from "@/components/layout/Navbar";
 import { WhatsAppIcon } from "@/components/ui/icons/WhatsApp";
 import {
   site,
@@ -63,7 +64,11 @@ const FOOTER_LINK = `inline-block ${FOOTER_LINK_BASE}`;
 const FOOTER_CONTACT_LINK = `inline-flex items-center gap-3 ${FOOTER_LINK_BASE}`;
 
 /**
- * Site footer. A server component — no interactivity, so it ships zero JS.
+ * Site footer. A server component — no interactivity of its own. The nav
+ * links are `NavLink` (a client component exported by Navbar.tsx) so they can
+ * carry `aria-current="page"`: this footer sits in the shared layout, which
+ * never re-renders on client navigation, so only the client can know which
+ * page is current. Nothing else here crosses into the client.
  *
  * Social icons come from `activeSocials()`, which filters out empty entries in
  * site.config.ts. Adding a URL there makes the icon appear; clearing it makes
@@ -145,9 +150,9 @@ export async function Footer() {
             <ul className="space-y-4">
               {navLinks.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className={FOOTER_LINK}>
+                  <NavLink href={l.href} className={FOOTER_LINK}>
                     {l.label}
-                  </Link>
+                  </NavLink>
                 </li>
               ))}
             </ul>
@@ -160,9 +165,9 @@ export async function Footer() {
             <ul className="space-y-4">
               {SERVICES.map((s) => (
                 <li key={s.slug}>
-                  <Link href={`/services/${s.slug}`} className={FOOTER_LINK}>
+                  <NavLink href={`/services/${s.slug}`} className={FOOTER_LINK}>
                     {tsv(`${s.slug}.title`)}
-                  </Link>
+                  </NavLink>
                 </li>
               ))}
             </ul>
@@ -246,30 +251,30 @@ export async function Footer() {
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
-            <Link
+            <NavLink
               href="/privacy"
               className="inline-block py-2 -my-2 text-[11px] uppercase tracking-widest text-brand-muted hover:text-brand-text transition-colors"
             >
               {t("privacy")}
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               href="/terms"
               className="inline-block py-2 -my-2 text-[11px] uppercase tracking-widest text-brand-muted hover:text-brand-text transition-colors"
             >
               {t("terms")}
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               href="/legal"
               className="inline-block py-2 -my-2 text-[11px] uppercase tracking-widest text-brand-muted hover:text-brand-text transition-colors"
             >
               {t("legal")}
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               href="/cookies"
               className="inline-block py-2 -my-2 text-[11px] uppercase tracking-widest text-brand-muted hover:text-brand-text transition-colors"
             >
               {t("cookies")}
-            </Link>
+            </NavLink>
           </div>
         </div>
       </div>

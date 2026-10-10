@@ -111,8 +111,13 @@
   transition: box-shadow 0.3s ease;
 }
 
+/* Transparent, not `none`: the ring below is the visible indicator, but a
+   transparent outline is still an outline, so Windows High Contrast /
+   forced-colors mode (which drops box-shadows and repaints outlines in the
+   system highlight colour) keeps a focus indicator. */
 .vault:focus-visible {
-  outline: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 
 .vault:focus-visible .wrapper {
@@ -195,7 +200,7 @@
 .status span {
   display: inline-block;
   transition:
-    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.4s ease,
     color 0.4s ease;
   transition-delay: calc(var(--i) * 0.05s);
@@ -237,7 +242,9 @@
     inset 0 2px 4px rgba(255, 255, 255, 0.15),
     inset 0 -3px 6px rgba(0, 0, 0, 0.5);
   z-index: 3;
-  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* An ease-out, not the original overshoot spring: the bounce read as
+     jitter at this size, and it is a motion-sensitivity trigger. */
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -277,7 +284,7 @@
   color: var(--color-idle);
   transition:
     color 0.6s ease,
-    transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .thumbGlare {

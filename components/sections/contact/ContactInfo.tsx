@@ -1,5 +1,5 @@
-'use client';
-
+// No 'use client': nothing here needs the browser. `useTranslations` works in
+// server components, and the enter animation is pure CSS (globals.css).
 import { type CSSProperties } from 'react';
 import { Mail, MapPin, Phone, ExternalLink } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -106,7 +106,9 @@ export function ContactInfo({ locale }: { locale: string }) {
                 <div className="text-[11px] md:text-xs uppercase tracking-wide mb-1 font-bold text-brand-muted">
                   {m.label}
                 </div>
-                <div className="text-base md:text-lg font-bold group-hover:text-brand-accent transition-colors break-all md:break-normal">
+                {/* `break-words`, not `break-all`: the latter split the
+                    address mid-word ("Burkina Fa / so") on narrow phones. */}
+                <div className="text-base md:text-lg font-bold group-hover:text-brand-accent transition-colors break-words">
                   {m.value}
                 </div>
               </div>
@@ -155,8 +157,13 @@ export function ContactInfo({ locale }: { locale: string }) {
         )}
         style={enterStep(methods.length + 1)}
       >
+        {/* The timezone sits in the heading: the hours are Ouagadougou's,
+            and most visitors from abroad read them as their own. */}
         <h2 className="text-[11px] md:text-xs uppercase tracking-wide text-brand-muted mb-4 font-bold">
-          {ts('title')}
+          {ts('title')}{' '}
+          <span className="font-medium normal-case tracking-normal">
+            {t('scheduleTimezone')}
+          </span>
         </h2>
         <div className="space-y-3">
           {site.contact.schedule.map((slot) => (

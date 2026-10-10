@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/routing';
@@ -73,7 +73,19 @@ type Phase = 'checking' | 'open' | 'saved' | 'closed';
  */
 export function CookieConsent() {
   const [phase, setPhase] = useState<Phase>('checking');
+  const [modalOpen, setModalOpen] = useState(false);
   const t = useTranslations('cookieConsent');
+
+  const rootRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLParagraphElement>(null);
+  const savedRef = useRef<HTMLParagraphElement>(null);
+  /**
+   * Set by the reset event only. The banner also opens on a first visit,
+   * and stealing focus from the page a visitor just landed on is exactly
+   * the pattern consent prompts are hated for — so the title is focused
+   * only when the visitor asked for the banner back from /cookies.
+   */
+  const focusTitleOnOpen = useRef(false);
 
   useEffect(() => {
     const stored = readStored();
@@ -88,9 +100,49 @@ export function CookieConsent() {
       setPhase('open');
     }
 
-    const onReset = () => setPhase('open');
+    const onReset = () => {
+      focusTitleOnOpen.current = true;
+      setPhase('open');
+    };
     window.addEventListener(CONSENT_RESET_EVENT, onReset);
     return () => window.removeEventListener(CONSENT_RESET_EVENT, onReset);
+  }, []);
+
+  /**
+   * Focus follows the phase: the "saved" line after a choice (so the
+   * confirmation is read, and focus is not left on a button that no longer
+   * exists), the title after a reset re-open. Both are tabIndex -1.
+   */
+  useEffect(() => {
+    if (phase === 'saved') {
+      savedRef.current?.focus();
+    } else if (phase === 'open' && focusTitleOnOpen.current) {
+      focusTitleOnOpen.current = false;
+      titleRef.current?.focus();
+    }
+  }, [phase]);
+
+  /**
+   * Hide while a modal is up. The nav drawer makes this banner `inert`, but
+   * `inert` does not stop it painting: at z-[90] it sat on top of the open
+   * drawer (z-[60]). Same `aria-modal` signal StickyCTA watches, for the
+   * same reason — any future modal gets the behaviour for free.
+   */
+  useEffect(() => {
+    if (typeof MutationObserver !== 'function') return;
+
+    const sync = () =>
+      setModalOpen(document.querySelector('[aria-modal="true"]') !== null);
+    sync();
+
+    const observer = new MutationObserver(sync);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['aria-modal'],
+    });
+    return () => observer.disconnect();
   }, []);
 
   if (!analyticsProvider() || !analyticsSiteId()) return null;
@@ -99,17 +151,32 @@ export function CookieConsent() {
     writeStored(analytics);
     updateAnalyticsConsent(analytics);
     setPhase('saved');
-    window.setTimeout(() => setPhase('closed'), 1800);
+    window.setTimeout(() => {
+      // The banner is about to become `invisible`; if focus is still on the
+      // "saved" line it would otherwise drop to <body>, and the next Tab
+      // would start the page over. #main-content is the skip link's target
+      // and is already focusable (tabIndex -1, see the layout).
+      const active = document.activeElement;
+      if (active && rootRef.current?.contains(active)) {
+        document.getElementById('main-content')?.focus();
+      }
+      setPhase('closed');
+    }, 1800);
   };
 
-  const visible = phase === 'open' || phase === 'saved';
+  const visible = (phase === 'open' || phase === 'saved') && !modalOpen;
 
   return (
+    /* `data-state` is the public "is the banner showing" signal StickyCTA
+       reads, so the FAB can step aside — the two would otherwise stack in
+       the same bottom corner on narrow screens. */
     <div
+      ref={rootRef}
       id="cookie-consent"
       role="region"
       aria-live="polite"
       aria-label={t('aria')}
+      data-state={visible ? 'open' : 'closed'}
       className={`fixed bottom-4 left-4 lg:left-24 z-[90] w-[calc(100%-2rem)] max-w-sm transition-[opacity,translate,visibility] duration-300 motion-reduce:transition-none ${
         visible
           ? 'opacity-100 translate-y-0 visible'
@@ -118,10 +185,16 @@ export function CookieConsent() {
     >
       <div className="rounded-2xl border border-brand-border bg-brand-surface p-5 shadow-2xl">
         {phase === 'saved' ? (
-          <p className="text-sm text-brand-text">{t('saved')}</p>
+          <p ref={savedRef} tabIndex={-1} className="text-sm text-brand-text outline-none">
+            {t('saved')}
+          </p>
         ) : (
           <>
-            <p className="text-xs font-mono uppercase tracking-wider text-brand-accent mb-2">
+            <p
+              ref={titleRef}
+              tabIndex={-1}
+              className="text-xs font-mono uppercase tracking-wider text-brand-accent mb-2 outline-none"
+            >
               {t('title')}
             </p>
             <p className="text-sm text-brand-muted leading-relaxed mb-4">

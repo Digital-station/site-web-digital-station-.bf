@@ -30,6 +30,7 @@ export function StickyCTA() {
   const [modalOpen, setModalOpen] = useState(false);
   const linkRef = useRef<HTMLAnchorElement>(null);
   const t = useTranslations('stickyCta');
+  const tc = useTranslations('common');
   const pathname = usePathname();
 
   const isContactPage = pathname === '/contact';
@@ -56,7 +57,7 @@ export function StickyCTA() {
   }, [pathname]);
 
   /**
-   * Stand down while a modal is open.
+   * Stand down while a modal is open, or while the cookie banner is showing.
    *
    * `aria-modal="true"` is the signal, rather than anything private to the
    * navbar: it is the standard semantic for "a modal is up", the nav drawer
@@ -66,31 +67,39 @@ export function StickyCTA() {
    * The drawer also flips `inert` on `#main-content` / `<footer>`, but this FAB
    * is rendered by the layout OUTSIDE both of those, which is exactly why it
    * escaped in the first place — so it has to notice for itself.
+   *
+   * The cookie banner (`#cookie-consent`, bottom-left) is not a modal, but on
+   * a phone it and this FAB share the same bottom strip, and a consent prompt
+   * should not compete with a sales button. CookieConsent.tsx publishes
+   * `data-state="open"` while it is showing.
    */
   useEffect(() => {
     if (typeof MutationObserver !== 'function') return;
 
     const sync = () =>
-      setModalOpen(document.querySelector('[aria-modal="true"]') !== null);
+      setModalOpen(
+        document.querySelector('[aria-modal="true"], #cookie-consent[data-state="open"]') !==
+          null,
+      );
     sync();
 
     /*
-     * `childList` + `subtree` on <body> is deliberately broad: the drawer is
-     * mounted by AnimatePresence with `aria-modal` ALREADY on it, so watching
-     * attribute changes alone would never see it arrive. It is also cheaper
-     * than it looks — MutationObserver batches records and invokes the
-     * callback once per microtask checkpoint, not once per mutation, so a
-     * Motion transition inserting fifty nodes costs one `querySelector`, and
-     * React bails out of the re-render when the boolean has not changed.
-     * Debouncing it further would cost a frame of overlap with the modal,
-     * which is the exact bug this observer exists to prevent.
+     * `childList` + `subtree` on <body> is deliberately broad: a modal may
+     * be mounted with `aria-modal` ALREADY on it, so watching attribute
+     * changes alone would never see it arrive. It is also cheaper than it
+     * looks — MutationObserver batches records and invokes the callback
+     * once per microtask checkpoint, not once per mutation, so a transition
+     * inserting fifty nodes costs one `querySelector`, and React bails out
+     * of the re-render when the boolean has not changed. Debouncing it
+     * further would cost a frame of overlap with the modal, which is the
+     * exact bug this observer exists to prevent.
      */
     const observer = new MutationObserver(sync);
     observer.observe(document.body, {
       childList: true,
       subtree: true,
       attributes: true,
-      attributeFilter: ['aria-modal'],
+      attributeFilter: ['aria-modal', 'data-state'],
     });
     return () => observer.disconnect();
   }, []);
@@ -110,12 +119,18 @@ export function StickyCTA() {
       : waHref(t('whatsappMessage'));
   }, [t]);
 
-  // Unmount outright while a modal is open. Because the FAB outranks the
-  // drawer in the stacking order, any fade-out would keep it painted — and
-  // clickable — on top of the modal for the whole animation.
+  // Unmount outright while a modal or the cookie banner is up. Because the
+  // FAB outranks both in the stacking order, any fade-out would keep it
+  // painted — and clickable — on top of them for the whole animation.
   if (modalOpen) return null;
 
   const isVisible = scrolled && !isContactPage && !footerVisible;
+
+  // One message for the eye and the ear: the hover pill shows the same words
+  // the accessible name starts with (WCAG 2.5.3, label in name), plus a
+  // new-tab warning that only assistive tech needs — the pill's icon and
+  // `target` already imply it visually.
+  const label = t('aria');
 
   return (
     <div className="fixed bottom-4 right-4 z-[100] xl:bottom-10 xl:right-10">
@@ -134,7 +149,7 @@ export function StickyCTA() {
           onClick={handleClick}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={t('aria')}
+          aria-label={`${label} ${tc('newTab')}`}
           tabIndex={isVisible ? undefined : -1}
           className="group flex items-center rounded-full bg-brand-accent-strong text-brand-on-accent shadow-card ring-1 ring-brand-accent-ring transition-shadow hover:shadow-elevated focus-visible:ring-2 focus-visible:ring-brand-accent"
         >
@@ -143,7 +158,7 @@ export function StickyCTA() {
             className="hidden md:block max-w-0 overflow-hidden transition-[max-width] duration-300 ease-out group-hover:max-w-xs group-focus-visible:max-w-xs"
           >
             <span className="block whitespace-nowrap pl-6 text-xs font-black uppercase tracking-widest">
-              {t('labelTop')} {t('labelBottom')}
+              {label}
             </span>
           </span>
           <span className="flex h-14 w-14 shrink-0 items-center justify-center">

@@ -33,7 +33,6 @@ export const TOOLS_ROW_1: Tool[] = [
 
 export const TOOLS_ROW_2: Tool[] = [
   { name: 'AWS', src: '/logo/Amazon-Web-Services.webp' },
-  { name: 'Cloudflare', src: '/logo/Cloudflare.webp' },
   { name: 'Google', src: '/logo/Google.webp' },
   { name: 'Google Ads', src: '/logo/Google_Ads.svg' },
   { name: 'Meta', src: '/logo/Meta.webp' },

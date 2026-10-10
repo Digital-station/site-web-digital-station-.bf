@@ -11,13 +11,12 @@ type Props = { params: Promise<{ locale: string }> };
 const SECTIONS = ['publisher', 'director', 'host', 'ip', 'liability'] as const;
 
 /**
- * Hébergeur, for the mentions légales. Deploy target is Vercel today; if this
- * ever moves to the VPS path documented in DEPLOYMENT.md (Docker/PM2/Nginx),
- * update this block to that provider's own legal name and address instead.
+ * Hébergeur, for the mentions légales: the OVH VPS the site runs on (see
+ * DEPLOYMENT.md). Update this block if the hosting provider ever changes.
  */
 const HOST = {
-  name: 'Vercel Inc.',
-  address: '440 N Barranca Ave #4133, Covina, CA 91723, USA',
+  name: 'OVH SAS',
+  address: '2 rue Kellermann, 59100 Roubaix, France',
 };
 
 export function generateStaticParams() {

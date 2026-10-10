@@ -14,6 +14,8 @@ import type { LucideIcon } from "lucide-react";
 import {
   Search,
   X,
+  Pause,
+  Play,
   HeartPulse,
   Landmark,
   Building2,
@@ -67,6 +69,11 @@ const INDUSTRY_ICONS: { id: string; icon: LucideIcon }[] = [
 
 /* ── CAROUSEL CARD ─────────────────────────────────────────── */
 
+/** Vertical distance between neighbouring side-column cards, in px. */
+const CARD_PITCH = 120;
+/** Odd, so one item anchors the centre. 7 × 120px fits the 520px column. */
+const ITEMS_TO_SHOW = 7;
+
 const CarouselItemCard = ({
   item,
   side,
@@ -78,7 +85,9 @@ const CarouselItemCard = ({
   const distance = Math.abs(distanceFromCenter);
   const opacity = 1 - distance / 4;
   const scale = 1 - distance * 0.1;
-  const yOffset = distanceFromCenter * 90;
+  // Pitch ≥ card height, or neighbours overlap. The card is a fixed 96px
+  // (see below), and 120px leaves room for the scale() of the centre card.
+  const yOffset = distanceFromCenter * CARD_PITCH;
   const xOffset = side === "left" ? -distance * 18 : distance * 18;
 
   // Was `motion.div animate={...}`: the values are already computed in JS,
@@ -86,11 +95,15 @@ const CarouselItemCard = ({
   // properties render the identical tween with zero Motion runtime. The
   // transition only exists under `motion-safe` — reduced-motion visitors
   // get the instant swap (better than the old fade).
+  //
+  // Fixed height + line clamps: the cards are absolutely positioned on a
+  // fixed pitch, so a long name wrapping to two lines (or a three-line
+  // "details" in French) used to grow the card into its neighbour.
   return (
     <div
       key={id}
       style={{ opacity, scale, translate: `${xOffset}px ${yOffset}px` }}
-      className={`absolute flex max-w-[320px] items-center gap-4 px-6 py-3 motion-safe:transition-[opacity,scale,translate] motion-safe:duration-400 motion-safe:ease-in-out ${
+      className={`absolute flex h-[96px] max-w-[320px] items-center gap-4 px-6 py-3 motion-safe:transition-[opacity,scale,translate] motion-safe:duration-400 motion-safe:ease-in-out ${
         side === "left" ? "flex-row-reverse" : "flex-row"
       }`}
     >
@@ -99,14 +112,16 @@ const CarouselItemCard = ({
       </div>
 
       <div
-        className={`flex flex-col mx-4 ${
+        className={`flex flex-col mx-4 min-w-0 ${
           side === "left" ? "text-right" : "text-left"
         }`}
       >
-        <span className="text-base lg:text-lg font-semibold whitespace-normal text-balance">
+        <span className="text-base lg:text-lg font-semibold line-clamp-1">
           {name}
         </span>
-        <span className="text-xs lg:text-sm text-brand-faint">{details}</span>
+        <span className="text-xs lg:text-sm text-brand-faint line-clamp-2">
+          {details}
+        </span>
       </div>
     </div>
   );
@@ -125,12 +140,15 @@ export function IndustriesWeServe() {
 
   /**
    * Why the rotation is stopped.
-   * Hover and keyboard focus provide pause control (WCAG 2.2.2);
-   * a non-empty search holds the chosen industry in the centre.
+   * Hover and keyboard focus pause it in passing; the visible pause button
+   * is the explicit control WCAG 2.2.2 asks for (hover is not a mechanism a
+   * touch or switch user has); a non-empty search holds the chosen industry
+   * in the centre.
    */
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
-  const isPaused = hovered || focused || searchTerm !== "";
+  const [manualPaused, setManualPaused] = useState(false);
+  const isPaused = manualPaused || hovered || focused || searchTerm !== "";
 
   const inputRef = useRef<HTMLInputElement>(null);
   const listId = useId();
@@ -181,10 +199,9 @@ export function IndustriesWeServe() {
   /* ── Visible items (mirrored left/right) ─────── */
   const getVisibleItems = useCallback((): AnimatedItem[] => {
     if (totalItems === 0) return [];
-    const itemsToShow = 9; // odd, so one item anchors the centre
-    const half = Math.floor(itemsToShow / 2);
+    const half = Math.floor(ITEMS_TO_SHOW / 2);
 
-    return Array.from({ length: itemsToShow }, (_, i) => {
+    return Array.from({ length: ITEMS_TO_SHOW }, (_, i) => {
       let index = currentIndex + (i - half);
       if (index < 0) index += totalItems;
       if (index >= totalItems) index -= totalItems;
@@ -318,7 +335,7 @@ export function IndustriesWeServe() {
             transition under reduced motion: the column just appears. */}
           <div
             aria-hidden="true"
-            className={`relative w-full max-w-md xl:max-w-2xl xl:h-[450px] items-center justify-center hidden xl:flex -left-14 motion-safe:transition-[translate,opacity] motion-safe:duration-700 motion-safe:ease-out ${
+            className={`relative w-full max-w-md xl:max-w-2xl xl:h-[520px] items-center justify-center hidden xl:flex -left-14 motion-safe:transition-[translate,opacity] motion-safe:duration-700 motion-safe:ease-out ${
               isInView
                 ? "translate-x-0 opacity-100"
                 : "-translate-x-full opacity-0"
@@ -452,13 +469,39 @@ export function IndustriesWeServe() {
                   </li>
                 ))}
               </ul>
+
+              {/* Search feedback for screen readers: the listbox is visual
+                  only until an option is highlighted, and "no result" has no
+                  visible state at all (the list simply stays hidden). Empty
+                  while the box is empty, so nothing is announced on load. */}
+              <p role="status" className="sr-only">
+                {searchTerm
+                  ? t("resultCount", { count: filteredItems.length })
+                  : ""}
+              </p>
             </div>
+
+            {/* Same pattern as ToolsMarquee's pause button: the label swaps
+                between pause and play, so no aria-pressed on top of it. */}
+            <button
+              type="button"
+              onClick={() => setManualPaused((v) => !v)}
+              aria-label={manualPaused ? t("play") : t("pause")}
+              title={manualPaused ? t("play") : t("pause")}
+              className="mx-auto mt-2 flex h-11 w-11 items-center justify-center rounded-full bg-brand-surface ring-1 ring-brand-border text-brand-text transition-colors hover:bg-brand-border/40"
+            >
+              {manualPaused ? (
+                <Play className="w-4 h-4" aria-hidden="true" />
+              ) : (
+                <Pause className="w-4 h-4" aria-hidden="true" />
+              )}
+            </button>
           </div>
 
           {/* Right carousel (xl and up) */}
           <div
             aria-hidden="true"
-            className={`relative w-full max-w-md xl:max-w-2xl xl:h-[450px] items-center justify-center hidden xl:flex -right-14 motion-safe:transition-[translate,opacity] motion-safe:duration-700 motion-safe:ease-out ${
+            className={`relative w-full max-w-md xl:max-w-2xl xl:h-[520px] items-center justify-center hidden xl:flex -right-14 motion-safe:transition-[translate,opacity] motion-safe:duration-700 motion-safe:ease-out ${
               isInView
                 ? "translate-x-0 opacity-100"
                 : "translate-x-full opacity-0"

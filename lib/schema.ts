@@ -42,7 +42,10 @@ export const organizationLd = (description: string): Json => ({
   '@type': ['Organization', 'ProfessionalService'],
   '@id': ORG_ID,
   name: site.name,
+  // The spellings people actually type into a search box or an assistant.
+  alternateName: ['DigitalStation', 'Digital Station Burkina Faso', 'Digital Station SARL'],
   legalName: site.contact.legal.entity,
+  slogan: 'Redéfinir les frontières du numérique',
   url: site.url,
   logo: {
     '@type': 'ImageObject',
@@ -73,6 +76,8 @@ export const organizationLd = (description: string): Json => ({
     },
   ],
   areaServed: [
+    { '@type': 'City', name: 'Ouagadougou' },
+    { '@type': 'City', name: 'Bobo-Dioulasso' },
     {
       '@type': 'Country',
       name: site.contact.address.countryName,
@@ -86,15 +91,24 @@ export const organizationLd = (description: string): Json => ({
       name: 'Global',
     },
   ],
+  // Written as the questions are asked, in both languages: this list is
+  // what an assistant matches "agence site web Ouagadougou" or "Odoo
+  // implementation Burkina Faso" against.
   knowsAbout: [
-    'Digital Transformation',
-    'Custom Software Development',
-    'ERP Integration (Odoo, Oracle, Microsoft)',
-    'Cybersecurity & ISO/IEC Compliance',
-    'Cloud Architecture & Hosting',
-    'Artificial Intelligence & Process Automation',
-    'IT Managed Services & Support',
-    'IT Equipment Procurement & Hardware',
+    'Création de sites web et applications web à Ouagadougou',
+    'Développement d\'applications mobiles (Android, iOS)',
+    'Implémentation et intégration Odoo ERP au Burkina Faso',
+    'Intégration ERP / CRM (Odoo, DigiERP, Oracle, Microsoft)',
+    'Logiciels de caisse, de gestion scolaire et de billetterie',
+    'Gestion des réseaux sociaux, affiches publicitaires et visuels',
+    'Transformation digitale des PME et institutions',
+    'Cybersécurité et conformité (loi burkinabè sur les données, RGPD)',
+    'Cloud, hébergement et infogérance',
+    'Intelligence artificielle et automatisation des processus',
+    'Formation et accompagnement au changement',
+    'Vente et installation de matériel informatique',
+    'Web agency and software development in Burkina Faso',
+    'Odoo ERP implementation partner in West Africa',
   ],
   sameAs: activeSocials().map((s) => s.url),
 });

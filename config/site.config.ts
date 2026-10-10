@@ -105,8 +105,8 @@ export const site = {
    */
   leadership: {
     director: {
-      name: 'Landry .P. KABORE',
-      role: 'Gérant / Managing Director',
+      name: 'Landry P. KABORE',
+      role: 'Gérant',
       linkedin: 'https://www.linkedin.com/in/landry-kabore',
       email: 'landry.kabore@digitalstation.bf',
       bio: 'Ingénieur logiciel & Architecte Solutions IT. Spécialiste du déploiement de systèmes d\'information critiques en Afrique de l\'Ouest.',
@@ -118,8 +118,10 @@ export const site = {
    * Fill these in as the accounts go live.
    */
   socials: {
-    linkedin: 'https://www.linkedin.com/',
-    twitter: 'https://twitter.com/digitalstation',
+    // Blank until the company page exists: a placeholder URL was rendered in
+    // the footer and published in the JSON-LD `sameAs`.
+    linkedin: '',
+    twitter: '',
     facebook: 'https://www.facebook.com/profile.php?id=61579090841259',
     instagram: '',
     youtube: '',

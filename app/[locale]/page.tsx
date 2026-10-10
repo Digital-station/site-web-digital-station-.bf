@@ -6,12 +6,14 @@ import { Hero } from "@/components/sections/home/Hero";
 import { HomeServices } from "@/components/sections/home/HomeServices";
 import { AudienceSegmentation } from "@/components/sections/home/AudienceSegmentation";
 import { CTASection } from "@/components/sections/home/CTASection";
+import { HomeFaq } from "@/components/sections/home/HomeFaq";
+import { HOME_FAQ_KEYS } from "@/content/faq";
 // DISABLED until there are real clients to name — see README › Client
 // references. The section and its placeholder data already exist:
 // import { ClientReferences } from "@/components/sections/home/ClientReferences";
 import { RevealRoot } from "@/components/ui/RevealRoot";
 import { pageMeta } from "@/lib/seo";
-import { webSiteLd, ldJson } from "@/lib/schema";
+import { webSiteLd, faqPageLd, ldJson } from "@/lib/schema";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -76,6 +78,15 @@ export default async function HomePage({ params }: Props) {
   const t = await getTranslations("home.meta");
   const description = t("description");
 
+  // Same keys, same messages as the FAQ section renders below.
+  const tf = await getTranslations("home.faq");
+  const faq = faqPageLd(
+    HOME_FAQ_KEYS.map((key) => ({
+      question: tf(`items.${key}.q`),
+      answer: tf(`items.${key}.a`),
+    })),
+  );
+
   return (
     <>
       {/* JSON-LD renders on the server, so crawlers see it in the initial
@@ -85,6 +96,10 @@ export default async function HomePage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: ldJson(webSiteLd(description)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: ldJson(faq) }}
       />
 
       {/* Server components render their HTML with zero JS; the client
@@ -101,6 +116,7 @@ export default async function HomePage({ params }: Props) {
             lists real, consenting clients (README › Client references):
         <ClientReferences />
         */}
+        <HomeFaq />
         <CTASection />
       </RevealRoot>
     </>

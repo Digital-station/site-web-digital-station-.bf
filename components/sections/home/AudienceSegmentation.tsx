@@ -20,8 +20,11 @@ export async function AudienceSegmentation() {
   const t = await getTranslations('home.segments');
   const ti = await getTranslations('home.segments.items');
 
+  // `lg:pl-16` like every other home section: without it the fixed LeftRail
+  // (w-16, lg and up) covered the left edge of the cards between 1024 px and
+  // the width where max-w-7xl's auto margins take over (~1400 px).
   return (
-    <section className="py-20 lg:py-24 border-t border-brand-border bg-brand-primary/40 relative">
+    <section className="lg:pl-16 py-20 lg:py-24 border-t border-brand-border bg-brand-primary/40 relative">
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
         <div className="mb-14 text-center max-w-2xl mx-auto">
           <p className="text-brand-accent text-xs font-mono font-bold uppercase tracking-widest mb-3">

@@ -16,6 +16,7 @@
     "contactUs": "Nous contacter",
     "promise": "Devis gratuit · réponse sous 24 h",
     "whatsappCta": "Écrire sur WhatsApp",
+    "newTab": "(nouvel onglet)",
     "noscript": "Ce site fonctionne sans JavaScript pour la lecture, mais le formulaire de contact et le changement de thème en ont besoin. Vous pouvez aussi nous écrire directement par e-mail ou par téléphone (coordonnées en bas de page)."
   },
   "nav": {
@@ -94,6 +95,9 @@
       "titleAccent": "que nous servons",
       "body": "De la santé à l'énergie, nous intervenons dans les secteurs clés de l'économie ouest-africaine, avec des solutions adaptées à chaque métier.",
       "searchPlaceholder": "Rechercher un secteur…",
+      "pause": "Mettre en pause le défilement des secteurs",
+      "play": "Reprendre le défilement des secteurs",
+      "resultCount": "{count, plural, =0 {Aucun secteur trouvé} one {# secteur trouvé} other {# secteurs trouvés}}",
       "clearSearch": "Effacer la recherche",
       "items": {
         "healthcare": {
@@ -191,6 +195,37 @@
       "subtitle": "Prêt à démarrer votre projet ?",
       "button": "Démarrer un projet"
     },
+    "faq": {
+      "eyebrow": "Questions fréquentes",
+      "title": "Vous cherchez un <accent>partenaire digital</accent> au Burkina Faso ?",
+      "intro": "Les réponses courtes aux questions que l'on nous pose le plus souvent.",
+      "items": {
+        "website": {
+          "q": "Quelle agence contacter pour créer un site web ou une application à Ouagadougou ?",
+          "a": "Digital Station conçoit des sites vitrines, sites e-commerce, applications web et mobiles sur mesure depuis Ouagadougou, pour des clients au Burkina Faso, en Afrique de l'Ouest et à l'international. Devis gratuit sous 24 h ouvrées."
+        },
+        "odoo": {
+          "q": "Qui peut implémenter Odoo ou un ERP au Burkina Faso ?",
+          "a": "Nous déployons, paramétrons et intégrons des ERP (Odoo, DigiERP) et des CRM pour les PME, institutions et ONG : comptabilité, ventes, achats, stocks, RH et paie, avec formation des équipes et support de proximité."
+        },
+        "design": {
+          "q": "Réalisez-vous des affiches publicitaires, visuels et supports de communication ?",
+          "a": "Oui. Notre pôle réseaux sociaux et communication crée vos affiches publicitaires, visuels pour les réseaux sociaux, bannières et supports imprimés, et anime vos pages pour renforcer votre visibilité."
+        },
+        "services": {
+          "q": "Quels services propose Digital Station ?",
+          "a": "Onze pôles : développement logiciel, gestion des réseaux sociaux, intégration de solutions, licences logicielles, support et infogérance, formation, conseil en transformation digitale, cybersécurité, cloud et hébergement, intelligence artificielle, négoce et équipement IT."
+        },
+        "area": {
+          "q": "Intervenez-vous en dehors de Ouagadougou ?",
+          "a": "Oui. Nous travaillons sur place à Ouagadougou et à distance dans tout le Burkina Faso, en Afrique de l'Ouest (Côte d'Ivoire, Mali, Niger, Togo, Bénin, Sénégal) et pour la diaspora et les partenaires internationaux."
+        },
+        "pricing": {
+          "q": "Combien coûte un site web ou un logiciel sur mesure ?",
+          "a": "Chaque projet est chiffré sur devis gratuit après un premier échange. Nous acceptons le virement bancaire, le Mobile Money (Orange, Moov, Wave) et les paiements échelonnés selon le projet."
+        }
+      }
+    },
     "segments": {
       "eyebrow": "Accompagnement sur mesure",
       "title": "Des réponses précises selon vos enjeux",
@@ -202,7 +237,7 @@
           "description": "Déploiement ERP (Odoo), digitalisation des points de vente, infogérance continue et automatisation administrative, avec une présence physique à Ouagadougou.",
           "highlights": [
             "Support de proximité en direct",
-            "Solutions hors-ligne & Mobile Money",
+            "Solutions hors ligne & Mobile Money",
             "Facturation & fiscalité conformes"
           ],
           "cta": "Explorer nos solutions d'entreprise"
@@ -536,9 +571,9 @@
       },
       "social-media-management": {
         "title": "Gestion des réseaux sociaux",
-        "desc": "Stratégie, animation et optimisation de vos réseaux sociaux pour renforcer votre visibilité en ligne.",
+        "desc": "Stratégie, animation, visuels et affiches publicitaires pour vos réseaux sociaux et votre visibilité en ligne.",
         "audience": "Marques, commerces et organisations qui veulent une présence en ligne suivie et cohérente.",
-        "longDesc": "Nous élaborons une présence sociale cohérente et engageante pour votre marque. De la création de contenu à l'animation des communautés, en passant par l'analyse des performances, nous mettons en place des actions ciblées pour maximiser votre impact numérique.",
+        "longDesc": "Nous élaborons une présence sociale cohérente et engageante pour votre marque. De la création de contenu, de visuels et d'affiches publicitaires à l'animation des communautés, en passant par l'analyse des performances, nous mettons en place des actions ciblées pour maximiser votre impact numérique.",
         "benefits": [
           "Stratégie de contenu social adaptée",
           "Augmentation de l'engagement",
@@ -556,9 +591,9 @@
       },
       "integration-solutions": {
         "title": "Intégration de solutions",
-        "desc": "Interconnexion de logiciels métiers (ERP, CRM, outils tiers) pour unifier votre système d'information.",
+        "desc": "Implémentation Odoo et interconnexion de vos logiciels métiers (ERP, CRM, outils tiers) pour unifier votre système d'information.",
         "audience": "Organisations dont les outils métiers ne communiquent pas encore entre eux.",
-        "longDesc": "Nous déployons et interconnectons vos logiciels métiers ERP, CRM, plateformes SaaS et outils tiers pour créer un écosystème numérique unifié. Fini les silos de données : vos équipes travaillent avec une information fluide, centralisée et fiable.",
+        "longDesc": "Nous implémentons Odoo et déployons puis interconnectons vos logiciels métiers — ERP, CRM, plateformes SaaS et outils tiers — pour créer un écosystème numérique unifié. Fini les silos de données : vos équipes travaillent avec une information fluide, centralisée et fiable.",
         "benefits": [
           "Élimination des silos de données",
           "Synchronisation en temps réel",
@@ -600,7 +635,7 @@
         "audience": "Structures sans équipe informatique interne, ou dont l'équipe a besoin de renfort au quotidien.",
         "longDesc": "Notre équipe assure le maintien en condition opérationnelle de vos infrastructures et applications. Grâce à une supervision continue, une assistance réactive et des interventions de proximité, nous veillons à la disponibilité et à la performance de votre système d'information.",
         "benefits": [
-          "Supervision continue et assistance réactive",
+          "Assistance utilisateurs réactive (téléphone, WhatsApp, e-mail)",
           "Interventions réactives & de proximité",
           "Supervision proactive des infrastructures",
           "Réduction des temps d'arrêt"
@@ -678,7 +713,7 @@
         "title": "Cloud & hébergement",
         "desc": "Hébergement souverain et infrastructures cloud hybrides avec résidence des données locale à Ouagadougou (Ouaga 2000).",
         "audience": "Entreprises dont l'infrastructure vieillit ou dont les besoins varient, et qui exigent la souveraineté de leurs données.",
-        "longDesc": "Nous accompagnons les entreprises dans leur migration vers le cloud et la gestion de leurs infrastructures sur AWS, Microsoft Azure et Google Cloud Platform. Notre approche hybride unique combine la puissance des hyperscalers mondiaux avec une résidence des données locale : grâce à nos partenaires stratégiques, nous exploitons des centres de données situés à Ouagadougou, dans la zone Ouaga 2000, garantissant la souveraineté des données et la conformité aux réglementations burkinabè et ouest-africaines.",
+        "longDesc": "Nous accompagnons les entreprises dans leur migration vers le cloud et la gestion de leurs infrastructures sur AWS, Microsoft Azure et Google Cloud Platform. Notre approche hybride unique combine la puissance des hyperscalers mondiaux avec une résidence des données locale : grâce à nos partenaires, nous proposons un hébergement dans des centres de données situés à Ouagadougou (zone Ouaga 2000), garantissant la souveraineté des données et la conformité aux réglementations burkinabè et ouest-africaines.",
         "benefits": [
           "Migration cloud sécurisée, avec un minimum d'interruption",
           "Résidence des données locale (Ouaga 2000) via partenaires stratégiques",
@@ -780,10 +815,11 @@
       "intro": "Transformez vos idées en solutions numériques performantes. Notre équipe est prête à vous accompagner.",
       "statusOpen": "Disponible maintenant",
       "statusClosed": "Actuellement fermé",
-      "emailLabel": "Email",
+      "emailLabel": "E-mail",
       "phoneLabel": "Téléphone",
       "whatsappLabel": "WhatsApp",
-      "officeLabel": "Bureau"
+      "officeLabel": "Bureau",
+      "scheduleTimezone": "(GMT, Ouagadougou)"
     },
     "schedule": {
       "title": "Horaires d'ouverture",
@@ -854,15 +890,19 @@
         "contactRequired": "Indiquez un email ou un numéro de téléphone.",
         "brief": "Veuillez fournir plus de détails sur votre projet",
         "tooLong": "Ce champ est trop long.",
-        "submit": "L'envoi a échoué. Réessayez, ou écrivez-nous directement à infos@digitalstation.bf."
-      }
+        "submit": "L'envoi a échoué. Réessayez, ou écrivez-nous directement à infos@digitalstation.bf.",
+        "rateLimited": "Trop de tentatives en peu de temps. Patientez quelques minutes avant de réessayer.",
+        "unavailable": "Notre messagerie est momentanément indisponible. Contactez-nous par WhatsApp, e-mail ou téléphone :",
+        "validation": "Certains champs n'ont pas été acceptés. Vérifiez les champs signalés et renvoyez le formulaire."
+      },
+      "retryPhone": "Appeler"
     },
     "scheduler": {
       "eyebrow": "Échange direct",
-      "title": "Réserver un échange d'architecture ({duration})",
+      "title": "Demander un échange d'architecture ({duration})",
       "tz": "Fuseau : GMT (Ouagadougou)",
       "intro": "Un échange direct, sans filtre commercial : 20 minutes pour auditer vos besoins techniques, évaluer la faisabilité et tracer une feuille de route claire.",
-      "ndaNote": "Accord de confidentialité (NDA) implicite",
+      "ndaNote": "Échange confidentiel — NDA mutuel disponible sur demande",
       "noCommitment": "Aucun engagement requis",
       "recommendations": "Recommandations d'architecture immédiates",
       "stepSlots": "1. Créneau souhaité (indicatif)",
@@ -873,7 +913,7 @@
       "emailPlaceholder": "Email professionnel",
       "topics": {
         "architecture": "Cadrage de projet / développement sur mesure",
-        "productDemo": "Démonstration produit (Ticketia, AlimGesto, ImmoPilot, EduManager)",
+        "productDemo": "Démonstration d'une de nos solutions (DigiERP, DigiResto, DigiStore, DigiSchool…)",
         "nearshore": "Partenariat nearshore / équipe dédiée",
         "erpCloud": "Déploiement ERP & infrastructure cloud"
       },
@@ -884,12 +924,18 @@
       "successAlt": "Besoin d'une réponse immédiate ?",
       "reset": "Faire une autre demande",
       "error": "L'envoi a échoué. Réessayez, ou écrivez-nous directement à infos@digitalstation.bf.",
-      "brief": "Demande de créneau — {topic}. Créneau souhaité : {slot}."
-    }
+      "brief": "Demande de créneau — {topic}. Créneau souhaité : {slot}.",
+      "errorRateLimited": "Trop de demandes en peu de temps. Patientez quelques minutes avant de réessayer.",
+      "errorUnavailable": "Notre messagerie est momentanément indisponible. Demandez votre créneau par WhatsApp, e-mail ou téléphone :",
+      "errorValidation": "Vérifiez votre nom et votre e-mail, puis renvoyez la demande.",
+      "topicLabel": "Sujet de l'échange",
+      "notABooking": "Ce créneau est une préférence, pas une réservation : nous confirmons la disponibilité par e-mail ou WhatsApp sous 24 h ouvrées."
+    },
+    "noscript": "JavaScript est désactivé : le formulaire ne peut pas s'afficher. Écrivez-nous directement :"
   },
   "servicesPage": {
     "meta": {
-      "title": "Services IT & digital à Ouagadougou",
+      "title": "Nos 11 pôles de services IT & digital",
       "description": "Développement logiciel, intégration, cloud, cybersécurité, IA et transformation digitale. Découvrez les 11 pôles d'expertise de Digital Station."
     },
     "eyebrow": "Nos métiers",
@@ -1015,7 +1061,8 @@
         "2021": "Expansion vers le conseil IT & ERP",
         "2023": "Lancement du support & de l'infogérance en continu",
         "2024": "Intégration de solutions IA & automatisation",
-        "2025": "Pôle IA & transformation digitale avancée"
+        "2025": "Pôle IA & transformation digitale avancée",
+        "2026": "Lancement de la gamme Digi : DigiERP, DigiResto, DigiStore, DigiSchool…"
       }
     },
     "team": {
@@ -1038,13 +1085,13 @@
       }
     },
     "director": {
-      "name": "Landry .P. KABORE",
+      "name": "Landry P. KABORE",
       "role": "Gérant",
       "initials": "LPK",
       "sectionTitle": "Mot du Gérant",
-      "verifiedIdentity": "Identité vérifiée",
+      "verifiedIdentity": "Direction joignable directement",
       "chatWhatsApp": "Chat WhatsApp",
-      "directEmail": "Email Direct",
+      "directEmail": "E-mail direct",
       "visionTitle": "Notre vision",
       "pillarsTitle": "Les piliers de notre stratégie de croissance",
  "message" : "La révolution numérique n'est pas à l'horizon, c'est déjà une réalité, et nous sommes là pour contribuer à la façonner. <br></br>Nous aidons les entreprises à transformer la technologie en avantage concurrentiel grâce à des solutions innovantes, une technologie fiable et des partenariats conçus pour stimuler la croissance.<br></br>Du Burkina Faso au marché mondial, nous développons des solutions numériques qui créent une réelle valeur ajoutée pour les entreprises, ouvrent de nouvelles opportunités et transforment des idées ambitieuses en résultats durables.<br></br>Nous ne nous contentons pas de suivre le rythme de l’avenir. Nous le construisons avec vous.",
@@ -1288,7 +1335,7 @@
     "sections": {
       "collection": {
         "title": "Données collectées",
-        "body": "Nous collectons uniquement les informations nécessaires à la fourniture de nos services : les coordonnées que vous nous transmettez via notre formulaire de contact (nom, adresse e-mail, téléphone, description de votre projet), ainsi que des données de navigation anonymes destinées à améliorer le site."
+        "body": "Nous collectons uniquement les informations nécessaires à la fourniture de nos services : les coordonnées que vous nous transmettez via notre formulaire de contact (nom, adresse e-mail, téléphone, description de votre projet), ainsi que, si vous l'acceptez, des statistiques de fréquentation anonymes destinées à améliorer le site. Le responsable du traitement est DIGITAL STATION SARL, Ouagadougou (infos@digitalstation.bf). Vous pouvez adresser toute réclamation à la Commission de l'Informatique et des Libertés (CIL) du Burkina Faso."
       },
       "usage": {
         "title": "Utilisation des données",
@@ -1300,7 +1347,7 @@
       },
       "retention": {
         "title": "Durée de conservation",
-        "body": "Les demandes reçues via le formulaire de contact sont conservées pendant la durée nécessaire au traitement de votre demande et à la relation commerciale qui peut en découler, puis archivées ou supprimées."
+        "body": "Les demandes reçues via le formulaire de contact sont conservées pendant la durée nécessaire au traitement de votre demande et à la relation commerciale qui peut en découler, et au plus tard trois ans après notre dernier échange, puis supprimées."
       },
       "rights": {
         "title": "Vos droits",
@@ -1308,7 +1355,7 @@
       },
       "cookies": {
         "title": "Cookies",
-        "body": "Votre choix de thème et votre décision concernant les cookies analytiques sont conservés localement dans votre navigateur (localStorage), et votre langue figure dans l'adresse de la page. Avec votre accord explicite, des cookies de mesure d'audience (Google Analytics 4) peuvent également être déposés — voir notre politique de cookies pour le détail et pour modifier votre choix."
+        "body": "Votre choix de thème et votre décision concernant les cookies analytiques sont conservés localement dans votre navigateur (localStorage), et votre langue figure dans l'adresse de la page. Ce site ne dépose aucun cookie de mesure d'audience sans votre accord explicite : si une mesure d'audience (Google Analytics 4) est activée, elle ne démarre qu'après votre consentement — voir notre politique de cookies pour le détail et pour modifier votre choix."
       },
       "security": {
         "title": "Sécurité",
@@ -1335,7 +1382,7 @@
       },
       "intellectual": {
         "title": "Propriété intellectuelle",
-        "body": "Le contenu de ce site : textes, visuels, marques et logos appartient à Digital Station. La propriété des livrables produits dans le cadre d'une mission est définie par le contrat conclu avec le client."
+        "body": "Le contenu de ce site (textes, visuels, marques et logos) appartient à Digital Station. La propriété des livrables produits dans le cadre d'une mission est définie par le contrat conclu avec le client."
       },
       "obligations": {
         "title": "Engagements du client",
@@ -1402,11 +1449,11 @@
       },
       "analytics": {
         "title": "Mesure d'audience (avec votre accord)",
-        "body": "Avec votre accord explicite, ce site utilise Google Analytics 4 pour mesurer la fréquentation (pages consultées, provenance, type d'appareil), avec anonymisation systématique de l'adresse IP. Les cookies associés (_ga, _ga_XXXXXXX) ne sont déposés qu'après votre consentement et peuvent être refusés sans affecter votre navigation."
+        "body": "Lorsqu'une mesure d'audience est activée, ce site utilise Google Analytics 4, uniquement avec votre accord explicite, pour mesurer la fréquentation (pages consultées, provenance, type d'appareil), avec anonymisation systématique de l'adresse IP. Les cookies associés (_ga, _ga_XXXXXXX) ne sont déposés qu'après votre consentement et peuvent être refusés sans affecter votre navigation."
       },
       "duration": {
         "title": "Durée de conservation",
-        "body": "Les cookies analytiques, lorsqu'ils sont acceptés, sont conservés 13 mois maximum, conformément aux recommandations de la CNIL. Votre choix est mémorisé pendant 6 mois ; passé ce délai, la bannière de consentement vous sera présentée à nouveau."
+        "body": "Les cookies analytiques, lorsqu'ils sont acceptés, sont conservés 13 mois maximum, conformément aux recommandations de la CIL (Burkina Faso) et de la CNIL. Votre choix est mémorisé pendant 6 mois ; passé ce délai, la bannière de consentement vous sera présentée à nouveau."
       },
       "manage": {
         "title": "Modifier votre choix",
